@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Stop hook — Agent Diary. Si hubo trabajo sobre el vault esta sesión, hace que el
+# agente registre una entrada de bitácora ANTES de terminar (contexto para el próximo).
+#
+# Mecánica (patrón de obsidian-mind / claude-obsidian, sin node y sin jq):
+#   - Guard anti-loop: si el modelo ya reentró por el Stop (stop_hook_active=true),
+#     limpia la marca y permite terminar.
+#   - Dispara solo si existe la marca .vault-meta/session-touched (la deja auto-commit.sh
+#     cuando se escribe contenido del vault).
+#   - DEDUPE POR SESIÓN (v2, 2026-07-05): bloquea UNA sola vez por session_id (stamp
+#     .vault-meta/diary-done-<sid>). Antes bloqueaba en cada cierre de turno con ediciones
+#     → un turno extra del modelo por turno de trabajo (caro en conversaciones largas).
+#     Si el agente sigue trabajando tras registrar, la convención es AMPLIAR su entrada
+#     (voluntario, sin bloqueo). Stamps viejos (>7 días) se limpian solos.
+#   - Salida JSON estática {"decision":"block","reason":...} → el modelo continúa,
+#     escribe la entrada y luego termina (segunda pasada = stop_hook_active).
+#   - Kill-switch: .vault-meta/diary.disabled
+set -uo pipefail
+
+ROOT="${CLAUDE_PROJECT_DIR:-$PWD}"
+cd "$ROOT" 2>/dev/null || exit 0
+
+INPUT="$(cat)"
+
+# Guard anti-loop: segunda pasada → limpiar marca y salir.
+case "$INPUT" in
+  *'"stop_hook_active":true'*|*'"stop_hook_active": true'*)
+    rm -f .vault-meta/session-touched 2>/dev/null || true
+    exit 0 ;;
+esac
+
+# Kill-switch.
+[ -f .vault-meta/diary.disabled ] && exit 0
+
+# ¿Hubo trabajo en el vault esta sesión?
+[ -f .vault-meta/session-touched ] || exit 0
+
+# Dedupe por sesión: si esta sesión ya registró bitácora, no volver a bloquear.
+SID="$(printf '%s' "$INPUT" | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
+[ -n "$SID" ] || SID="dia-$(date +%Y-%m-%d)"
+STAMP=".vault-meta/diary-done-${SID}"
+[ -f "$STAMP" ] && exit 0
+mkdir -p .vault-meta 2>/dev/null || true
+: > "$STAMP" 2>/dev/null || true
+find .vault-meta -maxdepth 1 -name 'diary-done-*' -mtime +7 -delete 2>/dev/null || true
+
+MONTH="$(date +%Y-%m)"
+DAY="$(date +%Y-%m-%d)"
+
+printf '{"decision":"block","reason":"[AGENT DIARY] Se trabajó sobre el vault esta sesión. Antes de terminar, registrá UNA entrada en la bitácora \\"05 Diario/Bitácora Agentes/%s.md\\" (creá el archivo y la carpeta si no existen) con este formato exacto:\\n\\n## %s — <tu agente, ej. Claude Code>\\n- Qué se avanzó/creó/editó:\\n- Qué quedó bloqueado:\\n- Qué se decidió o cambió:\\n- Qué debe saber el próximo agente:\\n\\nTRES REGLAS (el hook de sesión inyecta la ÚLTIMA entrada del archivo):\\n1. Agregá tu entrada AL FINAL del archivo (la más reciente SIEMPRE abajo).\\n2. En \\"Qué debe saber\\", el siguiente paso apuntá al [[Roadmap del Sistema]] (fuente viva), NO congeles un paso concreto.\\n3. UNA entrada por sesión: este aviso no se repite; si seguís trabajando después de registrarla, AMPLIÁ tu propia entrada (no crees otra).\\n\\nDespués terminá normalmente. (Para desactivar esta bitácora: crear el archivo .vault-meta/diary.disabled)"}' "$MONTH" "$DAY"
+exit 0

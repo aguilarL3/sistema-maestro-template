@@ -1,0 +1,63 @@
+﻿.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/plugins/obsidian-git/data.json
+.trash/
+# Google Drive temp upload artifacts
+.tmp.driveupload/
+# Windows / OneDrive folder metadata
+desktop.ini
+**/desktop.ini
+# ─── Política: git = solo markdown ───────────────────────────────
+# Los binarios viven en disco y se sincronizan por OneDrive/Drive, NO en git.
+# Obsidian los renderiza desde disco igual; git se queda con texto diffeable.
+# (.canvas NO se ignora: es JSON/texto, contenido del vault)
+# Imágenes
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+# Documentos / hojas de cálculo
+*.pdf
+*.xlsx
+*.xls
+*.docx
+*.pptx
+# Comprimidos y multimedia
+*.zip
+*.mp4
+*.mov
+*.mp3
+# ─── Worktrees de agentes (orquestación multi-agente) ────────────
+# Checkouts aislados que crean los agentes (Claude/Codex/...). No son
+# contenido del vault: viven aparte y se integran por rama.
+# Ver "00 Sistema/Orquestación Multi-Agente Abierta.md".
+.claude/worktrees/
+.codex/worktrees/
+# ─── Estado runtime de hooks multi-agente ────────────────────────
+# Marcas de sesión, locks y kill-switches locales (no son contenido del vault).
+.vault-meta/
+# ─── Secretos y credenciales (NUNCA a git) ───────────────────────
+# Primera línea de defensa de cadena de suministro. El secret-scan pre-commit
+# y el security-guard son las otras capas. Ver "00 Sistema/SOP de Seguridad.md".
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.ppk
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+credentials.json
+.aws/credentials
+secrets.json
+secrets.yaml
+secrets.yml
+# Config local de Claude Code (permisos personales; no se comparte)
+.claude/settings.local.json
+# Python bytecode
+__pycache__/
+*.pyc

@@ -1,0 +1,49 @@
+# Sistema Maestro V6
+
+> Sistema operativo personal de {{OWNER}}, construido en Obsidian (Markdown puro). Convierte información en conocimiento, acción y evidencia. Arquitectura de 8 capas (00 Sistema → 99 Archivo). Este archivo es el MAPA: le dice a cualquier IA qué leer y en qué orden antes de operar sobre el vault.
+
+Antes de crear, mover o resumir cualquier cosa, una IA debe leer la capa Ley (AGENTS.md / CLAUDE.md) y respetar el protocolo: no duplicar, no borrar sin proponer, priorizar conexiones sobre estructura, markdown puro. La precedencia de autoridad de este ecosistema es: CLAUDE.md → AGENTS.md → llms.txt → Skills → resto.
+
+## Empezar acá (Ley y orientación)
+
+- [AGENTS.md](AGENTS.md): Ley universal del vault. Propósito, reglas, arquitectura. La lee toda IA. **Leer primero.**
+- [CLAUDE.md](CLAUDE.md): Instrucciones operativas específicas de Claude Code. Máxima autoridad en sesión Claude.
+- [SOP Maestro](00%20Sistema/SOP%20Maestro.md): Explicación central de todo el sistema.
+- [Glosario de términos](00%20Sistema/Glosario%20de%20términos.md): El lenguaje del vault. Usar estos términos, no inventar otros.
+- [00 Inicio Rapido](00%20Inicio%20Rapido.md): Onboarding para entender el sistema desde cero.
+
+## Interoperabilidad y construcción de sistemas
+
+- [SOP Interoperabilidad IA](00%20Sistema/SOP%20Interoperabilidad%20IA.md): Cómo cualquier IA lee y opera sobre cualquier sistema. Las 5 capas, el flujo de entrada, prompt caching, mantenimiento.
+- [Blueprint de Sistemas](00%20Sistema/Blueprint%20de%20Sistemas.md): Checklist reutilizable para armar un sistema nuevo legible por IA.
+- [SOP Conectores](00%20Sistema/SOP%20Conectores.md): Cómo documentar un sistema externo (Notion, Drive, ERP).
+- [SOP Skills](00%20Sistema/SOP%20Skills.md): Qué es una skill, dónde vive, cuándo crearla.
+- [SOP IA](00%20Sistema/SOP%20IA.md): Cómo trabajar con IA en el vault (proponer, no decidir).
+
+## Conectores (sistemas externos)
+
+- [Notion - Arquitectura](04%20Knowledge/Conectores/Notion%20-%20Arquitectura.md): EJEMPLO ficticio de doc de conector (modelo de datos, ERD, diccionario, deuda técnica). Reemplazar por tus sistemas reales.
+
+## Seguridad (leer antes de operar con permisos amplios)
+
+- [SOP de Seguridad](00%20Sistema/SOP%20de%20Seguridad.md): El marco completo: capas deterministas (deny, guards, secret-scan), reglas para el agente, qué nunca hacer.
+- [Baseline de Seguridad](00%20Sistema/Baseline%20de%20Seguridad/Baseline%20de%20Seguridad.md): Kit portable para que cualquier repo de código nazca con seguridad determinista (settings deny + guard + secret-scan + pre-commit).
+- [Prompt Injection y la Tríada Letal](04%20Knowledge/Temas/Prompt%20Injection%20y%20la%20Tríada%20Letal.md): Fundamento: por qué el contenido externo es datos, no instrucciones.
+- [MOC - Seguridad](02%20MOCs/MOC%20-%20Seguridad.md): Puerta de entrada al tema.
+
+## Estado (qué cambió / qué hay en curso)
+
+- [Dashboard-CEO](Dashboard-CEO.md): Vista operativa que integra carrera, vida y ejecución.
+- [Vault System Map](Vault%20System%20Map.md): Inventario de carpetas, SOPs, plantillas, MOCs y proyectos.
+
+## Capacidades (Skills ejecutables)
+
+- [Skill - Mantenimiento Sistema](04%20Knowledge/Skills/Skill%20-%20Mantenimiento%20Sistema.md): Audita la frescura de la documentación y propone mejoras según buenas prácticas actuales.
+- [Skill - Cerebro Audit](04%20Knowledge/Skills/Skill%20-%20Cerebro%20Audit.md): Auditoría CE-RE-BRO del vault (conexiones, agrupación, estructura).
+
+## Optional
+
+- [Matriz Definitiva](Matriz%20Definitiva.md): Decisiones estructurales inamovibles. Consultar solo ante dudas de arquitectura base.
+- [Principios](01%20Index/Principios.md): Principios no negociables del sistema.
+- [Valores](01%20Index/Valores.md): Valores personales que filtran decisiones.
+- [Investigación y auditoría de marcos](04%20Knowledge/Investigación%20del%20Sistema/Investigación%20y%20auditoría%20de%20marcos.md): Qué aporta cada marco (GTD, PARA, Zettelkasten, LLM Wiki…), qué se adoptó y qué no.

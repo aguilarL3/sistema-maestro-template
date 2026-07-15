@@ -1,0 +1,5 @@
+# Los hooks del harness son bash: DEBEN conservar LF siempre.
+# Con CRLF, el shebang y `\r` finales rompen la ejecución en Git Bash (Windows).
+*.sh text eol=lf
+.claude/hooks/* text eol=lf
+.githooks/* text eol=lf

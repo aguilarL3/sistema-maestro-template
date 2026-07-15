@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Git hook pre-commit (versionado en .githooks/, activado con core.hooksPath).
+# Delega en el verifier del sistema. A diferencia de los hooks del harness
+# (.claude/hooks/ en settings.json), este corre en CADA `git commit`, lo haga
+# un agente o un humano. Ver [[Verifier pre-commit (self-review)]].
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+# 1) Gate de seguridad: bloquea secretos antes de que entren al historial.
+bash "$ROOT/.claude/hooks/secret-scan.sh" || exit 1
+# 2) Verifier de conocimiento (frontmatter + tags).
+exec bash "$ROOT/.claude/hooks/verify-commit.sh"
