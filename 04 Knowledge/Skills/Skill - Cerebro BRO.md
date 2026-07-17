@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Cerebro BRO — Bloques Relacionados Organizados"
 tags: [skill, ia, claude-code, cerebro-digital, ce-re-bro, bloques, atomicidad]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
@@ -15,6 +16,7 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟨 Borrador
+resource:
 ---
 
 # Skill | Cerebro BRO — Bloques Relacionados Organizados
@@ -98,14 +100,14 @@ Ver archivo ejecutable: `.claude/commands/cerebro-bro.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro CE]] → conexiones entre notas
-- [[Skill - Cerebro RE]] → reagrupamiento y metadatos
-- [[Skill - Cerebro Audit]] → corre las tres dimensiones juntas
+- [Skill - Cerebro CE](<Skill - Cerebro CE.md>) → conexiones entre notas
+- [Skill - Cerebro RE](<Skill - Cerebro RE.md>) → reagrupamiento y metadatos
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) → corre las tres dimensiones juntas
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>)
 - Metodología CE-RE-BRO — Marcos Emowe (Cerebro Digital)
 - Video: "Tres formas de organizar tus notas que el papel no permite"

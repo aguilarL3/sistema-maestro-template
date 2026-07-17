@@ -1,11 +1,13 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP MOCs"
 tags: [sop, moc, navegacion]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "SOP-009"
+resource:
 ---
 
 > [!info] Un MOC no es una carpeta
@@ -53,15 +55,15 @@ Primero captura, luego agrupa, luego sintetiza.
 
 ## Referencias
 - [[Plantilla MOC]]
-- [[SOP Notas Atómicas]]
-- [[SOP Index]]
-- [[SOP Maestro]]
+- [SOP Notas Atómicas](<SOP Notas Atómicas.md>)
+- [SOP Index](<SOP Index.md>)
+- [SOP Maestro](<SOP Maestro.md>)
 
 ## Antes de crear un MOC, lee
-- [[MOC]]
-- [[Zettelkasten]]
-- [[LLM Wiki]]
-- [[Glosario de términos]]
+- [MOC](<../04 Knowledge/Sistemas y Metodologías/MOC.md>)
+- [Zettelkasten](<../04 Knowledge/Sistemas y Metodologías/Zettelkasten.md>)
+- [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)
+- [Glosario de términos](<Glosario de términos.md>)
 
 ## Cómo debe entenderse
 Un MOC sirve para entrar, orientarse y descubrir relaciones.  

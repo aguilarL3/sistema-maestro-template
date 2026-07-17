@@ -1,9 +1,11 @@
 ---
-tipo_doc: Indice
+type: Indice
+title: "SOPS"
 tags: [sop, sistema]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-07-14
+timestamp: 2026-07-14T00:00:00Z
+resource:
 ---
 
 # SOPS

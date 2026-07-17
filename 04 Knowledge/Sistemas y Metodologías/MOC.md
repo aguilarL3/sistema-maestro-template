@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "MOC"
 tags: [moc, knowledge, sistema]
 life_areas: [profesional, personal]
 domains: [navegacion, conocimiento]
@@ -9,8 +10,9 @@ projects: []
 sources: [Luhmann, Obsidian community]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-015"
+resource:
 ---
 
 # MOC

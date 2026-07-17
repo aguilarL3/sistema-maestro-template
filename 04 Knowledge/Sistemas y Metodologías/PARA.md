@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "PARA"
 tags: [metodologia, para, knowledge, sistema]
 life_areas: [personal, profesional]
 domains: [organizacion, productividad]
@@ -9,8 +10,9 @@ projects: []
 sources: [Tiago Forte]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-016"
+resource:
 ---
 
 # PARA

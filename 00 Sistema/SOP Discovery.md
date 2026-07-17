@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Discovery — Investigación Previa"
 tags: [sop, discovery, investigacion, prior-art]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-DISCOVERY-001"
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Investigación Previa (Discovery)]] (estudio a fondo) | [[Blueprint de Sistemas]] | [[Ciclo de Vida de Capacidades IA]] | [[SOP Interoperabilidad IA]]
+>[Investigación Previa (Discovery)](<../04 Knowledge/Sistemas y Metodologías/Investigación Previa (Discovery).md>) (estudio a fondo) | [Blueprint de Sistemas](<Blueprint de Sistemas.md>) | [Ciclo de Vida de Capacidades IA](<../04 Knowledge/Sistemas y Metodologías/Ciclo de Vida de Capacidades IA.md>) | [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)
 
 # SOP Discovery — Investigación Previa
 
@@ -18,9 +20,9 @@ fecha_creacion: 2026-06-26
 
 Definir el protocolo **timeboxed** que se ejecuta **antes** de construir cualquier cosa (proyecto, feature, app, skill, conector, negocio): averiguar si ya existe, si está documentado oficialmente, y decidir build / buy / adopt — para no reinventar ni perder tiempo descifrando lo que ya está escrito.
 
-> **Regla de oro:** ninguna construcción arranca sin un Discovery. Es la **Fase 0** del [[Ciclo de Vida de Capacidades IA]] y el paso 0 del [[Blueprint de Sistemas]].
+> **Regla de oro:** ninguna construcción arranca sin un Discovery. Es la **Fase 0** del [Ciclo de Vida de Capacidades IA](<../04 Knowledge/Sistemas y Metodologías/Ciclo de Vida de Capacidades IA.md>) y el paso 0 del [Blueprint de Sistemas](<Blueprint de Sistemas.md>).
 >
-> El *por qué* y los conceptos a fondo (Spike, Prior Art, Build-vs-Buy, parálisis por análisis) están en [[Investigación Previa (Discovery)]]. Este SOP es solo el **cómo**.
+> El *por qué* y los conceptos a fondo (Spike, Prior Art, Build-vs-Buy, parálisis por análisis) están en [Investigación Previa (Discovery)](<../04 Knowledge/Sistemas y Metodologías/Investigación Previa (Discovery).md>). Este SOP es solo el **cómo**.
 
 ---
 
@@ -38,7 +40,7 @@ Timebox sugerido: **30 min – 3 días** según tamaño. No más.
 - [ ] **¿Hay documentación oficial?** Si la hay, **leerla primero** (RTFM). Es la base de arranque.
 - [ ] **¿La fuente es oficial o no?** Distinguí doc oficial (vendor) de blogs/terceros. Priorizá oficial, pero verificá (puede estar incompleta o atrasada).
 - [ ] **¿Hay repos / research disponibles?** GitHub, papers, ejemplos. Sirven de base o de auditoría para mejorar.
-- [ ] **¿Hay estándar o convención?** (ej. para conectores: MCP. Ver [[SOP Interoperabilidad IA]]).
+- [ ] **¿Hay estándar o convención?** (ej. para conectores: MCP. Ver [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)).
 - [ ] **Decisión Build / Buy / Adopt** (ver §3), explícita.
 - [ ] **Escribir el brief** (ver §4).
 
@@ -110,10 +112,10 @@ Escribir el brief
 ---
 
 ## Referencias
-- [[Investigación Previa (Discovery)]] — el estudio a fondo de los conceptos
-- [[Blueprint de Sistemas]] — Discovery es su paso 0
-- [[Ciclo de Vida de Capacidades IA]] — Discovery es su Fase 0
-- [[SOP Interoperabilidad IA]] · [[Glosario de términos]]
+- [Investigación Previa (Discovery)](<../04 Knowledge/Sistemas y Metodologías/Investigación Previa (Discovery).md>) — el estudio a fondo de los conceptos
+- [Blueprint de Sistemas](<Blueprint de Sistemas.md>) — Discovery es su paso 0
+- [Ciclo de Vida de Capacidades IA](<../04 Knowledge/Sistemas y Metodologías/Ciclo de Vida de Capacidades IA.md>) — Discovery es su Fase 0
+- [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) · [Glosario de términos](<Glosario de términos.md>)
 
 ## Cómo leer este SOP
-Es el **cómo**. Si querés entender el porqué de cada paso, andá a [[Investigación Previa (Discovery)]]. Para ejecutar: seguí el checklist (§2), respetá el timebox (§5), escribí el brief (§4).
+Es el **cómo**. Si querés entender el porqué de cada paso, andá a [Investigación Previa (Discovery)](<../04 Knowledge/Sistemas y Metodologías/Investigación Previa (Discovery).md>). Para ejecutar: seguí el checklist (§2), respetá el timebox (§5), escribí el brief (§4).

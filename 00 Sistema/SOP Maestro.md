@@ -1,17 +1,19 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Maestro"
 tags: [SOP, maestro, sistema, onboarding]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-001"
-ultima_revision: 2026-07-02
+timestamp: 2026-07-02T00:00:00Z
 fecha_creacion: 2026-06-17
+resource:
 ---
 
 > [!info] Este es el archivo raíz del sistema
 > Si alguien entra por primera vez al vault, este archivo debe ser de los primeros en leer.
-> Antes o después también conviene leer: [[00 Inicio Rapido]], [[AGENTS]], [[SOP Index]], [[Glosario de términos]], [[Investigación y auditoría de marcos]]
+> Antes o después también conviene leer: [00 Inicio Rapido](<../00 Inicio Rapido.md>), [AGENTS](<../AGENTS.md>), [SOP Index](<SOP Index.md>), [Glosario de términos](<Glosario de términos.md>), [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
 
 # SOP Maestro
 
@@ -67,26 +69,26 @@ La lectura recomendada no es lineal sino por capas.
 
 ### Capa 1. Entender el sentido
 Primero lee:
-- [[00 Inicio Rapido]]
-- [[AGENTS]]
-- [[Glosario de términos]]
+- [00 Inicio Rapido](<../00 Inicio Rapido.md>)
+- [AGENTS](<../AGENTS.md>)
+- [Glosario de términos](<Glosario de términos.md>)
 
 ### Capa 2. Entender la arquitectura
 Luego:
-- [[SOP Index]]
-- [[SOP MOCs]]
-- [[SOP Diario]]
-- [[SOP Revisiones]]
-- [[SOP Proyectos]]
-- [[SOP IA]]
+- [SOP Index](<SOP Index.md>)
+- [SOP MOCs](<SOP MOCs.md>)
+- [SOP Diario](<SOP Diario.md>)
+- [SOP Revisiones](<SOP Revisiones.md>)
+- [SOP Proyectos](<SOP Proyectos.md>)
+- [SOP IA](<SOP IA.md>)
 
 ### Capa 3. Entender la filosofía
 Después:
-- [[Valores]]
-- [[Principios]]
-- [[Vision]]
-- [[Objetivos]]
-- [[Investigación y auditoría de marcos]]
+- [Valores](<../01 Index/Valores.md>)
+- [Principios](<../01 Index/Principios.md>)
+- [Vision](<../01 Index/Vision.md>)
+- [Objetivos](<../01 Index/Objetivos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
 
 ## 5. Arquitectura base
 La estructura base es esta:
@@ -124,6 +126,23 @@ Fuentes originales sin procesar.
 
 #### `99 Archivo`
 Material terminado, obsoleto o archivado.
+
+### Convenciones por carpeta
+
+> El índice de cada carpeta es un `index.md` **de listado puro** (sin frontmatter ni prosa — se regenera con `generate-index.py`; convención [Open Knowledge Format](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>)). La regla de cada carpeta vive acá o en su SOP dedicado.
+
+| Carpeta | Regla esencial | SOP dedicado |
+|---|---|---|
+| `03 Proyectos` | Cada proyecto: objetivo, alcance, hitos, próximo paso, evidencia, enlace a diario y notas | — |
+| `04 Knowledge` | Solo conocimiento procesado y reutilizable. NO: fuentes sin procesar (→ `06 Raw`), proyectos (→ `03`), diarios (→ `05`) | — |
+| `04 Knowledge/Temas` | Notas atómicas: conceptos que aparecen 3+ veces en distintas fuentes, conectan áreas o tienen alto valor práctico | [SOP Notas Atómicas](<SOP Notas Atómicas.md>) |
+| `04 Knowledge/Cursos` | Una subcarpeta por curso; una nota por clase (`Clase N.M - Título.md`) | [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>) |
+| `04 Knowledge/Prompts` | Estructura plana; un prompt por nota, versionado v1/v2 | [SOP Prompts](<SOP Prompts.md>) |
+| `04 Knowledge/Modelos Mentales` | Modelos transversales (Kaizen, interés compuesto, feedback loops, incentivos, pensamiento sistémico…) | — |
+| `05 Diario` | Centro operativo: hábitos, prioridades, problemas, predicciones, reflexiones. Regla: no tiene que ser perfecto, tiene que ser útil | — |
+| `05 Diario/Auditorías` | Fotos fechadas de skills de auditoría e investigaciones (hallazgos, no registro permanente — eso va al [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>)) | [SOP Skills](<SOP Skills.md>) |
+| `06 Raw` | Regla práctica: **si lo creó otro** (video, PDF, slides, transcripción) → vive acá; **si lo escribiste vos** → `04 Knowledge`. El material original se consulta y cita, **no se reescribe** (distinción Raw Sources vs Wiki de [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)). Subcarpetas opcionales por tipo — crear recién con 3+ archivos del mismo tipo | [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>) |
+| `99 Archivo` | Archivo no significa basura: significa fuera del flujo principal | — |
 
 ## 6. Flujo general de trabajo
 
@@ -199,13 +218,13 @@ ROADMAP  →  (un agente agarra un pendiente y lo construye)  →  BITÁCORA  �
 
 | Documento | Ubicación | Pregunta | Naturaleza |
 |---|---|---|---|
-| [[Roadmap del Sistema]] | `01 Index/` | ¿Qué falta / qué sigue? | Backlog vivo (se vacía) |
+| [Roadmap del Sistema](<../01 Index/Roadmap del Sistema.md>) | `01 Index/` | ¿Qué falta / qué sigue? | Backlog vivo (se vacía) |
 | [[Bitácora de Agentes]] | `05 Diario/Bitácora Agentes/` | ¿Qué pasó en esta sesión y dónde quedamos? | Handoff cronológico (por mes; se llena solo vía hook `Stop`) |
-| [[CHANGELOG del Sistema]] | `00 Sistema/` | ¿Qué cambió estructuralmente, para siempre? | Registro permanente y curado (append-only) |
+| [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>) | `00 Sistema/` | ¿Qué cambió estructuralmente, para siempre? | Registro permanente y curado (append-only) |
 
 La distinción fina es **Bitácora vs CHANGELOG**: la bitácora registra *toda* sesión significativa con tono de "dónde quedé" (bloqueos, decisiones a medias, avisos al próximo agente) y es desechable; el CHANGELOG registra *solo cambios estructurales consumados* con tono de "esto ahora es así" y es permanente. Analogía: la bitácora es el mensaje al del turno siguiente; el CHANGELOG es el acta oficial. Las **auditorías** (`05 Diario/Auditorías/`) son fotos fechadas que *alimentan* al Roadmap, no forman parte de este flujo.
 
-> Detalle multi-agente de este flujo → [[Orquestación Multi-Agente Abierta]] §13.
+> Detalle multi-agente de este flujo → [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) §13.
 
 ## 7. Qué NO hacer
 - No convertir el vault en miles de carpetas temáticas.
@@ -258,7 +277,7 @@ Cada capa del vault traduce un marco externo. El mapa mínimo:
 | Career OS | evidencia, portfolio, carrera | `{{OWNER}} Career OS` + MOC Carrera |
 | CE-RE-BRO (propio) | auditoría Conectar/Reagrupar/Optimizar | skills `cerebro-*` |
 
-> **Una fuente de verdad por pregunta:** *¿por qué* se eligió cada marco y qué se adoptó/descartó → [[Filosofía del Sistema]] (§Los 6 pilares). *¿Qué dice* cada marco en profundidad (el estudio) → [[Investigación y auditoría de marcos]]. Este SOP solo mantiene el mapa de traducción de arriba.
+> **Una fuente de verdad por pregunta:** *¿por qué* se eligió cada marco y qué se adoptó/descartó → [Filosofía del Sistema](<Filosofía del Sistema.md>) (§Los 6 pilares). *¿Qué dice* cada marco en profundidad (el estudio) → [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>). Este SOP solo mantiene el mapa de traducción de arriba.
 
 ## 11. Cómo mantener el sistema en el tiempo
 Una vez por semana:
@@ -296,20 +315,20 @@ Con uso sostenido y revisión regular, el Sistema Maestro se convierte en:
 ---
 
 ## 14. Referencias
-- [[00 Inicio Rapido]]
-- [[Glosario de términos]]
-- [[Investigación y auditoría de marcos]]
-- [[SOP Index]]
-- [[SOP MOCs]]
-- [[SOP Diario]]
-- [[SOP Revisiones]]
-- [[SOP Proyectos]]
-- [[SOP IA]]
-- [[SOP Evergreen Notes]]
-- [[SOP Áreas]]
-- [[Valores]]
-- [[Principios]]
-- [[Vision]]
-- [[Objetivos]]
-- [[MOC - Investigación del Sistema]]
+- [00 Inicio Rapido](<../00 Inicio Rapido.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
+- [SOP Index](<SOP Index.md>)
+- [SOP MOCs](<SOP MOCs.md>)
+- [SOP Diario](<SOP Diario.md>)
+- [SOP Revisiones](<SOP Revisiones.md>)
+- [SOP Proyectos](<SOP Proyectos.md>)
+- [SOP IA](<SOP IA.md>)
+- [SOP Evergreen Notes](<SOP Evergreen Notes.md>)
+- [SOP Áreas](<SOP Áreas.md>)
+- [Valores](<../01 Index/Valores.md>)
+- [Principios](<../01 Index/Principios.md>)
+- [Vision](<../01 Index/Vision.md>)
+- [Objetivos](<../01 Index/Objetivos.md>)
+- [MOC - Investigación del Sistema](<../02 MOCs/MOC - Investigación del Sistema.md>)
 - MOC - Master Learning System

@@ -1,12 +1,14 @@
 ---
-tipo_doc: Runbook
+type: Runbook
+title: "Runbook - [Nombre del Fallo]"
 tags: [runbook, ops]
 estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "RUN-XXX"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
+resource:
 ---
 
 >[!info] Documentación relacionada

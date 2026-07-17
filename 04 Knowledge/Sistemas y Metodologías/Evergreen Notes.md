@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Evergreen Notes"
 tags: [metodologia, evergreen, knowledge, sistema]
 life_areas: [personal, profesional]
 domains: [aprendizaje, conocimiento]
@@ -9,8 +10,9 @@ projects: []
 sources: [Andy Matuschak]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-011"
+resource:
 ---
 
 # Evergreen Notes

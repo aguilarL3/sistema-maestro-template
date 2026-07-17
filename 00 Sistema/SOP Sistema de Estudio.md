@@ -1,17 +1,19 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP — Sistema Maestro de Estudio"
 tags: [SOP, estudio, aprendizaje]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 domains: [bi, ia, automatizacion, ingles, negocio]
 responsable: "{{OWNER}}"
 id: "SOP-MASTER-STUDY-001"
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-17
+resource:
 ---
 
 >[!info] Documentación
->Consulta la plantilla de apuntes: [[00 Sistema/001_plantillas/Plantilla Apunte Curso]] | Cronogramas: [[SOP Cronogramas de Estudio]] | Ubicación y ciclo de vida de apuntes: [[SOP Cursos y Apuntes]] | Prompts: [[SOP Prompts]]
+>Consulta la plantilla de apuntes: [[00 Sistema/001_plantillas/Plantilla Apunte Curso]] | Cronogramas: [SOP Cronogramas de Estudio](<SOP Cronogramas de Estudio.md>) | Ubicación y ciclo de vida de apuntes: [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>) | Prompts: [SOP Prompts](<SOP Prompts.md>)
 
 > [!warning] Cambio de flujo aplicado 2026-06-24
 > La **ubicación física** de los apuntes y prompts cambió. El flujo conceptual de las 5 fases sigue intacto; solo cambia dónde vive cada artefacto:
@@ -20,7 +22,7 @@ fecha_creacion: 2026-06-17
 > - **Prompts:** ahora en `04 Knowledge/Prompts/` (antes en `05 Diario/`).
 > - **`05 Diario/`:** vuelve a su definición original — solo daily notes operativos (hábitos, prioridades, reflexiones).
 >
-> Detalle completo en [[SOP Cursos y Apuntes]] y [[SOP Prompts]]. Los apuntes y prompts ya creados se migran manualmente desde Obsidian (arrastrar el archivo a la nueva carpeta — Obsidian actualiza los `[[links]]` automáticamente).
+> Detalle completo en [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>) y [SOP Prompts](<SOP Prompts.md>). Los apuntes y prompts ya creados se migran manualmente desde Obsidian (arrastrar el archivo a la nueva carpeta — Obsidian actualiza los `[[links]]` automáticamente).
 
 # SOP — Sistema Maestro de Estudio
 
@@ -162,11 +164,11 @@ Simula entrevista para: Business Intelligence Analyst
 ---
 
 ## Referencias
-- [[SOP Cursos y Apuntes]]
-- [[SOP Prompts]]
-- [[Dashboard-Estudio]]
-- [[SOP Cronogramas de Estudio]]
-- [[SOP Aprendizaje con IA]]
+- [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>)
+- [SOP Prompts](<SOP Prompts.md>)
+- [Dashboard-Estudio](<../Dashboard-Estudio.md>)
+- [SOP Cronogramas de Estudio](<SOP Cronogramas de Estudio.md>)
+- [SOP Aprendizaje con IA](<SOP Aprendizaje con IA.md>)
 - MOC - Master Learning System
 - [[02 MOCs/MOC - BI Analytics]]
 - [[02 MOCs/MOC - Automatizacion IA]]

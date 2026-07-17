@@ -61,3 +61,4 @@ secrets.yml
 # Python bytecode
 __pycache__/
 *.pyc
+.okf-backup/

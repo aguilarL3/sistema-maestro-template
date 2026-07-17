@@ -1,10 +1,12 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Weekly Dashboard — Semana [N]"
 tags: [dashboard, weekly, estudio]
 estado: 🏃 En curso / ✅ Completada
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: 2026-07-03
+timestamp: 2026-07-03T00:00:00Z
 semana: ""
+resource:
 ---
 
 >[!abstract] Plantilla

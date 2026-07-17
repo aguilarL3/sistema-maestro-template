@@ -14,7 +14,7 @@ Carpetas objetivo: "00 Sistema/", "04 Knowledge/Conectores/", "04 Knowledge/Skil
 
 == DIMENSIÓN 1: FRESCURA ==
 1. Determiná la fecha de hoy desde runtime.
-2. Glob los .md de las carpetas objetivo; Grep "^(ultima_revision|fecha_actualizacion):".
+2. Glob los .md de las carpetas objetivo; Grep "^(timestamp|fecha_actualizacion):".
 3. Calculá días desde esa fecha hasta hoy. Clasificá: 🔴 Vencido (+90d), 🟡 Por vencer (60-90d), 🟢 Fresco (<60d), ⚪ Sin fecha.
 
 == DIMENSIÓN 2: CONSISTENCIA ==
@@ -28,7 +28,7 @@ NIVEL 0 — Checkers deterministas (barato y exhaustivo, vía Bash, sobre TODO e
 NIVEL 1 — Heurístico (barato, sobre TODOS los docs):
 4. Con las refs rotas ya provistas por el Nivel 0, enfocá el heurístico en lo que los scripts NO cubren:
    - ¿Las RUTAS que menciona existen? (carpetas referenciadas, no solo wikilinks)
-   - ¿Referencia CONVENCIONES VIGENTES? Ej.: las skills de auditoría deben escribir en `05 Diario/Auditorías/` (no en la raíz del Diario); los docs deben tener `tipo_doc` si son documentación (ver [[Tipos de Documentación]]).
+   - ¿Referencia CONVENCIONES VIGENTES? Ej.: las skills de auditoría deben escribir en `05 Diario/Auditorías/` (no en la raíz del Diario); los docs deben tener `type` si son documentación (ver [[Tipos de Documentación]]).
    - ¿Apunta a archivos que fueron movidos/renombrados? (cruzá contra el [[CHANGELOG del Sistema]])
    Este nivel es el que caza los DRIFT de convención. Es barato: solo cruza referencias contra la realidad del vault.
 

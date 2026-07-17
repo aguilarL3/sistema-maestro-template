@@ -1,15 +1,17 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "[Curso] | Clase [N] — [Título]"
 tags: [learning, clase]
 estado: 🟨 Pendiente / 🟩 Procesado
 fecha_creacion: YYYY-MM-DD
-ultima_revision: YYYY-MM-DD
+timestamp: YYYY-MM-DD
 origen: "[[MOC - nombre]]"
 curso: Career OS
 clase: "N"
 categoria: BI & Analytics
 subcategoria: ...
 domains: []
+resource:
 ---
 
 # [Curso] | Clase [N] — [Título]

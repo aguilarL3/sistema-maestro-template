@@ -1,11 +1,13 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Revisiones"
 tags: [sop, revision, auditoria]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "SOP-011"
+resource:
 ---
 
 > [!info] La revisión mantiene vivo el sistema
@@ -59,16 +61,16 @@ Sirve para:
 - notas modelo mental
 
 ## Referencias
-- [[SOP Maestro]]
-- [[SOP Index]]
-- [[SOP Diario]]
-- [[SOP Evergreen Notes]]
+- [SOP Maestro](<SOP Maestro.md>)
+- [SOP Index](<SOP Index.md>)
+- [SOP Diario](<SOP Diario.md>)
+- [SOP Evergreen Notes](<SOP Evergreen Notes.md>)
 
 ## Antes de revisar, lee
-- [[CE-RE-BRO]]
-- [[Evergreen Notes]]
-- [[Glosario de términos]]
-- [[SOP Diario]]
+- [CE-RE-BRO](<../04 Knowledge/Sistemas y Metodologías/CE-RE-BRO.md>)
+- [Evergreen Notes](<../04 Knowledge/Sistemas y Metodologías/Evergreen Notes.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [SOP Diario](<SOP Diario.md>)
 
 ## Qué debe salir de una revisión
 - notas conectadas

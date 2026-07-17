@@ -4,13 +4,15 @@ estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "REF-DOCTYPES-001"
-ultima_revision: 2026-06-26
-tipo_doc: Reference
+timestamp: 2026-06-26T00:00:00Z
+type: Reference
+title: "Tipos de Documentación del Sistema"
 fecha_creacion: 2026-06-26
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Catálogo de Tipos de Documentación]] (versión profunda, para *estudiar*) | [[Blueprint de Sistemas]] | [[SOP Interoperabilidad IA]] | [[SOP Maestro]] | [[Glosario de términos]]
+>[Catálogo de Tipos de Documentación](<../04 Knowledge/Sistemas y Metodologías/Catálogo de Tipos de Documentación.md>) (versión profunda, para *estudiar*) | [Blueprint de Sistemas](<Blueprint de Sistemas.md>) | [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) | [SOP Maestro](<SOP Maestro.md>) | [Glosario de términos](<Glosario de términos.md>)
 
 # Tipos de Documentación del Sistema
 
@@ -26,10 +28,10 @@ Marco canónico (Daniele Procida, 2020 — usado por Django, Cloudflare, Canonic
 
 | Tipo | Intención del lector | Pregunta que responde | Ejemplo en el vault |
 |---|---|---|---|
-| **Tutorial** | Aprender haciendo | "¿Cómo empiezo?" | [[00 Inicio Rapido]] (el único tutorial de entrada) |
-| **How-to guide** | Resolver una tarea concreta | "¿Cómo hago X?" | **los SOPs**, [[Blueprint de Sistemas]] |
-| **Reference** | Consultar un dato preciso | "¿Cuál es el valor / campo / regla?" | [[Glosario de términos]], [[Notion - Arquitectura]], este doc |
-| **Explanation** | Entender el porqué | "¿Por qué es así?" | [[Filosofía del Sistema]], [[Principios]], notas en `Temas/` |
+| **Tutorial** | Aprender haciendo | "¿Cómo empiezo?" | [00 Inicio Rapido](<../00 Inicio Rapido.md>) (el único tutorial de entrada) |
+| **How-to guide** | Resolver una tarea concreta | "¿Cómo hago X?" | **los SOPs**, [Blueprint de Sistemas](<Blueprint de Sistemas.md>) |
+| **Reference** | Consultar un dato preciso | "¿Cuál es el valor / campo / regla?" | [Glosario de términos](<Glosario de términos.md>), [Notion - Arquitectura](<../04 Knowledge/Conectores/Notion - Arquitectura.md>), este doc |
+| **Explanation** | Entender el porqué | "¿Por qué es así?" | [Filosofía del Sistema](<Filosofía del Sistema.md>), [Principios](<../01 Index/Principios.md>), notas en `Temas/` |
 
 ```
                   ACCIÓN
@@ -54,7 +56,7 @@ Del mundo ops/ingeniería 2026, categorías que el vault tiene o casi:
 | **SOP** | Cómo hacer una tarea **normal y esperada** | `00 Sistema/SOP *.md` ✅ |
 | **Runbook** | Qué hacer cuando algo **falla** (anormal) | ⚠️ Hoy implícito en la sección Troubleshooting de los SOPs |
 | **ADR** (Decision Record) | Por qué se **decidió** algo | [[Plantilla Decisiones]] ✅ |
-| **Changelog / Bitácora** | Qué **cambió** | [[CHANGELOG del Sistema]], `Migracion...` ✅ |
+| **Changelog / Bitácora** | Qué **cambió** | [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>), `Migracion...` ✅ |
 | **Índice / Mapa** | **Dónde** está cada cosa | MOCs, `llms.txt`, [[01 Index/Index Global]] ✅ |
 | **Plantilla** | Andamio para crear cualquiera de los anteriores | `00 Sistema/001_plantillas/` ✅ |
 
@@ -84,24 +86,24 @@ Del mundo ops/ingeniería 2026, categorías que el vault tiene o casi:
 Para que cada doc sepa qué es, se recomienda el campo de frontmatter:
 
 ```yaml
-tipo_doc: Tutorial | How-to | Reference | Explanation | SOP | Runbook | ADR | Changelog | Indice
+type: Tutorial | How-to | Reference | Explanation | SOP | Runbook | ADR | Changelog | Indice
 ```
 
-Esto permite que una IA (o vos) filtre por tipo y que el [[Skill - Mantenimiento Sistema]] audite la consistencia. **No es obligatorio retroactivo** — se aplica a docs nuevos y a los que se vayan tocando (ver plan de migración pendiente).
+Esto permite que una IA (o vos) filtre por tipo y que el [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) audite la consistencia. **No es obligatorio retroactivo** — se aplica a docs nuevos y a los que se vayan tocando (ver plan de migración pendiente).
 
 ---
 
 ## 5. Por qué importa (relación con el resto del sistema)
 
-- El [[Blueprint de Sistemas]] dice *qué capas* crear; este doc dice *qué tipo de documento* es cada pieza de esas capas.
-- El [[SOP Interoperabilidad IA]] separa Ley/Mapa/Estado/Arquitectura/Capacidad; esos son **roles**, esto son **formatos**. Un doc de Arquitectura suele ser Reference; uno de Capacidad suele ser How-to.
+- El [Blueprint de Sistemas](<Blueprint de Sistemas.md>) dice *qué capas* crear; este doc dice *qué tipo de documento* es cada pieza de esas capas.
+- El [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) separa Ley/Mapa/Estado/Arquitectura/Capacidad; esos son **roles**, esto son **formatos**. Un doc de Arquitectura suele ser Reference; uno de Capacidad suele ser How-to.
 - Evita el anti-patrón "todo es un SOP", que infla los how-to con cosas que son reference o explanation.
 
 ---
 
-## 6. Qué NO lleva `tipo_doc` (y por qué)
+## 6. Qué NO lleva `type` (y por qué)
 
-No todo el vault se etiqueta. `tipo_doc` es para **documentación**; estas categorías quedan fuera por principio:
+No todo el vault se etiqueta. `type` es para **documentación**; estas categorías quedan fuera por principio:
 
 | Excluido | Razón de best-practice |
 |---|---|
@@ -113,16 +115,16 @@ No todo el vault se etiqueta. `tipo_doc` es para **documentación**; estas categ
 | **`.claude/commands/`** | Son ejecutables de skills, no documentación del vault. |
 | **`99 Archivo/`** (contenido) | Material archivado; no se mantiene. |
 
-> **Regla:** Diátaxis es para documentación con audiencia. Los artefactos de trabajo (notas de estudio, proyectos, diario) y los archivos de convención (definidos por su propia spec) se clasifican por **otro eje** —carpeta, tags, o el estándar que los gobierna— no por `tipo_doc`.
+> **Regla:** Diátaxis es para documentación con audiencia. Los artefactos de trabajo (notas de estudio, proyectos, diario) y los archivos de convención (definidos por su propia spec) se clasifican por **otro eje** —carpeta, tags, o el estándar que los gobierna— no por `type`.
 
 ---
 
 ## Referencias
 
-- [[Blueprint de Sistemas]]
-- [[SOP Interoperabilidad IA]]
-- [[SOP Maestro]]
-- [[Glosario de términos]]
+- [Blueprint de Sistemas](<Blueprint de Sistemas.md>)
+- [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)
+- [SOP Maestro](<SOP Maestro.md>)
+- [Glosario de términos](<Glosario de términos.md>)
 - Diátaxis — Daniele Procida (https://diataxis.fr)
 - Fuente ops: Runbook vs SOP (upstat.io, 2026)
 

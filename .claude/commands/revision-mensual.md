@@ -19,7 +19,7 @@ La fecha de hoy la recibís en runtime — nunca la leas de un archivo.
 
    SUBAGENTE B — Mantenimiento v2 (frescura + consistencia):
    "Auditá la documentación en 00 Sistema/, 04 Knowledge/Conectores/, 04 Knowledge/Skills/. Hoy es {fecha de hoy}.
-   (1) FRESCURA: para cada doc con ultima_revision o fecha_actualizacion, calculá días hasta hoy. Marcá vencidos (+90d) y por vencer (60-90d).
+   (1) FRESCURA: para cada doc con timestamp o fecha_actualizacion, calculá días hasta hoy. Marcá vencidos (+90d) y por vencer (60-90d).
    (2) CONSISTENCIA — Nivel 1 heurístico (sobre todos): ¿las rutas que menciona existen? ¿sus wikilinks resuelven? ¿referencia convenciones vigentes (ej. skills de auditoría escriben en 05 Diario/Auditorías/, no en la raíz)? ¿apunta a archivos movidos? (cruzá contra 00 Sistema/CHANGELOG del Sistema.md). Esto caza drift de convención.
    VERIFICÁ antes de proponer. NO escribas archivos. Devolvé SOLO síntesis: vencidos/por-vencer + drifts de convención detectados. (El Nivel 2 juez con WebSearch es opcional en la corrida mensual; omitilo salvo que un doc de alto valor luzca conceptualmente atrasado.)"
 

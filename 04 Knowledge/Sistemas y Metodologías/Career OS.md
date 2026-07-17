@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Career OS"
 tags: [career, sistema, knowledge]
 life_areas: [profesional]
 domains: [carrera, cv, linkedin, entrevistas, portfolio]
@@ -9,8 +10,9 @@ projects: []
 sources: [Career OS]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-008"
+resource:
 ---
 
 # Career OS

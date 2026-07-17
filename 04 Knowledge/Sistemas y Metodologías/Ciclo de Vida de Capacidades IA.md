@@ -1,15 +1,17 @@
 ---
-tipo_doc: Reference
+type: Reference
+title: "Ciclo de Vida de Capacidades IA"
 tags: [metodologia, ia, skills, prompts, agentes, evals, carrera]
 origen: "MOC - Master Learning System"
 estado: 🟢 Activo
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "REF-005"
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP Skills]] | [[Catálogo de Skills]] | [[SOP Prompts]] | [[Glosario de términos]]
+>[SOP Skills](<../../00 Sistema/SOP Skills.md>) | [Catálogo de Skills](<../Skills/Catálogo de Skills.md>) | [SOP Prompts](<../../00 Sistema/SOP Prompts.md>) | [Glosario de términos](<../../00 Sistema/Glosario de términos.md>)
 
 # Ciclo de Vida de Capacidades IA
 
@@ -29,7 +31,7 @@ Marco profesional para construir, probar, evaluar, versionar y mantener **capaci
 
 | Fase | Qué se hace | Concepto clave |
 |---|---|---|
-| **0 · Discovery** | Investigar si ya existe **antes** de construir | Prior Art, RTFM, Build vs Buy → ver [[SOP Discovery]] / [[Investigación Previa (Discovery)]] |
+| **0 · Discovery** | Investigar si ya existe **antes** de construir | Prior Art, RTFM, Build vs Buy → ver [SOP Discovery](<../../00 Sistema/SOP Discovery.md>) / [Investigación Previa (Discovery)](<Investigación Previa (Discovery).md>) |
 | **Build** | Escribir la capacidad (instrucciones + herramientas) | Single responsibility: una skill = una tarea |
 | **Test** | Probar con casos reales | Casos de prueba / smoke tests |
 | **Eval** | Medir calidad con métricas objetivas | **Evals**, **golden dataset**, **LLM-as-Judge** |
@@ -60,11 +62,11 @@ Marco profesional para construir, probar, evaluar, versionar y mantener **capaci
 
 ## 3. Conceptos clave
 
-- **Eval** — prueba objetiva y repetible de la calidad de una capacidad. A diferencia de un test de software (pasa/falla determinista), mide dimensiones difusas (relevancia, exactitud) y suele necesitar un juez. Ver [[Glosario de términos]].
+- **Eval** — prueba objetiva y repetible de la calidad de una capacidad. A diferencia de un test de software (pasa/falla determinista), mide dimensiones difusas (relevancia, exactitud) y suele necesitar un juez. Ver [Glosario de términos](<../../00 Sistema/Glosario de términos.md>).
 - **Golden dataset** — conjunto fijo de casos con su respuesta correcta. Cada versión nueva se corre contra él y se compara con la versión actual. Es el "set de exámenes" de la capacidad.
-- **LLM-as-Judge / Agent-as-Judge** — un modelo (o agente con herramientas) evalúa la salida de otro. Base de los evals difusos. Ver [[Glosario de términos]].
+- **LLM-as-Judge / Agent-as-Judge** — un modelo (o agente con herramientas) evalúa la salida de otro. Base de los evals difusos. Ver [Glosario de términos](<../../00 Sistema/Glosario de términos.md>).
 - **CI/CD eval gate** — los evals corren solos en cada commit; si una métrica baja del umbral, **bloquean el deploy** (como un test que falla frena el merge).
-- **SemVer** — Major.Minor.Patch. Major = cambio incompatible; Minor = funcionalidad nueva compatible; Patch = arreglo menor. Ver [[Glosario de términos]].
+- **SemVer** — Major.Minor.Patch. Major = cambio incompatible; Minor = funcionalidad nueva compatible; Patch = arreglo menor. Ver [Glosario de términos](<../../00 Sistema/Glosario de términos.md>).
 - **Tracing / observabilidad** — registrar qué versión corrió, con qué entrada, qué salida y los fallos. Permite mejorar con datos reales, no suposiciones.
 - **Deprecation policy** — cómo se retira una versión vieja sin romper a quien la usa (ventana de migración, avisos). Solo aplica si hay consumidores externos.
 
@@ -93,9 +95,9 @@ Aplica igual a los cuatro tipos:
 
 ## 5. Aplicación a este vault
 
-- El **ciclo de las skills** está en [[SOP Skills]] (build → test → productivo → deprecar).
-- El **inventario** vivo está en [[Catálogo de Skills]].
-- El **eval** ya existe en forma de LLM-as-Judge dentro de [[Skill - Mantenimiento Sistema]] (Nivel 2).
+- El **ciclo de las skills** está en [SOP Skills](<../../00 Sistema/SOP Skills.md>) (build → test → productivo → deprecar).
+- El **inventario** vivo está en [Catálogo de Skills](<../Skills/Catálogo de Skills.md>).
+- El **eval** ya existe en forma de LLM-as-Judge dentro de [Skill - Mantenimiento Sistema](<../Skills/Skill - Mantenimiento Sistema.md>) (Nivel 2).
 - **Lo próximo para madurar:** un golden dataset de casos de auditoría para medir si una versión nueva de una skill mejora o empeora respecto a la anterior.
 
 ---
@@ -103,7 +105,7 @@ Aplica igual a los cuatro tipos:
 ## Referencias
 
 **Internas:**
-- [[SOP Skills]] · [[Catálogo de Skills]] · [[SOP Prompts]] · [[Glosario de términos]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>) · [Catálogo de Skills](<../Skills/Catálogo de Skills.md>) · [SOP Prompts](<../../00 Sistema/SOP Prompts.md>) · [Glosario de términos](<../../00 Sistema/Glosario de términos.md>)
 
 **Externas (best practices 2026):**
 - Anthropic — *Demystifying evals for AI agents* (anthropic.com/engineering/demystifying-evals-for-ai-agents)

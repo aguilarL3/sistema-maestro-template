@@ -1,16 +1,18 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Orquestación Multi-Agente Abierta"
 tags: [multiagente, interoperabilidad, git, ia, arquitectura, estudio]
 estado: 🧭 Planificación
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "EXP-MULTIAGENTE-001"
-ultima_revision: 2026-07-04
+timestamp: 2026-07-04T00:00:00Z
 fecha_creacion: 2026-06-30
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP Interoperabilidad IA]] (la convención de archivos-ley) | [[SOP Git y Flujo de Trabajo]] (Conventional Commits + worktrees) | [[AGENTS]] | [[CLAUDE]] | [[SOP Conectores]] | [[Blueprint de Sistemas]]
+>[SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) (la convención de archivos-ley) | [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) (Conventional Commits + worktrees) | [AGENTS](<../AGENTS.md>) | [CLAUDE](<../CLAUDE.md>) | [SOP Conectores](<SOP Conectores.md>) | [Blueprint de Sistemas](<Blueprint de Sistemas.md>)
 
 # Orquestación Multi-Agente Abierta
 
@@ -26,7 +28,7 @@ fecha_creacion: 2026-06-30
 
 1. **La base ya existe.** El vault ya tiene `AGENTS.md` (ley universal) + `CLAUDE.md` (ley específica de Claude). Ese es el estándar multi-agente. Codex y Antigravity **leen `AGENTS.md`**; Claude Code lee `CLAUDE.md`. → §2.
 2. **Para no pisarse:** en un vault Markdown el riesgo es menor que en código, pero real. La respuesta 2026 es **aislamiento por git worktree** (un checkout separado por agente) + **zonas de propiedad por carpeta**. → §4.
-3. **Para saber quién hizo qué:** identidad de commit por agente (autor distinto) + `scope` y *trailer* en el mensaje. Se **extiende** la convención de [[SOP Git y Flujo de Trabajo]], no se reemplaza. → §5.
+3. **Para saber quién hizo qué:** identidad de commit por agente (autor distinto) + `scope` y *trailer* en el mensaje. Se **extiende** la convención de [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>), no se reemplaza. → §5.
 4. **¿Doc nuevo "reglas multi-agente"?** Recomendación: **todavía no un SOP nuevo.** Este doc de estudio + extender los dos SOPs existentes. Se promueve a `SOP Multi-Agente` cuando el flujo se estabilice. → §10.
 5. **Ojo con Obsidian:** el plugin Obsidian Git (auto-commit/sync en `main`) **choca** con agentes commiteando en ramas. Hay que pausarlo durante corridas multi-agente. → §7.
 
@@ -77,7 +79,7 @@ CLAUDE.md   → ley específica de Claude Code (única con máxima autoridad en 
 AGENTS.md   → ley universal que leen Codex y Antigravity (y cualquier agente del estándar)
 ```
 
-Esta separación es la que ya documenta [[SOP Interoperabilidad IA]] §1. La regla de autoridad del ecosistema (de mayor a menor):
+Esta separación es la que ya documenta [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) §1. La regla de autoridad del ecosistema (de mayor a menor):
 
 ```
 CLAUDE.md  →  AGENTS.md  →  llms.txt  →  Skills  →  resto de la documentación
@@ -89,7 +91,7 @@ CLAUDE.md  →  AGENTS.md  →  llms.txt  →  Skills  →  resto de la document
 
 ## 3. Mantener una sola fuente de verdad entre los archivos-ley
 
-Tres archivos podrían contener reglas: `CLAUDE.md`, `AGENTS.md` y (a futuro) un `codex`/`gemini` específico. **Regla de oro del vault** (ya en [[SOP Interoperabilidad IA]] §9): *una sola fuente de verdad por regla; enlazar, no copiar.*
+Tres archivos podrían contener reglas: `CLAUDE.md`, `AGENTS.md` y (a futuro) un `codex`/`gemini` específico. **Regla de oro del vault** (ya en [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) §9): *una sola fuente de verdad por regla; enlazar, no copiar.*
 
 Estrategias posibles (a decidir — §11):
 
@@ -99,25 +101,25 @@ Estrategias posibles (a decidir — §11):
 | **B. AGENTS.md canónico + CLAUDE.md fino** | Toda la ley común vive en `AGENTS.md`; `CLAUDE.md` es corto y dice "seguí `AGENTS.md` + estas 3 cosas Claude-específicas" | Una sola fuente; menos divergencia | Claude no lee `AGENTS.md` nativo → hay que referenciarlo explícito dentro de `CLAUDE.md` |
 | **C. Generación** | Un `AGENTS.base.md` como fuente; un script genera `CLAUDE.md` y `AGENTS.md` | Cero divergencia | Complejidad; overkill para el vault hoy |
 
-**Recomendación (propuesta, no decisión):** **Estrategia B**. Ya casi está: `CLAUDE.md` es rico; `AGENTS.md` es la ley. Bastaría con que `CLAUDE.md` diga explícitamente "las reglas base viven también en `AGENTS.md`; ante cambio, actualizá ambos" y que el [[Skill - Mantenimiento Sistema]] audite que no divergieron.
+**Recomendación (propuesta, no decisión):** **Estrategia B**. Ya casi está: `CLAUDE.md` es rico; `AGENTS.md` es la ley. Bastaría con que `CLAUDE.md` diga explícitamente "las reglas base viven también en `AGENTS.md`; ante cambio, actualizá ambos" y que el [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) audite que no divergieron.
 
 ---
 
 ## 4. División del trabajo sin pisarse
 
-> **→ PROMOVIDO a [[SOP Multi-Agente]] §1-2 (2026-07-11, ejecutando el plan de §10).** Resumen: tres niveles de aislamiento; el muro real son los **git worktrees** (checkout físico por agente, soporte nativo en Claude Code y Codex); las **zonas de propiedad** son convención complementaria — reparto por tipo de tarea con `03 Proyectos/` y `05 Diario/` solo-humano y `99 Archivo/` congelado (ex §4.6, hoy SOP §2). No existe lock de archivo real para `.md`: aislamiento = worktrees + zonas + merge al final; si dos agentes deben tocar lo mismo, se serializa.
+> **→ PROMOVIDO a [SOP Multi-Agente](<SOP Multi-Agente.md>) §1-2 (2026-07-11, ejecutando el plan de §10).** Resumen: tres niveles de aislamiento; el muro real son los **git worktrees** (checkout físico por agente, soporte nativo en Claude Code y Codex); las **zonas de propiedad** son convención complementaria — reparto por tipo de tarea con `03 Proyectos/` y `05 Diario/` solo-humano y `99 Archivo/` congelado (ex §4.6, hoy SOP §2). No existe lock de archivo real para `.md`: aislamiento = worktrees + zonas + merge al final; si dos agentes deben tocar lo mismo, se serializa.
 
 ---
 
 ## 5. Convención de commits por agente (quién hizo qué)
 
-> **→ PROMOVIDO a [[SOP Multi-Agente]] §3.** Resumen: cada agente commitea con **identidad git propia** (`*@agent.local`) + trailer `Agent:` en el mensaje (usar ambos). Trampa verificada: `git config` dentro del worktree escribe en la config compartida y contamina `main` — usar `git -c` por commit o `extensions.worktreeConfig`.
+> **→ PROMOVIDO a [SOP Multi-Agente](<SOP Multi-Agente.md>) §3.** Resumen: cada agente commitea con **identidad git propia** (`*@agent.local`) + trailer `Agent:` en el mensaje (usar ambos). Trampa verificada: `git config` dentro del worktree escribe en la config compartida y contamina `main` — usar `git -c` por commit o `extensions.worktreeConfig`.
 
 ---
 
 ## 6. El flujo completo, paso a paso
 
-> **→ PROMOVIDO a [[SOP Multi-Agente]] §4.** Resumen: FASE 0 preparar (identidades, zonas, `core.longpaths`, `core.hooksPath`) → FASE 1 lanzar (pausar auto-sync de Obsidian, un worktree por agente, verifier tier-2 antes de commitear) → FASE 2 integrar (el lead mergea rama por rama a `main`) → FASE 3 verificar (links, MOCs, CE-RE-BRO si hubo cambios grandes).
+> **→ PROMOVIDO a [SOP Multi-Agente](<SOP Multi-Agente.md>) §4.** Resumen: FASE 0 preparar (identidades, zonas, `core.longpaths`, `core.hooksPath`) → FASE 1 lanzar (pausar auto-sync de Obsidian, un worktree por agente, verifier tier-2 antes de commitear) → FASE 2 integrar (el lead mergea rama por rama a `main`) → FASE 3 verificar (links, MOCs, CE-RE-BRO si hubo cambios grandes).
 
 ---
 
@@ -221,8 +223,8 @@ Tier 3 — Con adaptador: no lee AGENTS.md solo → le pasás las reglas en el p
 
 **Respuesta corta: sí conviene documentarlo, pero NO como un `SOP Multi-Agente` nuevo todavía.** Razones (alineadas con las reglas del vault: *no duplicar*, *conectar antes que clasificar*):
 
-- Ya existen **dos SOPs** que cubren el 70%: [[SOP Interoperabilidad IA]] (cómo cada IA lee la ley) y [[SOP Git y Flujo de Trabajo]] (commits, ramas, worktrees). Un SOP nuevo **duplicaría** secciones.
-- Un SOP es un **How-to** (tarea normal, repetible). Hoy esto es **experimental**: todavía no lo ejecutaste ni una vez. Documentar como SOP algo no probado infla el how-to (anti-patrón "todo es un SOP" — [[Tipos de Documentación]] §5).
+- Ya existen **dos SOPs** que cubren el 70%: [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) (cómo cada IA lee la ley) y [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) (commits, ramas, worktrees). Un SOP nuevo **duplicaría** secciones.
+- Un SOP es un **How-to** (tarea normal, repetible). Hoy esto es **experimental**: todavía no lo ejecutaste ni una vez. Documentar como SOP algo no probado infla el how-to (anti-patrón "todo es un SOP" — [Tipos de Documentación](<Tipos de Documentación.md>) §5).
 
 **Recomendación en capas (propuesta):**
 
@@ -232,17 +234,17 @@ Tier 3 — Con adaptador: no lee AGENTS.md solo → le pasás las reglas en el p
 
 Así seguís la propia doctrina del vault: primero *entender* (Explanation), después *hacer repetible* (extender SOP), y solo cuando es rutina, *SOP dedicado*.
 
-> **✅ Promoción EJECUTADA (2026-07-11).** La condición "cuando sea rutina" se cumplió (gaps A-E cerrados, mecanismos en operación diaria) → §4-6 promovidos a **[[SOP Multi-Agente]]** (SOP-014). Este documento queda como el *porqué* (Explanation), tal como este mismo plan lo pedía.
+> **✅ Promoción EJECUTADA (2026-07-11).** La condición "cuando sea rutina" se cumplió (gaps A-E cerrados, mecanismos en operación diaria) → §4-6 promovidos a **[SOP Multi-Agente](<SOP Multi-Agente.md>)** (SOP-014). Este documento queda como el *porqué* (Explanation), tal como este mismo plan lo pedía.
 
 ---
 
 ## 11. Decisiones (registro histórico — todas resueltas)
 
-> Nació como lista de decisiones abiertas; al **2026-07-11 están todas cerradas**. Queda como registro del razonamiento; los cambios estructurales permanentes se registran en [[CHANGELOG del Sistema]].
+> Nació como lista de decisiones abiertas; al **2026-07-11 están todas cerradas**. Queda como registro del razonamiento; los cambios estructurales permanentes se registran en [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>).
 
 1. **Sincronización de leyes (§3)** → ✅ (2026-06-30) Estrategia B: puntero anti-divergencia en `AGENTS.md` y `CLAUDE.md` (si cambiás una regla base en una, actualizá la otra).
 2. **¿Cuántos agentes en paralelo?** → ✅ de facto (jul 2026): opera **1 lead (Claude Code) + subagentes por tarea** (extracción con Sonnet, verifier, bibliotecario). Si se suman CLIs pares (Codex/Hermes), arrancar con 2–3 — el cuello de botella es la revisión humana, no la IA.
-3. **Zonas de propiedad** → ✅ (2026-06-30) mapa por tipo de tarea, cobertura completa; `03 Proyectos/` y `05 Diario/` solo-humano; `99 Archivo/` congelado. Hoy en [[SOP Multi-Agente]] §2.
+3. **Zonas de propiedad** → ✅ (2026-06-30) mapa por tipo de tarea, cobertura completa; `03 Proyectos/` y `05 Diario/` solo-humano; `99 Archivo/` congelado. Hoy en [SOP Multi-Agente](<SOP Multi-Agente.md>) §2.
 4. **Rol de Antigravity** → ✅ (2026-06-30, decidido dentro del mapa de zonas): **auditor solo-lectura → propuestas**, hasta confirmar su manejo de git.
 5. **¿Quién es el "lead"?** → ✅ (2026-06-30 zonas + práctica de julio): **Claude Code como lead** integra las ramas y mantiene sistema/índices; {{OWNER}} revisa y aprueba (la decisión final siempre es suya).
 6. **Identidad de commit** → ✅ (2026-06-30) emails `@agent.local` (ej. `codex@agent.local`): no suplantar cuentas reales, separar humano/agente en `git log`.
@@ -302,7 +304,7 @@ Cómo logran las infraestructuras empresariales que **decenas de agentes trabaje
 - qué se decidió o cambió
 - **qué debe saber el próximo agente que entre**
 
-Esto convierte el vault en **memoria compartida viva**: cualquier agente (Claude, Codex, Hermes…) lee el diario y arranca con contexto, sin que vos repitas nada. Es la capa **Estado** de [[SOP Interoperabilidad IA]] aplicada a multi-agente. En el vault encaja en `05 Diario/` o un `Agent Diary/` dedicado. *Sesión significativa* = archivos creados/editados, sistemas externos tocados, o SOP nuevos/mejorados.
+Esto convierte el vault en **memoria compartida viva**: cualquier agente (Claude, Codex, Hermes…) lee el diario y arranca con contexto, sin que vos repitas nada. Es la capa **Estado** de [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) aplicada a multi-agente. En el vault encaja en `05 Diario/` o un `Agent Diary/` dedicado. *Sesión significativa* = archivos creados/editados, sistemas externos tocados, o SOP nuevos/mejorados.
 
 ### 12.4 Segmentación de acceso (obligatoria a escala empresa)
 
@@ -313,13 +315,13 @@ No todos los agentes merecen el mismo acceso. Patrón empresarial (Deleguía): s
 
 Para tu escala hoy (personal) alcanza con las zonas §4.6. Cuando el vault sirva a **proyectos/empresas**, esta segmentación pasa a ser **requisito**, no opción.
 
-> Implementación decidida (2026-07-04): el **modelo de acceso entre vaults** es asimétrico — personal→empresa sí / empresa→personal bloqueado en 3 capas (separación física, credenciales, deny de ruta en settings). La regla completa está en [[SOP Proyectos de Código]] (§1, *La frontera personal vs negocio*).
+> Implementación decidida (2026-07-04): el **modelo de acceso entre vaults** es asimétrico — personal→empresa sí / empresa→personal bloqueado en 3 capas (separación física, credenciales, deny de ruta en settings). La regla completa está en [SOP Proyectos de Código](<SOP Proyectos de Código.md>) (§1, *La frontera personal vs negocio*).
 
 ---
 
 ## 13. Estado del arte y gaps (auditoría 2026-07-01 — CERRADA)
 
-> **✅ Auditoría CERRADA (2026-07-11):** todos los gaps con letra (A–E) y los mecanismos de la tabla §13.3 están **construidos**. Esta sección queda como **registro histórico** del análisis y del prior art (valioso para portabilidad y para no re-litigar). Los pendientes vivos están en el [[Roadmap del Sistema]], no acá.
+> **✅ Auditoría CERRADA (2026-07-11):** todos los gaps con letra (A–E) y los mecanismos de la tabla §13.3 están **construidos**. Esta sección queda como **registro histórico** del análisis y del prior art (valioso para portabilidad y para no re-litigar). Los pendientes vivos están en el [Roadmap del Sistema](<../01 Index/Roadmap del Sistema.md>), no acá.
 
 Auditoría contra documentación oficial **+ relevamiento de implementaciones públicas existentes**. Objetivo: verificar lo diseñado y ubicarlo frente a lo que **ya existe funcionando**, para no reinventar.
 
@@ -362,15 +364,15 @@ Todo lo técnico del doc se verificó y **se sostiene**:
 | Mecanismo | ¿Lo tenemos? | Quién lo resuelve | Prioridad |
 |---|---|---|---|
 | Aislamiento worktree + identidad de commit | ✅ | validado | — |
-| **Conflicto semántico** (reconciliación, contradicciones) | ✅ (2026-07-01) | second-brain · claude-obsidian (`[!contradiction]`) | — → [[Conflicto Semántico - Enlaces y Contradicciones]] |
-| ├─ *enlaces rotos* (Gap 2a) | ✅ | `check-links.sh` (honra `aliases`) | — → [[Catálogo de Hooks y Locks]] |
-| ├─ *sanación/triage de enlaces* (Gap B) | ✅ (2026-07-02) | second-brain (`heal_links.py`) → `heal-links.py` | — → [[Catálogo de Hooks y Locks]] |
-| └─ *contradicciones* (Gap 2b) | ✅ | convención `[!contradiction]` + `check-contradictions.sh` | — → [[Conflicto Semántico - Enlaces y Contradicciones]] |
-| **Locks advisory** multi-writer | ✅ (2026-07-01) | claude-obsidian (`wiki-lock.sh`) | — → ver [[SOP Hooks y Automatización]] §7 |
-| **Hooks de sesión** (memoria persistente) | ✅ | obsidian-mind · claude-obsidian | — → ver [[SOP Hooks y Automatización]] |
+| **Conflicto semántico** (reconciliación, contradicciones) | ✅ (2026-07-01) | second-brain · claude-obsidian (`[!contradiction]`) | — → [Conflicto Semántico - Enlaces y Contradicciones](<Conflicto Semántico - Enlaces y Contradicciones.md>) |
+| ├─ *enlaces rotos* (Gap 2a) | ✅ | `check-links.sh` (honra `aliases`) | — → [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) |
+| ├─ *sanación/triage de enlaces* (Gap B) | ✅ (2026-07-02) | second-brain (`heal_links.py`) → `heal-links.py` | — → [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) |
+| └─ *contradicciones* (Gap 2b) | ✅ | convención `[!contradiction]` + `check-contradictions.sh` | — → [Conflicto Semántico - Enlaces y Contradicciones](<Conflicto Semántico - Enlaces y Contradicciones.md>) |
+| **Locks advisory** multi-writer | ✅ (2026-07-01) | claude-obsidian (`wiki-lock.sh`) | — → ver [SOP Hooks y Automatización](<SOP Hooks y Automatización.md>) §7 |
+| **Hooks de sesión** (memoria persistente) | ✅ | obsidian-mind · claude-obsidian | — → ver [SOP Hooks y Automatización](<SOP Hooks y Automatización.md>) |
 | ├─ *escritura* (Agent Diary, `Stop`) | ✅ (2026-07-01) | obsidian-mind | — |
 | └─ *lectura* (SessionStart carga el handoff) | ✅ (2026-07-02) | claude-obsidian (`hot.md`) · second-brain | — → `session-context.sh` |
-| **Edición con centinelas** (`@user`/`@generated`) | ✅ (2026-07-01) | second-brain | — → [[Centinelas de Edición]] |
+| **Edición con centinelas** (`@user`/`@generated`) | ✅ (2026-07-01) | second-brain | — → [Centinelas de Edición](<Centinelas de Edición.md>) |
 | **Verifier pre-commit** (self-review antes de commit) | ✅ tier-1 (2026-07-01) + tier-2 (2026-07-02) | claude-obsidian | — → Verifier pre-commit (self-review) |
 | ├─ *tier-1 determinista* (frontmatter/tags, git hook) | ✅ (2026-07-01) | claude-obsidian | — → `verify-commit.sh` |
 | └─ *tier-2 juez LLM* (calidad de conocimiento, subagente) | ✅ (2026-07-02) | claude-obsidian (`agents/verifier.md`) | — → `.claude/agents/verifier.md` |
@@ -387,9 +389,9 @@ Todo lo técnico del doc se verificó y **se sostiene**:
 
 No estamos equivocados: estamos en la línea correcta y con **mejor gobernanza** que la media. Pero **parte de lo que falta ya existe construido y open-source** → conviene **adoptar mecanismos** (locks advisory, hooks, centinelas, reconciliación) en vez de reinventarlos. La **siguiente frontera** es el conflicto **semántico**, no el de archivos.
 
-> **Qué falta y qué sigue → [[Roadmap del Sistema]]** (backlog único: gaps técnicos B–E + pendientes de producto + higiene). Esta §13.3 es el detalle técnico; el roadmap es la lista accionable.
+> **Qué falta y qué sigue → [Roadmap del Sistema](<../01 Index/Roadmap del Sistema.md>)** (backlog único: gaps técnicos B–E + pendientes de producto + higiene). Esta §13.3 es el detalle técnico; el roadmap es la lista accionable.
 >
-> **Cómo se pasan la posta los tres documentos de operación** (`Roadmap → Bitácora → CHANGELOG`, futuro → handoff → memoria) está explicado en [[SOP Maestro]] §6 → "Flujo de operación del sistema". Acá basta saber que el Roadmap es de dónde sale el trabajo, la [[Bitácora de Agentes]] es el handoff entre sesiones, y el [[CHANGELOG del Sistema]] es la memoria permanente de lo estructural.
+> **Cómo se pasan la posta los tres documentos de operación** (`Roadmap → Bitácora → CHANGELOG`, futuro → handoff → memoria) está explicado en [SOP Maestro](<SOP Maestro.md>) §6 → "Flujo de operación del sistema". Acá basta saber que el Roadmap es de dónde sale el trabajo, la [[Bitácora de Agentes]] es el handoff entre sesiones, y el [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>) es la memoria permanente de lo estructural.
 
 ---
 
@@ -446,12 +448,12 @@ No estamos equivocados: estamos en la línea correcta y con **mejor gobernanza**
 
 ## Referencias internas
 
-- [[SOP Interoperabilidad IA]] — la convención de archivos-ley (Ley/Mapa/Estado/Arquitectura/Capacidad)
-- [[SOP Git y Flujo de Trabajo]] — Conventional Commits y comandos git del vault
-- [[AGENTS]] · [[CLAUDE]] — los archivos-ley actuales del vault
-- [[Blueprint de Sistemas]] — cómo se arma un sistema interoperable
-- [[Tipos de Documentación]] — por qué esto es Explanation y no SOP
-- [[Skill - Mantenimiento Sistema]] — quién audita que las leyes no divergan
+- [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) — la convención de archivos-ley (Ley/Mapa/Estado/Arquitectura/Capacidad)
+- [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) — Conventional Commits y comandos git del vault
+- [AGENTS](<../AGENTS.md>) · [CLAUDE](<../CLAUDE.md>) — los archivos-ley actuales del vault
+- [Blueprint de Sistemas](<Blueprint de Sistemas.md>) — cómo se arma un sistema interoperable
+- [Tipos de Documentación](<Tipos de Documentación.md>) — por qué esto es Explanation y no SOP
+- [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) — quién audita que las leyes no divergan
 - Patrón Orquestador vs Patrón Asesor — los dos modelos de coordinación (jefe reparte vs. empleado consulta) explicados sin tecnicismos
 
 ## Cómo leer este documento

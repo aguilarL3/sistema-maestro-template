@@ -1,5 +1,6 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Diario - <% tp.date.now(\"YYYY-MM-DD\") %>"
 tags: [diario, tracking]
 estado: 🟢 Activo
 fecha: <% tp.date.now("YYYY-MM-DD") %>
@@ -9,6 +10,7 @@ goals: []
 habits: []
 projects: []
 sources: []
+resource:
 ---
 
 # Diario - <% tp.date.now("YYYY-MM-DD") %>

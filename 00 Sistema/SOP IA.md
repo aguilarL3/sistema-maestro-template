@@ -1,11 +1,13 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP IA"
 tags: [sop, ia, automatizacion]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "SOP-007"
+resource:
 ---
 
 > [!info] La IA es copiloto, no autoridad final
@@ -57,16 +59,16 @@ La salida debe ser:
 - fácil de entender para otra persona
 
 ## Referencias
-- [[AGENTS]]
-- [[SOP Maestro]]
-- [[SOP Revisiones]]
+- [AGENTS](<../AGENTS.md>)
+- [SOP Maestro](<SOP Maestro.md>)
+- [SOP Revisiones](<SOP Revisiones.md>)
 - [[Plantilla Prompt]]
 
 ## Antes de usar IA, lee
-- [[LLM Wiki]]
-- [[AGENTS]]
-- [[Glosario de términos]]
-- [[SOP Maestro]]
+- [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)
+- [AGENTS](<../AGENTS.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [SOP Maestro](<SOP Maestro.md>)
 
 ## Cómo se usa la IA aquí
 - para proponer

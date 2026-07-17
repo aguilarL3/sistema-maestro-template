@@ -1,9 +1,11 @@
 ---
-tipo_doc: Indice
+type: Indice
+title: "Dashboard CEO"
 tags: [dashboard]
 estado: 🟡 Borrador
-ultima_revision: 2026-07-04
+timestamp: 2026-07-04T00:00:00Z
 fecha_creacion: 2026-07-04
+resource:
 ---
 
 # Dashboard CEO
@@ -11,10 +13,10 @@ fecha_creacion: 2026-07-04
 > [!todo] Esqueleto — tu vista de gobernanza personal (Yo S.A.). Llenalo a tu medida.
 
 ## Brújula
-- Valores → [[Vision]] · Objetivos → [[Objetivos]] · Áreas de vida → [[Mapa Personal]]
+- Valores → [Vision](<01 Index/Vision.md>) · Objetivos → [Objetivos](<01 Index/Objetivos.md>) · Áreas de vida → [Mapa Personal](<01 Index/Mapa Personal.md>)
 
 ## Proyectos activos
 -
 
-## Revisión (ver [[SOP Revisiones]])
+## Revisión (ver [SOP Revisiones](<00 Sistema/SOP Revisiones.md>))
 - Semanal: · Mensual: · Trimestral:

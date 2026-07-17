@@ -1,15 +1,17 @@
 ---
-tipo_doc: Reference
+type: Reference
+title: "Notion — Arquitectura del Workspace"
 tags: [notion, arquitectura, documentacion, workspace, ejemplo]
 domains: [ia, automatizacion]
 estado: 🟩 Activo
-ultima_revision: 2026-07-14
+timestamp: 2026-07-14T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "REF-004"
+resource:
 ---
 
 >[!example] EJEMPLO ficticio
->Este doc es la **demostración** de las 7 secciones que exige el [[SOP Conectores]] §3, con un workspace de Notion inventado. Cuando conectes un sistema real, **reemplazá el contenido** (o creá `{Tu Sistema} - Arquitectura.md` al lado y borrá este). Los IDs `collection://…` son de fantasía.
+>Este doc es la **demostración** de las 7 secciones que exige el [SOP Conectores](<../../00 Sistema/SOP Conectores.md>) §3, con un workspace de Notion inventado. Cuando conectes un sistema real, **reemplazá el contenido** (o creá `{Tu Sistema} - Arquitectura.md` al lado y borrá este). Los IDs `collection://…` son de fantasía.
 
 # Notion — Arquitectura del Workspace
 
@@ -131,7 +133,7 @@ Recursos (standalone)
 | Alta | Limpiar relación huérfana a Untitled DB (retorna 404) | Proyectos |
 | Media | Normalizar campo `Tipo` (mezcla plataformas con categorías) | Recursos |
 
-> Esta sección es la más valiosa para un agente: documenta las trampas que el schema en vivo no explica ([[SOP Conectores]] §4).
+> Esta sección es la más valiosa para un agente: documenta las trampas que el schema en vivo no explica ([SOP Conectores](<../../00 Sistema/SOP Conectores.md>) §4).
 
 ---
 
@@ -140,4 +142,4 @@ Recursos (standalone)
 | Fecha | Cambio | Motivo |
 |---|---|---|
 | 2026-07-14 | Convertido en ejemplo ficticio para el template | El original documentaba un workspace real |
-| 2026-06-26 | Creado siguiendo [[SOP Conectores]] | Primer conector documentado |
+| 2026-06-26 | Creado siguiendo [SOP Conectores](<../../00 Sistema/SOP Conectores.md>) | Primer conector documentado |

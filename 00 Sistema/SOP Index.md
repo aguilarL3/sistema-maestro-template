@@ -1,11 +1,13 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Index"
 tags: [sop, index, navegacion]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-27
+timestamp: 2026-06-27T00:00:00Z
 id: "SOP-008"
+resource:
 ---
 
 > [!info] El índice es la puerta de entrada
@@ -64,15 +66,15 @@ Cualquier persona o IA debería poder encontrar:
 en menos de 30 segundos.
 
 ## Referencias
-- [[Vision]]
-- [[Objetivos]]
-- [[Mapa Personal]]
-- [[Dashboard-CEO|Dashboard CEO]]
-- [[SOP Maestro]]
+- [Vision](<../01 Index/Vision.md>)
+- [Objetivos](<../01 Index/Objetivos.md>)
+- [Mapa Personal](<../01 Index/Mapa Personal.md>)
+- [Dashboard CEO](<../Dashboard-CEO.md>)
+- [SOP Maestro](<SOP Maestro.md>)
 
 
 ## Lecturas relacionadas
-- [[00 Inicio Rapido]]
-- [[Glosario de términos]]
-- [[Investigación y auditoría de marcos]]
-- [[MOC - Investigación del Sistema]]
+- [00 Inicio Rapido](<../00 Inicio Rapido.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
+- [MOC - Investigación del Sistema](<../02 MOCs/MOC - Investigación del Sistema.md>)

@@ -3,7 +3,7 @@ Actúa como divulgador técnico del vault Sistema Maestro de {{OWNER}}. Tu traba
 
 [CONTEXTO]
 El vault sigue Diátaxis (ver [[Tipos de Documentación]]): una **Explanation** (Tema) sirve para *entender* (el porqué/el qué), distinta de una **How-to** (guía operativa: el cómo). Esta skill produce SIEMPRE una Explanation; para lo operativo, enlaza a la guía/SOP correspondiente.
-- Toda nota lleva frontmatter con los 4 campos obligatorios (`tipo_doc`, `estado`, `ultima_revision`, `id`) y se registra en [[SOP Documentación]] §7.1.
+- Toda nota lleva frontmatter con los 4 campos obligatorios (`type`, `estado`, `timestamp`, `id`) y se registra en [[SOP Documentación]] §7.1.
 - La fecha de hoy viene del runtime (`<system-reminder>`), nunca de un archivo.
 - Notas de aprendizaje ya existentes viven en `04 Knowledge/Temas/` (ej. Hooks y ciclo de vida del agente). No dupliques: si ya existe una nota del tema, ampliala — pero **ampliar ≠ anexar**, ver la regla de atomicidad.
 - **REGLA DE ATOMICIDAD (unidad = idea, no sesión):** una nota = UNA idea. Si la sesión cubre varias ideas → varias notas atómicas + (si hace falta) un hub corto que las enlace. Si profundizás un tema existente → creá una **nota hija** enlazada (o registrá el delta en `## Evolución`), NUNCA una sección "Profundización" anexada al cuerpo. Señal de alarma: nota >120 líneas o título con más de un concepto ("A, B y C") = hay que partir. (Origen: cirugía BRO 2026-07-11 — 4 dossiers de sesión partidos en 6 notas atómicas.)
@@ -31,13 +31,13 @@ Creá la nota en `04 Knowledge/Temas/{Título}.md` (salvo que el tema pida otra 
 
 ```
 ---
-tipo_doc: Explanation
+type: Explanation
 tags: [tema, ...]
 estado: 🌱 Semilla
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "EXP-...-NNN"
-ultima_revision: {hoy}
+timestamp: {hoy}
 fecha_creacion: {hoy}
 moc_principal: "[[MOC - {el que corresponda}]]"
 life_areas: [profesional]

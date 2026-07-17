@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Git y Flujo de Trabajo"
 tags: [sop, git, infraestructura, workflow]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-GIT-001"
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-24
+resource:
 ---
 
 >[!info] Documentación relacionada
->el histórico de migración (no incluido en el template) (decisión arquitectónica) | [[SOP Maestro]] | [[CLAUDE]]
+>el histórico de migración (no incluido en el template) (decisión arquitectónica) | [SOP Maestro](<SOP Maestro.md>) | [CLAUDE](<../CLAUDE.md>)
 
 # SOP Git y Flujo de Trabajo
 
@@ -376,7 +378,7 @@ git branch -D experimento-X
 ## Referencias
 
 - el histórico de migración (no incluido en el template)
-- [[SOP Maestro]]
-- [[CLAUDE]]
-- [[SOP Cursos y Apuntes]]
-- [[SOP Prompts]]
+- [SOP Maestro](<SOP Maestro.md>)
+- [CLAUDE](<../CLAUDE.md>)
+- [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>)
+- [SOP Prompts](<SOP Prompts.md>)

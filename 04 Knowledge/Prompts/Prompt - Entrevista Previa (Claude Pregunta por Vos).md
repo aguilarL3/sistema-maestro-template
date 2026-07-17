@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Prompt | Entrevista Previa (Claude Pregunta por Vos)"
 tags: [prompt, prompt-engineering, ai, patron-reutilizable, claude]
 origen: "[[MOC - Prompt Engineering]]"
 fecha_creacion: 2026-06-24
@@ -14,6 +15,7 @@ domains: []
 version: v2.0
 estado: 🟦 En pruebas
 performance: ⭐⭐⭐⭐
+resource:
 ---
 
 # Prompt | Entrevista Previa (Claude Pregunta por Vos)
@@ -209,7 +211,7 @@ _Pendiente — sin pruebas formales realizadas todavía._
 
 ## 🔗 Prompts relacionados
 
-- [[Prompt - Búsqueda Web Estructurada]] → otro patrón reutilizable del catálogo; combinable con este para investigar antes de generar.
+- [Prompt - Búsqueda Web Estructurada](<Prompt - Búsqueda Web Estructurada.md>) → otro patrón reutilizable del catálogo; combinable con este para investigar antes de generar.
 
 ---
 
@@ -234,4 +236,4 @@ _Pendiente — sin pruebas formales realizadas todavía._
 
 ---
 
-◀ [[Prompt - Búsqueda Web Estructurada]] | MOC: [[MOC - Prompt Engineering]] | Prompt Siguiente ▶
+◀ [Prompt - Búsqueda Web Estructurada](<Prompt - Búsqueda Web Estructurada.md>) | MOC: [[MOC - Prompt Engineering]] | Prompt Siguiente ▶

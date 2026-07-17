@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Cursos y Apuntes"
 tags: [sop, cursos, apuntes, aprendizaje]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-COURSES-001"
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-24
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Plantilla Apunte Curso]] | [[SOP Sistema de Estudio]] | [[SOP Notas Atómicas]] | [[SOP Prompts]] | [[SOP MOCs]]
+>[[Plantilla Apunte Curso]] | [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>) | [SOP Notas Atómicas](<SOP Notas Atómicas.md>) | [SOP Prompts](<SOP Prompts.md>) | [SOP MOCs](<SOP MOCs.md>)
 
 # SOP Cursos y Apuntes
 
@@ -18,7 +20,7 @@ fecha_creacion: 2026-06-24
 
 Definir dónde viven los apuntes de curso, cómo se nombran, cómo se conectan al resto del vault y cuándo se archivan.
 
-Este SOP cubre **el envase**. El **flujo conceptual** (Curso → Nota de clase → Nota atómica → Aplicación → Evidencia) está definido en [[SOP Sistema de Estudio]].
+Este SOP cubre **el envase**. El **flujo conceptual** (Curso → Nota de clase → Nota atómica → Aplicación → Evidencia) está definido en [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>).
 
 ---
 
@@ -31,7 +33,7 @@ Los apuntes de curso viven en:
 ```
 
 **Por qué `04 Knowledge` y no `05 Diario`:**
-Los apuntes ya pasaron por la plantilla — son conocimiento procesado, no captura cruda. El diario es centro operativo (hábitos, reflexiones, prioridades) según [[SOP Diario]]. Mezclarlos rompe la función de cada capa.
+Los apuntes ya pasaron por la plantilla — son conocimiento procesado, no captura cruda. El diario es centro operativo (hábitos, reflexiones, prioridades) según [SOP Diario](<SOP Diario.md>). Mezclarlos rompe la función de cada capa.
 
 **Por qué subcarpeta por curso y no flat:**
 - Facilita archivar el curso entero cuando termina.
@@ -114,7 +116,7 @@ Cada apunte debe enlazar:
 1. **MOC del curso** — en frontmatter `origen` y en la navegación inferior.
 2. **Clase anterior y siguiente** — navegación inferior.
 3. **Conceptos extraídos a Knowledge** — sección "Conceptos extraídos".
-4. **Prompts que aparecen en la clase** — sección "Ejemplos", enlazando a la nota del prompt en `04 Knowledge/Prompts/` (ver [[SOP Prompts]]).
+4. **Prompts que aparecen en la clase** — sección "Ejemplos", enlazando a la nota del prompt en `04 Knowledge/Prompts/` (ver [SOP Prompts](<SOP Prompts.md>)).
 
 ---
 
@@ -130,7 +132,7 @@ Cada apunte debe enlazar:
 
 ## 6. Cuándo extraer una nota atómica
 
-Regla (heredada de [[SOP Notas Atómicas]] y [[SOP Sistema de Estudio]]):
+Regla (heredada de [SOP Notas Atómicas](<SOP Notas Atómicas.md>) y [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>)):
 
 Una idea del apunte merece su propia nota en `04 Knowledge/Temas/` cuando:
 - Aparece 3+ veces en distintas fuentes / clases / proyectos.
@@ -175,9 +177,9 @@ Cuando un curso termina **y deja de tener movimiento por 3+ meses**, evaluar:
 ## Referencias
 
 - [[Plantilla Apunte Curso]]
-- [[SOP Sistema de Estudio]]
-- [[SOP Notas Atómicas]]
-- [[SOP Prompts]]
-- [[SOP MOCs]]
-- [[SOP Diario]]
+- [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>)
+- [SOP Notas Atómicas](<SOP Notas Atómicas.md>)
+- [SOP Prompts](<SOP Prompts.md>)
+- [SOP MOCs](<SOP MOCs.md>)
+- [SOP Diario](<SOP Diario.md>)
 - MOC - Master Learning System

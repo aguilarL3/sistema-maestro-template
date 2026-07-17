@@ -54,7 +54,7 @@ contexto que el que revelan `git diff --cached` y el filesystem.
 - **No duplicar** — ¿este contenido ya existe en otra nota/MOC? No podés
   afirmarlo sin buscar: hacé `Grep` de los términos clave; si hay sospecha
   fuerte, ficha el hallazgo pidiendo verificar/enlazar en vez de duplicar.
-- **Tipo correcto (Diátaxis)** — ¿el `tipo_doc` declarado matchea el contenido
+- **Tipo correcto (Diátaxis)** — ¿el `type` declarado matchea el contenido
   REAL? (un How-to escrito como Explanation, un Reference que en verdad es un
   Tutorial…). El tier-1 verifica que el campo exista; vos, que sea el correcto.
 
@@ -72,7 +72,7 @@ contexto que el que revelan `git diff --cached` y el filesystem.
 | Tier | Criterio |
 |---|---|
 | **BLOQUEANTE** | Contradice una ley del sistema (SOP, Matriz Definitiva, glosario) o borraría/pisaría conocimiento. Retiraría el commit. |
-| **ALTO** | Debería arreglarse antes de commitear: atomicidad rota, `tipo_doc` equivocado, nota huérfana en zona que exige conexión, duplicación probable. |
+| **ALTO** | Debería arreglarse antes de commitear: atomicidad rota, `type` equivocado, nota huérfana en zona que exige conexión, duplicación probable. |
 | **MEDIO** | Anotar como mejora: enlace faltante no crítico, claridad mejorable. Diferible. |
 | **BAJO** | Nota para el futuro / pulido de estilo. |
 

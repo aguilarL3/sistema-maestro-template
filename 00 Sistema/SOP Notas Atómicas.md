@@ -1,12 +1,14 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Notas Atómicas"
 tags: [sop, nota, knowledge]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-003"
 fecha_creacion: 2026-07-03
-ultima_revision: 2026-07-03
+timestamp: 2026-07-03T00:00:00Z
+resource:
 ---
 
 > [!info] Una nota atómica = una idea útil y reutilizable
@@ -51,8 +53,8 @@ Si la respuesta es sí, probablemente sí merece nota.
 ## Notas vivas (evergreen)
 Una **nota evergreen** no es un tipo aparte: es una nota atómica que **crece con el tiempo** en vez de quedar congelada. No tiene plantilla propia — se usa [[Plantilla Nota]] con `estado: 🌱 Semilla` y su sección `## Evolución`.
 - **Cuándo:** cuando una idea merece madurar (reaparece, o cambia tu comprensión del tema).
-- **Cómo:** al revisarla, subí `ultima_revision`, anotá "qué aprendí / qué cambió" en `## Evolución`, y sumá backlinks nuevos.
-- **Cada cuánto:** cada vez que aprendas algo del tema, y en la revisión mensual/trimestral ([[SOP Revisiones]]).
+- **Cómo:** al revisarla, subí `timestamp`, anotá "qué aprendí / qué cambió" en `## Evolución`, y sumá backlinks nuevos.
+- **Cada cuánto:** cada vez que aprendas algo del tema, y en la revisión mensual/trimestral ([SOP Revisiones](<SOP Revisiones.md>)).
 
 ## Relación con otras capas
 - `06 Raw`: fuentes sin procesar
@@ -62,5 +64,5 @@ Una **nota evergreen** no es un tipo aparte: es una nota atómica que **crece co
 
 ## Referencias
 - [[Plantilla Nota]]
-- [[SOP Index]]
-- [[SOP Maestro]]
+- [SOP Index](<SOP Index.md>)
+- [SOP Maestro](<SOP Maestro.md>)

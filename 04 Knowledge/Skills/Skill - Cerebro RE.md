@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Cerebro RE — Reagrupar Elementos"
 tags: [skill, ia, claude-code, cerebro-digital, ce-re-bro, reagrupar]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
@@ -15,6 +16,7 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟨 Borrador
+resource:
 ---
 
 # Skill | Cerebro RE — Reagrupar Elementos
@@ -99,14 +101,14 @@ Ver archivo ejecutable: `.claude/commands/cerebro-re.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro CE]] → conexiones entre notas, dimensión anterior
-- [[Skill - Cerebro BRO]] → estructura interna de notas
-- [[Skill - Cerebro Audit]] → corre las tres dimensiones juntas
+- [Skill - Cerebro CE](<Skill - Cerebro CE.md>) → conexiones entre notas, dimensión anterior
+- [Skill - Cerebro BRO](<Skill - Cerebro BRO.md>) → estructura interna de notas
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) → corre las tres dimensiones juntas
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>)
 - Metodología CE-RE-BRO — Marcos Emowe (Cerebro Digital)
 - Video: "Tres formas de organizar tus notas que el papel no permite"

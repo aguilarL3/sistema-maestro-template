@@ -1,37 +1,40 @@
 ---
-tipo_doc: Indice
+type: Indice
+title: "Home"
 tags: [home, dashboard]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-07-04
+timestamp: 2026-07-04T00:00:00Z
+resource:
 ---
 
 # Home
 
 ## Entrada rápida
-- [[00 Inicio Rapido]]
-- [[Dashboard-Estudio]]
-- [[Dashboard-CEO]]
-- [[SOPS]]
-- [[Glosario de términos]]
-- [[MOC - Investigación del Sistema]]
-- [[Matriz Definitiva]]
+- [00 Inicio Rapido](<00 Inicio Rapido.md>)
+- [Dashboard-Estudio](<Dashboard-Estudio.md>)
+- [Dashboard-CEO](<Dashboard-CEO.md>)
+- [SOPS](<SOPS.md>)
+- [Glosario de términos](<00 Sistema/Glosario de términos.md>)
+- [MOC - Investigación del Sistema](<02 MOCs/MOC - Investigación del Sistema.md>)
+- [Matriz Definitiva](<Matriz Definitiva.md>)
 
 ## Qué leer primero (orden recomendado)
-1. [[00 Inicio Rapido]] — **empezá acá**: el único tutorial de entrada (qué es el sistema, cómo se usa, dónde va cada cosa)
+1. [00 Inicio Rapido](<00 Inicio Rapido.md>) — **empezá acá**: el único tutorial de entrada (qué es el sistema, cómo se usa, dónde va cada cosa)
 2. [[00 Sistema/SOP Maestro]] — manual completo: arquitectura, capas y flujo de trabajo
 3. [[00 Sistema/Filosofía del Sistema]] — por qué cada decisión de diseño
-4. [[AGENTS]] · [[00 Sistema/SOP Index]] · [[01 Index/Index Global]] — para profundizar
+4. [AGENTS](<AGENTS.md>) · [[00 Sistema/SOP Index]] · [[01 Index/Index Global]] — para profundizar
 
 ## Capas del vault
-- [[AGENTS]]
+- [AGENTS](<AGENTS.md>)
 - [[01 Index/Index Global]]
 - [[02 MOCs/MOC - Ejemplo]]
-- [[03 Proyectos/README]]
-- [[04 Knowledge/README]]
-- [[05 Diario/README]]
-- [[06 Raw/README]]
-- [[99 Archivo/README]]
+- [00 Sistema](<00 Sistema/index.md>)
+- [02 MOCs](<02 MOCs/index.md>)
+- [04 Knowledge](<04 Knowledge/index.md>)
+- [05 Diario](<05 Diario/index.md>)
+
+> Las capas `03 Proyectos`, `06 Raw` y `99 Archivo` empiezan vacías (placeholders): se pueblan al usar el sistema. Qué va en cada una → [SOP Maestro](<00 Sistema/SOP Maestro.md>) §5.
 
 ## Rutinas de mantenimiento del sistema
 
@@ -40,5 +43,5 @@ ultima_revision: 2026-07-04
 | **Mensual** | Auditar frescura de la documentación | `/mantenimiento-sistema` | Informe en `05 Diario/Auditorías/` |
 | **Mensual** | Auditar conexiones y estructura del vault | `/cerebro-audit` | Informe en `05 Diario/Auditorías/` |
 
-**Flujo:** la skill deja un informe → resolvemos en el chat → cada arreglo va al [[CHANGELOG del Sistema]]. Detalle en [[SOP Skills]] §13.
-Registro permanente de cambios estructurales: [[CHANGELOG del Sistema]].
+**Flujo:** la skill deja un informe → resolvemos en el chat → cada arreglo va al [CHANGELOG del Sistema](<00 Sistema/CHANGELOG del Sistema.md>). Detalle en [SOP Skills](<00 Sistema/SOP Skills.md>) §13.
+Registro permanente de cambios estructurales: [CHANGELOG del Sistema](<00 Sistema/CHANGELOG del Sistema.md>).

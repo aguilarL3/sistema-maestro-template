@@ -1,10 +1,12 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Investigación y auditoría de marcos"
 tags: [investigacion, auditoria, sistema]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-003"
+resource:
 ---
 
 # Investigación y auditoría de marcos

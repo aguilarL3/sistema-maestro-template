@@ -1,10 +1,12 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Áreas"
 tags: [sop, areas]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "SOP-012"
+resource:
 ---
 
 # SOP Áreas

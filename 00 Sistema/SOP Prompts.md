@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Prompts"
 tags: [sop, prompts, prompt-engineering, ia]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-PROMPTS-001"
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-24
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Plantilla Prompt]] | [[SOP Cursos y Apuntes]] | [[SOP Notas Atómicas]] | [[SOP IA]] | [[02 MOCs/MOC - Prompt Engineering]]
+>[[Plantilla Prompt]] | [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>) | [SOP Notas Atómicas](<SOP Notas Atómicas.md>) | [SOP IA](<SOP IA.md>) | [[02 MOCs/MOC - Prompt Engineering]]
 
 # SOP Prompts
 
@@ -33,7 +35,7 @@ Todos los prompts viven en:
 **Estructura plana** — sin subcarpetas. La organización por **caso de uso** y por **técnica** vive en [[02 MOCs/MOC - Prompt Engineering]] (que cruza ambos índices).
 
 **Por qué `04 Knowledge` y no en una carpeta separada:**
-Un prompt es conocimiento reutilizable — encaja en la misma capa que las notas atómicas, los modelos mentales y los apuntes procesados. Crear `07 Prompts/` violaría la simplicidad del sistema (las 8 capas son inamovibles según [[Matriz Definitiva]]).
+Un prompt es conocimiento reutilizable — encaja en la misma capa que las notas atómicas, los modelos mentales y los apuntes procesados. Crear `07 Prompts/` violaría la simplicidad del sistema (las 8 capas son inamovibles según [Matriz Definitiva](<../Matriz Definitiva.md>)).
 
 ---
 
@@ -113,7 +115,7 @@ Ejemplos:
 - `[[Structured output]]` — idem.
 - `[[Meta-prompting]]` — idem cuando se acumulen 3 casos.
 
-Esto es la aplicación del criterio de [[SOP Notas Atómicas]] al dominio de prompts.
+Esto es la aplicación del criterio de [SOP Notas Atómicas](<SOP Notas Atómicas.md>) al dominio de prompts.
 
 ---
 
@@ -178,8 +180,8 @@ Cuando se deprecre → 99 Archivo/Prompts/ con motivo
 ## Referencias
 
 - [[Plantilla Prompt]]
-- [[SOP Cursos y Apuntes]]
-- [[SOP Notas Atómicas]]
-- [[SOP IA]]
+- [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>)
+- [SOP Notas Atómicas](<SOP Notas Atómicas.md>)
+- [SOP IA](<SOP IA.md>)
 - [[02 MOCs/MOC - Prompt Engineering]]
 - MOC - IA con Claude

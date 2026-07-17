@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Conectores"
 tags: [sop, conectores, ia, integraciones]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-CONECT-001"
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP Interoperabilidad IA]] | [[SOP Compartir Archivos]] | [[Blueprint de Sistemas]] | [[AGENTS]] | [[Glosario de términos]]
+>[SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) | [SOP Compartir Archivos](<SOP Compartir Archivos.md>) | [Blueprint de Sistemas](<Blueprint de Sistemas.md>) | [AGENTS](<../AGENTS.md>) | [Glosario de términos](<Glosario de términos.md>)
 
 # SOP Conectores
 
@@ -18,7 +20,7 @@ fecha_creacion: 2026-06-26
 
 Definir **cómo documentar un sistema externo** (Notion, Google Drive, OneDrive, un ERP a futuro) para que cualquier IA lo entienda y pueda operar sobre él sin explorar a ciegas.
 
-Un **conector** es el puente entre el Sistema Maestro y una herramienta externa. Este SOP cubre **la documentación del conector** (la capa Arquitectura del [[SOP Interoperabilidad IA]]). El *cómo se conecta técnicamente* (MCP, permisos) es responsabilidad de cada herramienta.
+Un **conector** es el puente entre el Sistema Maestro y una herramienta externa. Este SOP cubre **la documentación del conector** (la capa Arquitectura del [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)). El *cómo se conecta técnicamente* (MCP, permisos) es responsabilidad de cada herramienta.
 
 > **Regla:** un conector no documentado es un conector que la IA tiene que adivinar. Documentar = convertir "explorar" en "consultar".
 
@@ -54,11 +56,11 @@ Formato: `{Nombre del Sistema} - Arquitectura.md`. Un archivo por sistema extern
 
 ## 3. Estructura mínima de un doc de conector
 
-Todo doc en `Conectores/` debe tener estas secciones (ver [[Notion - Arquitectura]] como ejemplo completo):
+Todo doc en `Conectores/` debe tener estas secciones (ver [Notion - Arquitectura](<../04 Knowledge/Conectores/Notion - Arquitectura.md>) como ejemplo completo):
 
 | Sección | Qué contiene | Por qué |
 |---|---|---|
-| **Frontmatter** | `tags`, `estado`, `ultima_revision` | La frescura se mide contra `ultima_revision` |
+| **Frontmatter** | `tags`, `estado`, `timestamp` | La frescura se mide contra `timestamp` |
 | **Modelo / ERD** | Diagrama de entidades y relaciones | La IA entiende la estructura de un vistazo |
 | **Diccionario** | Cada entidad y campo, tipo y propósito | La IA sabe qué puede leer/escribir |
 | **Mapa de dependencias** | Cómo se relacionan las partes | Evita romper relaciones al operar |
@@ -93,13 +95,13 @@ Un agente que lee el schema en vivo siempre tendrá los datos frescos. El doc ap
 
 ## 6. Cuándo actualizar el doc
 
-Actualizá el doc del conector (y su `ultima_revision` + changelog) cuando:
+Actualizá el doc del conector (y su `timestamp` + changelog) cuando:
 
 - Cambiás la estructura del sistema externo (nuevo campo, nueva base, relación)
 - Detectás una nueva trampa o deuda técnica
 - El sistema cambia de credenciales, permisos o forma de acceso
 
-El [[Skill - Mantenimiento Sistema]] marca los docs cuyo `ultima_revision` lleva +90 días sin tocarse.
+El [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) marca los docs cuyo `timestamp` lleva +90 días sin tocarse.
 
 ---
 
@@ -140,13 +142,13 @@ Si el sistema se abandona → 99 Archivo/Conectores/
 
 ## Referencias
 
-- [[SOP Interoperabilidad IA]]
-- [[SOP Compartir Archivos]]
-- [[Blueprint de Sistemas]]
-- [[Notion - Arquitectura]]
-- [[Skill - Mantenimiento Sistema]]
-- [[AGENTS]]
-- [[Glosario de términos]]
+- [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)
+- [SOP Compartir Archivos](<SOP Compartir Archivos.md>)
+- [Blueprint de Sistemas](<Blueprint de Sistemas.md>)
+- [Notion - Arquitectura](<../04 Knowledge/Conectores/Notion - Arquitectura.md>)
+- [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>)
+- [AGENTS](<../AGENTS.md>)
+- [Glosario de términos](<Glosario de términos.md>)
 
 ## Cómo leer este SOP
 Primero el test conector-vs-recurso (§1). Luego la estructura mínima (§3) y la regla de oro (§4). El resto se consulta al crear o mantener un conector.

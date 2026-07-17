@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Prompt | Búsqueda Web Estructurada (Mejores Prácticas y Errores)"
 tags: [prompt, prompt-engineering, ai, busqueda-web, claude]
 origen: "[[MOC - Prompt Engineering]]"
 fecha_creacion: 2026-06-24
@@ -14,6 +15,7 @@ domains: []
 version: v2.0
 estado: 🟦 En pruebas
 performance: ⭐⭐⭐⭐
+resource:
 ---
 
 # Prompt | Búsqueda Web Estructurada (Mejores Prácticas y Errores)

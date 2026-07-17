@@ -1,27 +1,29 @@
 ---
-tipo_doc: Indice
+type: Indice
+title: "MOC - Carrera"
 tags: [moc, carrera, career-os]
 estado: 🟡 Borrador
 id: "MOC-CARRERA-001"
 fecha_creacion: 2026-07-14
-ultima_revision: 2026-07-14
+timestamp: 2026-07-14T00:00:00Z
 eje_central: "Carrera y empleabilidad"
 life_areas: [profesional]
 domains: [carrera]
+resource:
 ---
 
 >[!info] Documentación
->Protocolo de uso: [[SOP MOCs]] · El subsistema completo: [[SOP Career OS]]
+>Protocolo de uso: [SOP MOCs](<../00 Sistema/SOP MOCs.md>) · El subsistema completo: [SOP Career OS](<../00 Sistema/SOP Career OS.md>)
 
 # MOC - Carrera
 
 > [!todo] Stub — completalo cuando actives el subsistema Career OS.
-> Puerta de entrada temática de tu carrera. Debe enlazar a tus **notas reales** (experiencias, skills, CV, evidencia), no solo a la teoría ([[SOP Career OS]] §5).
+> Puerta de entrada temática de tu carrera. Debe enlazar a tus **notas reales** (experiencias, skills, CV, evidencia), no solo a la teoría ([SOP Career OS](<../00 Sistema/SOP Career OS.md>) §5).
 
 ## 📌 Núcleo
 
-- [[Career OS]] → el marco: convertir aprendizaje en oportunidades profesionales
-- [[SOP Career OS]] → dónde vive, cómo se nombra y cómo evoluciona el subsistema
+- [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>) → el marco: convertir aprendizaje en oportunidades profesionales
+- [SOP Career OS](<../00 Sistema/SOP Career OS.md>) → dónde vive, cómo se nombra y cómo evoluciona el subsistema
 
 ## 🧩 Tus notas (a crear al activar el subsistema)
 
@@ -33,6 +35,6 @@ domains: [carrera]
 
 ## 🔗 Conexiones
 
-- [[Dashboard-CEO]] → el único panel de gobernanza (objetivos y métricas de carrera viven ahí)
-- [[Objetivos]] → metas profesionales
-- [[Yo SA]] → gobernanza personal (`life_areas: [profesional]`)
+- [Dashboard-CEO](<../Dashboard-CEO.md>) → el único panel de gobernanza (objetivos y métricas de carrera viven ahí)
+- [Objetivos](<../01 Index/Objetivos.md>) → metas profesionales
+- [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>) → gobernanza personal (`life_areas: [profesional]`)

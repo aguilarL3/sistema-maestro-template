@@ -26,7 +26,7 @@ Creá o actualizá la nota `01 Index/Índice del Cerebro Digital.md` con esta es
 ---
 tags: [index, navegacion, cerebro-digital, agente]
 estado: 🟢 Activo
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24
 ---
 
 # Índice del Cerebro Digital

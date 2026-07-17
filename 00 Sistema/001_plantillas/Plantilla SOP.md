@@ -1,12 +1,14 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "SOP - [Nombre del Proceso]"
 tags: [sop, plantilla]
 estado: 🟢 Activo / 🧭 Planificación / ✅ Completado
 prioridad: 🔥 Alta / ⏳ Media / 💤 Baja
 responsable: "{{OWNER}}"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
 cliente_o_marca: "[Empresa A / ClienteEjemplo / Interno]"
+resource:
 ---
 
 >[!info] Documentación

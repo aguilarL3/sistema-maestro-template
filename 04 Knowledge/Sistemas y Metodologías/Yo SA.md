@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Yo S.A."
 tags: [yosa, sistema, personal]
 life_areas: [personal, profesional]
 domains: [foco, orden, revision]
@@ -9,8 +10,9 @@ projects: []
 sources: [Rubén Loan]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-017"
+resource:
 ---
 
 # Yo S.A.

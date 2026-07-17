@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Career OS"
 tags: [sop, carrera, career-os, empleabilidad]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-CAREER-001"
-ultima_revision: 2026-07-14
+timestamp: 2026-07-14T00:00:00Z
 fecha_creacion: 2026-06-27
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Career OS]] | [[MOC - Carrera]] | [[SOP Proyectos]] | [[SOP Notas Atómicas]] | [[SOP Skills]] | [[SOP Compartir Archivos]]
+>[Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>) | [MOC - Carrera](<../02 MOCs/MOC - Carrera.md>) | [SOP Proyectos](<SOP Proyectos.md>) | [SOP Notas Atómicas](<SOP Notas Atómicas.md>) | [SOP Skills](<SOP Skills.md>) | [SOP Compartir Archivos](<SOP Compartir Archivos.md>)
 
 # SOP Career OS
 
@@ -19,8 +21,8 @@ fecha_creacion: 2026-06-27
 Definir **dónde vive, cómo se nombra, cómo se conecta y cómo evoluciona** el subsistema Career OS dentro del vault.
 
 Este SOP cubre **el envase** (estructura, naming, integración, ciclo de vida).
-El **marco conceptual** (qué es Career OS y qué problema resuelve) está en [[Career OS]].
-La **navegación temática** la da [[MOC - Carrera]].
+El **marco conceptual** (qué es Career OS y qué problema resuelve) está en [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>).
+La **navegación temática** la da [MOC - Carrera](<../02 MOCs/MOC - Carrera.md>).
 
 ---
 
@@ -81,7 +83,7 @@ Al **tocar o crear** una nota dentro de Career OS, se le agrega frontmatter mín
 
 ```yaml
 ---
-tipo_doc: Reference        # o Explanation / How-to según el caso
+type: Reference        # o Explanation / How-to según el caso
 tags: [career-os, <familia>]
 life_areas: [profesional]
 domains: [carrera, <dominio>]
@@ -97,17 +99,17 @@ estado: 🟢 Activo          # o 🟨 Borrador / 🟦 Aplicado
 
 Toda nota relevante de Career OS debe poder alcanzarse desde la red del vault:
 
-1. **[[MOC - Carrera]]** → puerta de entrada temática. Debe enlazar a las notas reales de Career OS (experiencias, skills, dashboard), no solo a la nota conceptual [[Career OS]].
-2. **`life_areas: [profesional]`** → conecta con la gobernanza de [[Yo SA]].
+1. **[MOC - Carrera](<../02 MOCs/MOC - Carrera.md>)** → puerta de entrada temática. Debe enlazar a las notas reales de Career OS (experiencias, skills, dashboard), no solo a la nota conceptual [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>).
+2. **`life_areas: [profesional]`** → conecta con la gobernanza de [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>).
 3. **Experiencia ↔ Evidencia** → cada experiencia con datasets enlaza sus `Recursos/`; cada logro en `09_Achievements` apunta a la experiencia que lo respalda.
 4. **Skill ↔ Proyecto ↔ Evidencia** → una skill en `02_Skills` se respalda con un proyecto de `03_Projects` y/o una historia de `04_Career_Stories`.
 
 ### Jerarquía de dashboards (regla anti-duplicado)
 
-> **El [[Dashboard-CEO|Dashboard CEO]] (`01 Index`) es el ÚNICO panel de gobernanza.** Ya integra Career OS + Yo S.A. + Cerebro Digital + GTD.
+> **El [Dashboard CEO](<../Dashboard-CEO.md>) (`01 Index`) es el ÚNICO panel de gobernanza.** Ya integra Career OS + Yo S.A. + Cerebro Digital + GTD.
 
-- `00_Dashboard` de Career OS **no** replica objetivos, métricas ni visión: se limita a **auditorías y guías concretas de carrera** (auditoría de CV, optimización de LinkedIn) y **enlaza hacia arriba** al [[Dashboard-CEO|Dashboard CEO]].
-- Cualquier objetivo o métrica de carrera vive en [[Objetivos]] / [[Dashboard-CEO|Dashboard CEO]], no duplicado dentro de Career OS.
+- `00_Dashboard` de Career OS **no** replica objetivos, métricas ni visión: se limita a **auditorías y guías concretas de carrera** (auditoría de CV, optimización de LinkedIn) y **enlaza hacia arriba** al [Dashboard CEO](<../Dashboard-CEO.md>).
+- Cualquier objetivo o métrica de carrera vive en [Objetivos](<../01 Index/Objetivos.md>) / [Dashboard CEO](<../Dashboard-CEO.md>), no duplicado dentro de Career OS.
 
 ### Proyectos: enlazar, no duplicar
 
@@ -124,7 +126,7 @@ Los datasets crudos dentro de `01_Experiences/.../Recursos/` son **fuentes**, no
 > Si es un archivo original sin procesar (xlsx, zip, export) → es **Raw embebido**: no se modifica, se cita.
 > Si es una síntesis escrita por vos (análisis, propuesta, historia) → es **Knowledge**: evoluciona.
 
-Cuando un dataset crudo crezca o se reuse fuera de la carrera, evaluar moverlo a `06 Raw/` según [[SOP Compartir Archivos]].
+Cuando un dataset crudo crezca o se reuse fuera de la carrera, evaluar moverlo a `06 Raw/` según [SOP Compartir Archivos](<SOP Compartir Archivos.md>).
 
 ---
 
@@ -137,7 +139,7 @@ Cuando un dataset crudo crezca o se reuse fuera de la carrera, evaluar moverlo a
 | `Templates` | Plantillas de carta, email, seguimiento | Reutilizar, no mover |
 | `Applied` | Postulación enviada | Crear nota con puesto, empresa, fecha, link, CV usado |
 | `Interviewing` | En proceso de entrevistas | Adjuntar historia STAR de `04_Career_Stories` |
-| `Offers` | Oferta recibida | Registrar condiciones para decidir ([[SOP Decisiones]]) |
+| `Offers` | Oferta recibida | Registrar condiciones para decidir ([SOP Decisiones](<SOP Decisiones.md>)) |
 | `Rejected` | Descartada | Anotar feedback/aprendizaje antes de archivar |
 
 **Regla:** una postulación se mueve de carpeta, no se duplica. El historial vive en la propia nota.
@@ -148,7 +150,7 @@ Cuando un dataset crudo crezca o se reuse fuera de la carrera, evaluar moverlo a
 
 - Los `desktop.ini` son metadata de Windows/OneDrive. **Están en `.gitignore`** (`desktop.ini`, `**/desktop.ini`) — no entran al repo pero permanecen en disco para que la sincronización funcione.
 - **Política del vault: git = solo markdown.** Los binarios (xlsx, pdf, zip, imágenes, video) **no** se versionan en git: están en `.gitignore` a nivel de todo el vault. Viven en disco y se sincronizan por **OneDrive/Drive**, que es la capa de respaldo de archivos. Obsidian los renderiza desde disco igual; git se queda con texto diffeable y liviano.
-- Los datasets crudos y la evidencia binaria se citan y embeben según [[SOP Compartir Archivos]]; nunca se commitean.
+- Los datasets crudos y la evidencia binaria se citan y embeben según [SOP Compartir Archivos](<SOP Compartir Archivos.md>); nunca se commitean.
 - Excepción: `.canvas` **sí** entra a git (es JSON/texto, contenido del vault, no un binario opaco).
 
 ---
@@ -161,7 +163,7 @@ Cuando un dataset crudo crezca o se reuse fuera de la carrera, evaluar moverlo a
 | Crear notas sin frontmatter del vault | Quedan invisibles a queries, MOCs y campos transversales | Añadir frontmatter mínimo al trabajar la nota (§4) |
 | Duplicar una postulación al avanzar de etapa | Genera historial incoherente | Mover la nota entre carpetas del pipeline (§7) |
 | Tratar Career OS como proyecto | Confunde conocimiento con iniciativa | Subsistema en `04 Knowledge`; los entregables con fin van a `03 Proyectos` |
-| Atomizar cada bullet del CV a Knowledge | Inflación de notas | Solo extraer a `Temas/` lo que cruza áreas o se reusa (criterio [[SOP Notas Atómicas]]) |
+| Atomizar cada bullet del CV a Knowledge | Inflación de notas | Solo extraer a `Temas/` lo que cruza áreas o se reusa (criterio [SOP Notas Atómicas](<SOP Notas Atómicas.md>)) |
 | Commitear `desktop.ini` | Ruido en el repo | Ya cubierto por `.gitignore` |
 
 ---
@@ -174,12 +176,12 @@ Primero entendé el objetivo y el mapa de carpetas (§1–§2). Cuando crees o m
 
 ## Referencias
 
-- [[Career OS]]
-- [[MOC - Carrera]]
-- [[SOP Proyectos]]
-- [[SOP Notas Atómicas]]
-- [[SOP Skills]]
-- [[SOP Decisiones]]
-- [[SOP Compartir Archivos]]
-- [[Yo SA]]
-- [[SOP Maestro]]
+- [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>)
+- [MOC - Carrera](<../02 MOCs/MOC - Carrera.md>)
+- [SOP Proyectos](<SOP Proyectos.md>)
+- [SOP Notas Atómicas](<SOP Notas Atómicas.md>)
+- [SOP Skills](<SOP Skills.md>)
+- [SOP Decisiones](<SOP Decisiones.md>)
+- [SOP Compartir Archivos](<SOP Compartir Archivos.md>)
+- [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>)
+- [SOP Maestro](<SOP Maestro.md>)

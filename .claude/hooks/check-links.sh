@@ -2,12 +2,16 @@
 # check-links.sh — chequeador de integridad de enlaces del vault (Gap 2a).
 #
 # Escanea todos los .md, extrae los [[wikilinks]] (incluidos embeds ![[...]])
-# y reporta los que apuntan a un archivo inexistente. Resolución al estilo
-# Obsidian: por basename (sin importar carpeta) o por ruta relativa, sin
-# distinguir mayúsculas, y **honrando los `aliases:` del frontmatter** (un
-# [[Alias]] que resuelve a una nota vía alias NO es un enlace roto). Reconoce
-# alias `[[Nota|alias]]`, secciones `[[Nota#Título]]`, bloques `[[Nota#^id]]`,
-# pipes escapados de tabla `\|`, y omite bloques de código y código inline.
+# Y TAMBIÉN los links markdown [txt](<ruta>) a notas, y reporta los que apuntan
+# a un archivo inexistente. Resolución al estilo Obsidian: por basename (sin
+# importar carpeta) o por ruta relativa, sin distinguir mayúsculas, y **honrando
+# los `aliases:` del frontmatter** (un [[Alias]] que resuelve vía alias NO está
+# roto). Reconoce alias `[[Nota|alias]]`, secciones `[[Nota#Título]]`, bloques
+# `[[Nota#^id]]`, pipes escapados de tabla `\|`, y omite código en bloque/inline.
+# Links markdown: destino con `/` se resuelve como ruta relativa al archivo
+# (normaliza ./ y ../); destino de nombre pelado, por nombre (como un wikilink).
+# Solo se chequean destinos .md o sin extensión (los assets png/pdf/… se saltan).
+# El tipo de cada roto se marca en la 4ª columna del --tsv: `wiki` | `md`.
 #
 # Diseño: UN SOLO pase de awk para el índice+escaneo (más un pase liviano de
 # extracción de aliases), para no spawnear subprocesos por archivo/token — clave
@@ -75,6 +79,18 @@ fi
 SUMMARY="$(awk -v out="$BRK" -v allf="$ALL" -v aliasf="$ALIAS" '
   function noext(s){ if (match(s, /\.[^.\/]+$/)) return substr(s,1,RSTART-1); return s }
   function add(s){ if (s!="") have[tolower(s)]=1 }
+  # normaliza un target relativo (con ./ y ../) al path desde la raíz del vault
+  function normpath(dir, t,   base, parts, n, i, comp, k, out2, s2) {
+    if (substr(t,1,1)=="/") base=substr(t,2)          # root-relative
+    else base=(dir=="" ? t : dir "/" t)
+    n=split(base, parts, "/"); k=0
+    for(i=1;i<=n;i++){ comp=parts[i]
+      if(comp=="."||comp=="") continue
+      if(comp==".."){ if(k>0) k--; continue }
+      k++; out2[k]=comp }
+    s2=""; for(i=1;i<=k;i++) s2=(i==1?out2[i]:s2 "/" out2[i])
+    return s2
+  }
   FILENAME==allf {
     p=$0; sub(/^\.\//,"",p)
     n=split(p,a,"/"); base=a[n]
@@ -82,12 +98,17 @@ SUMMARY="$(awk -v out="$BRK" -v allf="$ALL" -v aliasf="$ALIAS" '
     next
   }
   FILENAME==aliasf { add($0); next }
-  FNR==1 { infence=0 }
+  FNR==1 { infence=0                                  # dir del archivo actual (para rutas md)
+    f=FILENAME; sub(/^\.\//,"",f); nf=split(f,fa,"/"); fdir=""
+    for(i=1;i<nf;i++) fdir=(i==1?fa[i]:fdir "/" fa[i])
+  }
   {
     line=$0
     if (line ~ /^[ \t]*(```|~~~)/) { infence=!infence; next }
     if (infence) next
     gsub(/`[^`]*`/, "", line)
+    f=FILENAME; sub(/^\.\//,"",f)
+    # --- wikilinks [[...]] ---
     s=line
     while (match(s, /\[\[[^]]*\]\]/)) {
       tok=substr(s, RSTART+2, RLENGTH-4)
@@ -101,10 +122,29 @@ SUMMARY="$(awk -v out="$BRK" -v allf="$ALL" -v aliasf="$ALIAS" '
       if (tok=="") continue
       if (tok ~ /^https?:\/\//) continue
       key=tolower(tok); gsub(/\\/, "/", key)
-      if (!(key in have)) {
-        f=FILENAME; sub(/^\.\//,"",f)
-        broken++
-        print f "\t" FNR "\t" tok "\t" raw > out
+      if (!(key in have)) { broken++; print f "\t" FNR "\t" tok "\t" raw "\twiki" > out }
+    }
+    # --- links markdown [txt](target) — solo destinos .md o sin extensión (notas) ---
+    s=line
+    while (match(s, /\]\(<[^>]*>\)|\]\([^)]*\)/)) {   # angular primero (permite ( ) en el nombre)
+      mfull=substr(s, RSTART, RLENGTH)
+      s=substr(s, RSTART+RLENGTH)
+      mdraw=substr(mfull, 3, length(mfull)-3)   # contenido entre ]( y )
+      t=mdraw
+      if (substr(t,1,1)=="<" && substr(t,length(t),1)==">") t=substr(t,2,length(t)-2)  # corchetes angulares
+      gsub(/%20/, " ", t)                    # decodificar espacios
+      sub(/#.*/, "", t)                      # anchor de sección
+      gsub(/^[ \t]+|[ \t]+$/, "", t)
+      if (t=="") continue
+      if (t ~ /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//) continue   # esquema:// (http, etc.)
+      if (t ~ /^mailto:/) continue
+      ext=""; if (match(t, /\.[^.\/]+$/)) ext=tolower(substr(t, RSTART+1))
+      if (ext!="" && ext!="md") continue     # saltar assets (png, pdf, xlsx…)
+      total++
+      if (t ~ /\//) key=tolower(normpath(fdir, t))   # ruta -> resolver relativa al archivo
+      else key=tolower(t)                            # nombre pelado -> por nombre (Obsidian)
+      if (!(key in have) && !(noext(key) in have)) {
+        broken++; print f "\t" FNR "\t" t "\t" mdraw "\tmd" > out
       }
     }
   }
@@ -115,7 +155,9 @@ case "$MODE" in
   pretty)
     if [ -s "$BRK" ]; then
       echo "Enlaces rotos (destino inexistente):"
-      sort "$BRK" | awk -F'\t' '{ if($1!=p){print "";print $1;p=$1} printf "  L%-5s [[%s]]\n",$2,$3 }'
+      sort "$BRK" | awk -F'\t' '{ if($1!=p){print "";print $1;p=$1}
+        if($5=="md") printf "  L%-5s [..](%s)\n",$2,$4
+        else printf "  L%-5s [[%s]]\n",$2,$3 }'
       echo
     fi
     echo "$SUMMARY"
@@ -124,8 +166,8 @@ case "$MODE" in
     echo "$SUMMARY"
     ;;
   tsv)
-    # archivo <TAB> línea <TAB> texto_del_link (raw, con alias/sección)
-    [ -s "$BRK" ] && sort "$BRK" | cut -f1,2,4
+    # archivo <TAB> línea <TAB> texto_del_link (raw) <TAB> kind (wiki|md)
+    [ -s "$BRK" ] && sort "$BRK" | cut -f1,2,4,5
     ;;
 esac
 

@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Interoperabilidad IA"
 tags: [sop, ia, interoperabilidad, arquitectura, conectores]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-INTEROP-001"
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[AGENTS]] | [[SOP IA]] | [[SOP Skills]] | [[SOP Conectores]] | [[Blueprint de Sistemas]] | [[Glosario de términos]]
+>[AGENTS](<../AGENTS.md>) | [SOP IA](<SOP IA.md>) | [SOP Skills](<SOP Skills.md>) | [SOP Conectores](<SOP Conectores.md>) | [Blueprint de Sistemas](<Blueprint de Sistemas.md>) | [Glosario de términos](<Glosario de términos.md>)
 
 # SOP Interoperabilidad IA
 
@@ -108,7 +110,7 @@ Cuando un sistema se comunica con otro (no solo una IA leyendo archivos), aplica
 | **SKILL.md** (Agent Skills) | Anthropic (oct 2025; estándar abierto dic 2025) | Convención de capacidades ejecutables, adoptada por múltiples frameworks. |
 | **A2A** (Agent-to-Agent) | Google | Comunicación entre agentes independientes. |
 
-> En este sistema, los **conectores** (Notion, Drive, ERP futuro) se implementan vía **MCP**. La documentación de cada uno vive en `04 Knowledge/Conectores/` (ver [[SOP Conectores]]).
+> En este sistema, los **conectores** (Notion, Drive, ERP futuro) se implementan vía **MCP**. La documentación de cada uno vive en `04 Knowledge/Conectores/` (ver [SOP Conectores](<SOP Conectores.md>)).
 
 ---
 
@@ -130,13 +132,13 @@ Cuando una IA entra al vault, `AGENTS.md` le dice: lee `SOP Maestro`, `SOP Index
 
 ## 7. Cómo aplicar este protocolo a un sistema NUEVO
 
-Cuando armes un sistema nuevo (ERP, LLM Wiki, base documental), seguí este checklist. Ver detalle en [[Blueprint de Sistemas]].
+Cuando armes un sistema nuevo (ERP, LLM Wiki, base documental), seguí este checklist. Ver detalle en [Blueprint de Sistemas](<Blueprint de Sistemas.md>).
 
 - [ ] **¿Tiene un archivo Ley?** Crear `AGENTS.md` (o equivalente) con propósito + reglas + prohibiciones.
 - [ ] **¿Tiene un Mapa?** Crear `llms.txt` que liste qué leer y en qué orden.
-- [ ] **¿Se conecta vía IA?** Documentar su arquitectura en `04 Knowledge/Conectores/` ([[SOP Conectores]]).
-- [ ] **¿Tiene operaciones repetitivas?** Crear Skills ([[SOP Skills]]).
-- [ ] **¿Cómo se mantiene fresco?** Registrarlo en el ciclo de [[Skill - Mantenimiento Sistema]].
+- [ ] **¿Se conecta vía IA?** Documentar su arquitectura en `04 Knowledge/Conectores/` ([SOP Conectores](<SOP Conectores.md>)).
+- [ ] **¿Tiene operaciones repetitivas?** Crear Skills ([SOP Skills](<SOP Skills.md>)).
+- [ ] **¿Cómo se mantiene fresco?** Registrarlo en el ciclo de [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>).
 
 ---
 
@@ -148,16 +150,16 @@ La documentación de IA **se desactualiza rápido** (los estándares cambian cad
 
 La frescura no vive en el documento, vive en el **proceso**:
 
-- Cada documento guarda `ultima_revision: YYYY-MM-DD` (estático).
-- Un **Skill de mantenimiento** corre con la fecha real de hoy (la IA siempre la recibe en runtime), compara contra `ultima_revision`, marca lo vencido (+90 días), busca buenas prácticas actuales y **propone** mejoras.
+- Cada documento guarda `timestamp: YYYY-MM-DD` (estático).
+- Un **Skill de mantenimiento** corre con la fecha real de hoy (la IA siempre la recibe en runtime), compara contra `timestamp`, marca lo vencido (+90 días), busca buenas prácticas actuales y **propone** mejoras.
 
-Eso *es* el `date.now()` buscado: el Skill siempre sabe qué día es. Ver [[Skill - Mantenimiento Sistema]].
+Eso *es* el `date.now()` buscado: el Skill siempre sabe qué día es. Ver [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>).
 
 ### Por qué la fecha NO se escribe en el documento (prompt caching)
 
 Hay una razón técnica más allá de "el .md es estático". Los modelos cachean un **prefijo estático** (reglas del sistema, `AGENTS.md`, definiciones de herramientas) que debe permanecer inmutable durante la sesión para no recalcular todo el contexto. Si una IA reescribiera la fecha dentro de un archivo maestro en cada turno, invalidaría esa caché y dispararía costo y latencia.
 
-Por eso la fecha viva se **inyecta como contexto volátil en runtime**, típicamente vía una directiva `<system-reminder>` en el flujo de mensajes — no se escribe en el archivo. El agente la lee al momento y la compara contra el `ultima_revision` estático del frontmatter.
+Por eso la fecha viva se **inyecta como contexto volátil en runtime**, típicamente vía una directiva `<system-reminder>` en el flujo de mensajes — no se escribe en el archivo. El agente la lee al momento y la compara contra el `timestamp` estático del frontmatter.
 
 > Esto está verificado en la práctica: este mismo sistema recibe la fecha de hoy por inyección de runtime, no leyéndola de ningún archivo del vault.
 
@@ -168,7 +170,7 @@ Por eso la fecha viva se **inyecta como contexto volátil en runtime**, típicam
 | Error | Por qué falla | Cómo evitarlo |
 |---|---|---|
 | Duplicar reglas en varios archivos | Se desincronizan | Una sola fuente de verdad por regla. Enlazar, no copiar. |
-| Documento sin `ultima_revision` | El mantenimiento no puede medir frescura | Frontmatter con fecha siempre. |
+| Documento sin `timestamp` | El mantenimiento no puede medir frescura | Frontmatter con fecha siempre. |
 | Hardcodear la fecha "de hoy" en un doc | Queda congelada | La fecha viva vive en el Skill, no en el texto. |
 | No tener `llms.txt` (Mapa) | La IA explora a ciegas y se satura | Crear el mapa raíz. |
 | Mezclar Ley con Arquitectura | La IA no sabe qué es regla y qué es descripción | Separar las 4 capas del §4. |
@@ -188,7 +190,7 @@ Crear capa MAPA (llms.txt): qué leer y en qué orden
 ↓
 ¿Operaciones repetitivas? → crear SKILLS
 ↓
-Registrar ultima_revision en cada doc
+Registrar timestamp en cada doc
 ↓
 Skill - Mantenimiento Sistema audita frescura periódicamente
   └─ propone mejoras según documentación actual (nunca aplica solo)
@@ -214,14 +216,14 @@ Estos estándares de 2026 son **reales y verificados**, pero aplican cuando un s
 
 ## Referencias
 
-- [[AGENTS]]
-- [[SOP IA]]
-- [[SOP Skills]]
-- [[SOP Conectores]]
-- [[Blueprint de Sistemas]]
-- [[Skill - Mantenimiento Sistema]]
-- [[Glosario de términos]]
-- [[LLM Wiki]]
+- [AGENTS](<../AGENTS.md>)
+- [SOP IA](<SOP IA.md>)
+- [SOP Skills](<SOP Skills.md>)
+- [SOP Conectores](<SOP Conectores.md>)
+- [Blueprint de Sistemas](<Blueprint de Sistemas.md>)
+- [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)
 
 ## Cómo leer este SOP
 Primero entendé la convención (§1) y el flujo de entrada (§2). El resto se consulta cuando armás o mantenés un sistema. No hace falta memorizarlo: el documento te guía.

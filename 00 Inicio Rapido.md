@@ -1,16 +1,18 @@
 ---
-tipo_doc: Tutorial
+type: Tutorial
+title: "Inicio Rápido — Sistema Maestro V6"
 tags: [sistema, onboarding, tutorial]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "TUT-002"
-ultima_revision: 2026-07-04
+timestamp: 2026-07-04T00:00:00Z
 fecha_creacion: 2026-06-17
+resource:
 ---
 
 > [!info] Este es EL tutorial de entrada del sistema (único, per Diátaxis).
-> Para el manual completo: [[SOP Maestro]]. Para navegar: [[Home]].
+> Para el manual completo: [SOP Maestro](<00 Sistema/SOP Maestro.md>). Para navegar: [Home](<Home.md>).
 
 # Inicio Rápido — Sistema Maestro V6
 
@@ -180,10 +182,10 @@ Domingo  → 15 min de revisión CE-RE-BRO
 
 ## Referencias clave
 
-- [[Home]] — punto de entrada principal
+- [Home](<Home.md>) — punto de entrada principal
 - [[00 Sistema/SOP Maestro]] — manual completo del sistema
 - [[00 Sistema/Filosofía del Sistema]] — por qué cada decisión de diseño
-- [[Dashboard-CEO]] — vista de vida completa
-- [[Dashboard-Estudio]] — hub operativo de estudio
+- [Dashboard-CEO](<Dashboard-CEO.md>) — vista de vida completa
+- [Dashboard-Estudio](<Dashboard-Estudio.md>) — hub operativo de estudio
 - [[00 Sistema/SOP Revisiones]] — auditoría semanal y mensual CE-RE-BRO
 - [[CLAUDE.md]] — contexto del sistema para trabajar con IA

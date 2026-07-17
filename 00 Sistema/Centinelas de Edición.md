@@ -1,22 +1,24 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Centinelas de Edición (@user / @generated)"
 tags: [multiagente, centinelas, edicion, proteccion, hooks]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "HOW-002"
-ultima_revision: 2026-07-01
+timestamp: 2026-07-01T00:00:00Z
 fecha_creacion: 2026-07-01
+resource:
 ---
 
 >[!info] Documentación relacionada
->Propiedad del contenido (centinelas) (el porqué) | [[Orquestación Multi-Agente Abierta]] (§13.3) | [[SOP Hooks y Automatización]] | [[Catálogo de Hooks y Locks]] | [[Conflicto Semántico - Enlaces y Contradicciones]]
+>Propiedad del contenido (centinelas) (el porqué) | [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) (§13.3) | [SOP Hooks y Automatización](<SOP Hooks y Automatización.md>) | [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) | [Conflicto Semántico - Enlaces y Contradicciones](<Conflicto Semántico - Enlaces y Contradicciones.md>)
 
 # Centinelas de Edición (@user / @generated)
 
 ## 1. Para qué sirven
 
-Un centinela es un **marcador invisible** que declara *de quién es* un fragmento de una nota, para que un agente de IA sepa qué puede reescribir y qué no. Resuelve el Gap 3 de [[Orquestación Multi-Agente Abierta]] §13.3: separar **contenido humano** (intocable) de **contenido generado** (regenerable) dentro de un mismo archivo.
+Un centinela es un **marcador invisible** que declara *de quién es* un fragmento de una nota, para que un agente de IA sepa qué puede reescribir y qué no. Resuelve el Gap 3 de [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) §13.3: separar **contenido humano** (intocable) de **contenido generado** (regenerable) dentro de un mismo archivo.
 
 | Centinela | Dueño | La IA puede… |
 |---|---|---|
@@ -75,9 +77,9 @@ La convención no depende de que el agente "se acuerde": la **obliga** un hook.
 Una edición que **cruza el borde** de un bloque (parte dentro, parte fuera) puede no detectarse (fail-open). El caso común —editar de lleno dentro de un `@user`— sí se bloquea.
 
 ## 5. Referencias
-- Por qué existe → [[Orquestación Multi-Agente Abierta]] §13.3 (prior art: `obsidian-second-brain`, edición con centinelas)
-- Ficha de la herramienta → [[Catálogo de Hooks y Locks]] (Guardianes)
-- Cómo se crean/prueban hooks → [[SOP Hooks y Automatización]]
+- Por qué existe → [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) §13.3 (prior art: `obsidian-second-brain`, edición con centinelas)
+- Ficha de la herramienta → [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) (Guardianes)
+- Cómo se crean/prueban hooks → [SOP Hooks y Automatización](<SOP Hooks y Automatización.md>)
 
 ## Cómo leer este documento
 Para proteger contenido, §2 (sintaxis) + §4 (workflow). Para entender qué bloquea y qué no, §3. El *porqué* está en §13.3 de la Orquestación.

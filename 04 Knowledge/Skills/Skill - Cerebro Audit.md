@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Cerebro Audit — Diagnóstico Completo CE-RE-BRO"
 tags: [skill, ia, claude-code, cerebro-digital, ce-re-bro, auditoria]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
@@ -15,6 +16,7 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟨 Borrador
+resource:
 ---
 
 # Skill | Cerebro Audit — Diagnóstico Completo CE-RE-BRO
@@ -98,16 +100,16 @@ Ver archivo ejecutable: `.claude/commands/cerebro-audit.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro CE]] → dimensión CE en detalle
-- [[Skill - Cerebro RE]] → dimensión RE en detalle
-- [[Skill - Cerebro BRO]] → dimensión BRO en detalle
-- [[Skill - Cerebro Index]] → generar índice de navegación
+- [Skill - Cerebro CE](<Skill - Cerebro CE.md>) → dimensión CE en detalle
+- [Skill - Cerebro RE](<Skill - Cerebro RE.md>) → dimensión RE en detalle
+- [Skill - Cerebro BRO](<Skill - Cerebro BRO.md>) → dimensión BRO en detalle
+- [Skill - Cerebro Index](<Skill - Cerebro Index.md>) → generar índice de navegación
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>)
 - Metodología CE-RE-BRO — Marcos Emowe (Cerebro Digital)
 - Video: "Tres formas de organizar tus notas que el papel no permite"
 - Video: "¿Un Agente de IA que te acompañe toda la vida? Así se construye"

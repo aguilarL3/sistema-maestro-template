@@ -1,12 +1,14 @@
 ---
-tipo_doc: Postmortem
+type: Postmortem
+title: "Postmortem - [Incidente] (<% tp.date.now(\"YYYY-MM-DD\") %>)"
 tags: [postmortem, incidente]
 estado: ✅ Completado
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "PM-XXX"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
+resource:
 ---
 
 >[!info] Documentación relacionada

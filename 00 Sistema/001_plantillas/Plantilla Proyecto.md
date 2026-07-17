@@ -1,11 +1,12 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Proyecto: [Nombre Claro del Proyecto]"
 tags: [proyecto, ejecucion]
 estado: 🧭 Planificación / 🏃 En Ejecución / 🛑 Bloqueado / ✅ Completado
 prioridad: 🔥 Alta / ⏳ Media / 💤 Baja
 responsable: "{{OWNER}}"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
 cliente_o_marca: "[Empresa A / ClienteEjemplo / Interno]"
 fecha_inicio: <% tp.date.now("YYYY-MM-DD") %>
 fecha_entrega: ""
@@ -13,6 +14,7 @@ repo: ""
 life_areas: [profesional]
 domains: []
 goals: []
+resource:
 ---
 
 >[!info] Documentación

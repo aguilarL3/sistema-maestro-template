@@ -37,7 +37,7 @@ Por defecto respondés EN EL CHAT (es una consulta de decisión, no genera archi
 - **Hallazgos:** lista (con `archivo:línea` si es código)
 - **Veredicto:** 🟢/🟡/🔴/⚠️ + razones
 - **Antes de instalar/abrir:** qué revisar o mitigar (si aplica)
-Con `--guardar`: además volcá el análisis a `05 Diario/Auditorías/Revisión Seguridad - {target} - {fecha}.md` con frontmatter canónico (tipo_doc: Reference).
+Con `--guardar`: además volcá el análisis a `05 Diario/Auditorías/Revisión Seguridad - {target} - {fecha}.md` con frontmatter canónico (type: Reference).
 
 [ARGUMENTOS]
 $ARGUMENTS

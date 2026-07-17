@@ -1,16 +1,18 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Filosofía del Sistema"
 tags: [filosofia, sistema, onboarding]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
-ultima_revision: 2026-07-11
+timestamp: 2026-07-11T00:00:00Z
 fecha_creacion: 2026-06-17
 id: "EXP-002"
+resource:
 ---
 
 >[!info] El triángulo fundacional (una fuente de verdad por pregunta — consolidación 2026-07-11)
->**Este documento = el PORQUÉ** (por qué existe el sistema, por qué cada pilar, qué se adoptó y descartó). · El **estudio** de qué dice cada marco → [[Investigación y auditoría de marcos]]. · El **manual de uso** del vault → [[SOP Maestro]].
+>**Este documento = el PORQUÉ** (por qué existe el sistema, por qué cada pilar, qué se adoptó y descartó). · El **estudio** de qué dice cada marco → [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>). · El **manual de uso** del vault → [SOP Maestro](<SOP Maestro.md>).
 
 # Filosofía del Sistema
 
@@ -287,17 +289,17 @@ Después de uso sostenido, el Sistema Maestro se convierte en:
 ---
 
 ## Referencias
-- [[AGENTS]]
-- [[SOP Maestro]]
-- [[Glosario de términos]]
-- [[Investigación y auditoría de marcos]]
-- [[Valores]]
-- [[Principios]]
-- [[Vision]]
-- [[LLM Wiki]]
-- [[Cerebro Digital]]
-- [[Yo SA]]
-- [[Career OS]]
-- [[Zettelkasten]]
-- [[Evergreen Notes]]
-- [[CE-RE-BRO]]
+- [AGENTS](<../AGENTS.md>)
+- [SOP Maestro](<SOP Maestro.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
+- [Valores](<../01 Index/Valores.md>)
+- [Principios](<../01 Index/Principios.md>)
+- [Vision](<../01 Index/Vision.md>)
+- [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)
+- [Cerebro Digital](<../04 Knowledge/Sistemas y Metodologías/Cerebro Digital.md>)
+- [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>)
+- [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>)
+- [Zettelkasten](<../04 Knowledge/Sistemas y Metodologías/Zettelkasten.md>)
+- [Evergreen Notes](<../04 Knowledge/Sistemas y Metodologías/Evergreen Notes.md>)
+- [CE-RE-BRO](<../04 Knowledge/Sistemas y Metodologías/CE-RE-BRO.md>)

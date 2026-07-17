@@ -1,12 +1,14 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP — Compartir Archivos (Drive / OneDrive en Obsidian)"
 tags: [SOP, archivos, privacidad]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-COMPARTIR-ARCHIVOS-001"
-ultima_revision: 2026-07-03
+timestamp: 2026-07-03T00:00:00Z
 fecha_creacion: 2026-06-17
+resource:
 ---
 
 # SOP — Compartir Archivos (Drive / OneDrive en Obsidian)

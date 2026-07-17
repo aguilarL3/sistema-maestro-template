@@ -1,9 +1,10 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Skill | [Nombre de la Skill]"
 tags: [skill, ia, claude-code, automatizacion]
 estado: 🟨 Borrador / 🟦 En pruebas / 🟩 Productivo / 🟥 Deprecado
 fecha_creacion: YYYY-MM-DD
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 origen: "[[Catálogo de Skills]]"
 fecha_actualizacion: YYYY-MM-DD
 modelo_objetivo: claude-sonnet-4-6 / claude-haiku-4-5 / claude-opus-4-8
@@ -16,6 +17,7 @@ tools_usadas: [Read, Grep, Glob, Edit, Write, Bash]
 scope: vault / proyecto / archivo
 version: v1.0
 domains: []
+resource:
 ---
 
 # Skill | [Nombre de la Skill]

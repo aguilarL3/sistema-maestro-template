@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Skills"
 tags: [sop, skills, ia, automatizacion, claude-code]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-SKILLS-001"
-ultima_revision: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-25
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Plantilla Skill]] | [[SOP Prompts]] | [[SOP IA]] | [[AGENTS]] | MOC - IA con Claude
+>[[Plantilla Skill]] | [SOP Prompts](<SOP Prompts.md>) | [SOP IA](<SOP IA.md>) | [AGENTS](<../AGENTS.md>) | MOC - IA con Claude
 
 # SOP Skills
 
@@ -129,7 +131,7 @@ Toda skill del Sistema Maestro debe respetar estos principios:
 2. **Nunca borrar archivos originales.** Solo crear notas nuevas con propuestas.
 3. **Reportar sin abortar.** Si falta un archivo o el frontmatter está incompleto, reportarlo y seguir.
 4. **Salida en markdown puro.** Sin HTML, sin formato propietario.
-5. **Respetar el lenguaje del vault.** Usar términos del [[Glosario de términos]].
+5. **Respetar el lenguaje del vault.** Usar términos del [Glosario de términos](<Glosario de términos.md>).
 
 ---
 
@@ -228,7 +230,7 @@ Algunas skills (Cerebro CE/RE/BRO, Cerebro Audit, Mantenimiento Sistema) no camb
 | Documento | Qué es | Dónde vive |
 |---|---|---|
 | **El informe** | El **hallazgo** — qué se detectó ese día (foto fechada) | `05 Diario/Auditorías/Informe ... - YYYY-MM-DD.md` |
-| **El changelog** | El **arreglo** — qué se cambió como consecuencia | Changelog del doc tocado + [[CHANGELOG del Sistema]] |
+| **El changelog** | El **arreglo** — qué se cambió como consecuencia | Changelog del doc tocado + [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>) |
 
 > El informe es la **lista de tareas**. El changelog es el **registro de lo hecho**. Son cosas distintas: no se documenta el arreglo en el informe, ni el hallazgo en el changelog.
 
@@ -239,7 +241,7 @@ Algunas skills (Cerebro CE/RE/BRO, Cerebro Audit, Mantenimiento Sistema) no camb
 2. Resolvemos en el chat, en la misma sesión, mientras el contexto está fresco
 3. Por cada hallazgo resuelto:
    - se aplica el cambio al doc correspondiente
-   - se actualiza el changelog de ese doc + su ultima_revision
+   - se actualiza el changelog de ese doc + su timestamp
    - si es estructural, se anota en CHANGELOG del Sistema
    - en el informe se marca ✅ resuelto / ⬜ pendiente
 4. Si la sesión se corta a medias → el informe es el punto de retoma:
@@ -257,8 +259,8 @@ El punto de retoma **siempre es el informe en `05 Diario/Auditorías/`**, nunca 
 ## Referencias
 
 - [[Plantilla Skill]]
-- [[SOP Prompts]]
-- [[SOP IA]]
-- [[AGENTS]]
+- [SOP Prompts](<SOP Prompts.md>)
+- [SOP IA](<SOP IA.md>)
+- [AGENTS](<../AGENTS.md>)
 - MOC - IA con Claude
-- [[Glosario de términos]]
+- [Glosario de términos](<Glosario de términos.md>)

@@ -1,5 +1,6 @@
 ---
-tipo_doc: Reference
+type: Reference
+title: "Bitácora de Agentes"
 aliases:
   - Bitácora de Agentes
 tags: [multiagente, bitacora, agentes]
@@ -7,18 +8,19 @@ estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "REF-BITACORA-AGENTES-001"
-ultima_revision: 2026-07-02
+timestamp: 2026-07-02T00:00:00Z
 fecha_creacion: 2026-07-01
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Orquestación Multi-Agente Abierta]] (§12.3 patrón Agent Diary) | [[SOP Interoperabilidad IA]] (capa Estado)
+>[Orquestación Multi-Agente Abierta](<../../00 Sistema/Orquestación Multi-Agente Abierta.md>) (§12.3 patrón Agent Diary) | [SOP Interoperabilidad IA](<../../00 Sistema/SOP Interoperabilidad IA.md>) (capa Estado)
 
 # Bitácora de Agentes
 
 Registro de **handoff entre agentes** (Claude Code, Codex, Antigravity, Hermes…). Cada agente, al cerrar una sesión donde tocó el vault, deja una entrada. Así cualquier agente que entre después arranca con contexto y no se repite trabajo.
 
-Es la **capa Estado** de [[SOP Interoperabilidad IA]] aplicada a multi-agente, y el patrón "Agent Diary" del §12.3 de [[Orquestación Multi-Agente Abierta]].
+Es la **capa Estado** de [SOP Interoperabilidad IA](<../../00 Sistema/SOP Interoperabilidad IA.md>) aplicada a multi-agente, y el patrón "Agent Diary" del §12.3 de [Orquestación Multi-Agente Abierta](<../../00 Sistema/Orquestación Multi-Agente Abierta.md>).
 
 ## Cómo se completa (automático)
 
@@ -42,7 +44,7 @@ El hook `SessionStart` (`.claude/hooks/session-context.sh`) inyecta al arrancar 
 
 1. **Append al final, siempre.** Cada entrada nueva va **al final del archivo** — la más reciente queda abajo. Nunca insertar arriba ni entre medio. (En jul-2026 se mezclaron append y prepend; el hook terminó inyectando una entrada vieja cuyo "siguiente = Gap B" ya estaba hecho → confusión. Ver esa corrección en `2026-07.md`.)
 
-2. **El "siguiente paso" apunta al Roadmap, no lo congela.** En *"Qué debe saber el próximo agente"*, para el siguiente paso remitir a [[Roadmap del Sistema]] (fuente viva). No escribir *"siguiente = X"* como hecho fijo: esa predicción se pudre cuando X se completa después y el hook la reinyecta como si fuera actual.
+2. **El "siguiente paso" apunta al Roadmap, no lo congela.** En *"Qué debe saber el próximo agente"*, para el siguiente paso remitir a [Roadmap del Sistema](<../../01 Index/Roadmap del Sistema.md>) (fuente viva). No escribir *"siguiente = X"* como hecho fijo: esa predicción se pudre cuando X se completa después y el hook la reinyecta como si fuera actual.
 
 > **Señal de frescura (red de seguridad):** aunque el orden se respete, el hook avisa `⚠ Hubo N commit(s) DESPUÉS de este handoff` cuando hubo trabajo commiteado posterior al último toque de la bitácora — indica que el handoff mostrado puede estar desfasado y hay que confirmar contra el Roadmap y el `git log`.
 

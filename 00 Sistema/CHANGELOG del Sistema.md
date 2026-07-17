@@ -1,15 +1,26 @@
 ---
-tipo_doc: Changelog
+type: Changelog
+title: "CHANGELOG del Sistema"
 tags: [changelog, sistema]
 estado: 🟢 Activo
 id: "LOG-001"
-ultima_revision: 2026-07-14
+timestamp: 2026-07-17T00:00:00Z
 fecha_creacion: 2026-07-04
+resource:
 ---
 
 # CHANGELOG del Sistema
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
+
+## [1.0.0] — 2026-07-17
+**Migración OKF total — release MAJOR (cambios de esquema = breaking).** El framework adopta el vocabulario [Open Knowledge Format](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) de forma literal por dentro.
+- **Frontmatter (breaking):** `tipo_doc` → `type` · `ultima_revision` (fecha) → `timestamp` (datetime ISO `YYYY-MM-DDT00:00:00Z`) · alta de `title` (= H1) · alta de `resource` (URI del asset externo, scaffold vacío, valor al tocar). `description` ya era opcional. Ley del frontmatter reescrita en [SOP Documentación](<SOP Documentación.md>) §4 (+ orden canónico §4.6).
+- **Índices:** los `README.md` de carpeta pasan a `index.md` **generados** (listado puro sin frontmatter, `okf_version: "0.1"` en el raíz) vía `generate-index.py` (cableado al pre-commit). La prosa de convenciones se movió a [SOP Maestro](<SOP Maestro.md>) §5 ("Convenciones por carpeta"). Las carpetas vacías (`03 Proyectos`, `06 Raw`, `99 Archivo`) persisten con `.gitkeep`.
+- **Enlaces:** wikilinks resueltos → links markdown `[Título](<ruta.md>)`; las promesas quedan `[[...]]`; frontmatter YAML y embeds intactos. Regla en [SOP Documentación](<SOP Documentación.md>) §6.1 + CLAUDE.md/AGENTS.md. Endurecido por `harden-links`.
+- **Tooling nuevo:** `.claude/hooks/` suma `migrate-keys.py`, `harden-links.py`, `generate-index.py`; `verify-commit.sh` exime `index.md` y avisa (warn-only) si falta `description`.
+- **Para instancias existentes:** `./migrate-okf.sh` migra tu vault (renombra README→index preservando tu prosa en `.okf-backup/`, migra claves, convierte links, regenera índices). Idempotente. Probá con `--dry-run` primero.
+- **Verificación:** `check-links` = solo promesas (semillas genéricas), 0 markdown roto; índices estables (regenerar = 0 diff); 0 claves viejas en frontmatter (salvo `Baseline de Seguridad`, excluido).
 
 ## [0.6.4] — 2026-07-14
 **Revisión pre-publicación (repo → público).**
@@ -27,7 +38,7 @@ Registro de cambios del **framework** (template). `update.sh` actualiza este arc
 ## [0.6.1] — 2026-07-14
 **Enlaces rotos: de 137 a 38 (solo semillas intencionales).**
 - **Añadido:** `00 Sistema/Baseline de Seguridad/` portado desde el vault maestro (escrubeado) — el kit de seguridad para repos de código que `SOP Proyectos de Código` §2 manda aplicar y no existía. El doc principal se llama `Baseline de Seguridad.md` (no README) para que el wikilink resuelva.
-- **Cambiado:** ~85 wikilinks a conocimiento de la instancia madre (MOC - IA con Claude, Anatomía de los hooks del vault, Hooks y ciclo de vida, Discovery con fecha, Migraciones, notas de curso…) despromovidos a texto plano en 35 archivos — apuntaban a notas que un usuario nuevo jamás tendrá, no eran "deuda de contenido" sanable. En las Skills, el footer `MOC:` se reapuntó a [[Catálogo de Skills]]. Tabla de IDs de `SOP Documentación` depurada (12 filas de docs de instancia removidas).
+- **Cambiado:** ~85 wikilinks a conocimiento de la instancia madre (MOC - IA con Claude, Anatomía de los hooks del vault, Hooks y ciclo de vida, Discovery con fecha, Migraciones, notas de curso…) despromovidos a texto plano en 35 archivos — apuntaban a notas que un usuario nuevo jamás tendrá, no eran "deuda de contenido" sanable. En las Skills, el footer `MOC:` se reapuntó a [Catálogo de Skills](<../04 Knowledge/Skills/Catálogo de Skills.md>). Tabla de IDs de `SOP Documentación` depurada (12 filas de docs de instancia removidas).
 - **Criterio de release nuevo:** los enlaces rotos que reporte `check-links` deben ser solo **semillas genéricas** (conceptos/MOCs que el usuario crearía); si un destino existe en el vault maestro, es fuga de instancia y se porta o se despromueve.
 
 ## [0.6.0] — 2026-07-14

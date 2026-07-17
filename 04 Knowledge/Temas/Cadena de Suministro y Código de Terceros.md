@@ -1,16 +1,18 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Cadena de Suministro y Código de Terceros"
 tags: [seguridad, cadena-de-suministro, plugins, dependencias, tema]
 estado: 🌱 Semilla
 prioridad: 🔴 Alta
 responsable: "{{OWNER}}"
 id: "EXP-SEGURIDAD-002"
-ultima_revision: 2026-07-08
+timestamp: 2026-07-08T00:00:00Z
 fecha_creacion: 2026-07-08
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Prompt Injection y la Tríada Letal]] (el vector gemelo) | [[SOP de Seguridad]] (el cómo operarlo) | Anatomía de los hooks del vault | [[Orquestación Multi-Agente Abierta]]
+>[Prompt Injection y la Tríada Letal](<Prompt Injection y la Tríada Letal.md>) (el vector gemelo) | [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) (el cómo operarlo) | Anatomía de los hooks del vault | [Orquestación Multi-Agente Abierta](<../../00 Sistema/Orquestación Multi-Agente Abierta.md>)
 
 # Cadena de Suministro y Código de Terceros
 
@@ -26,14 +28,14 @@ Es fácil confundir este riesgo con el de prompt injection, pero son **distintos
 |---|---|---|
 | Qué se explota | El **juicio** del modelo (lee órdenes ocultas) | La **confianza** tuya (ejecutás su código) |
 | Hace falta una IA | Sí | **No** — el código corre solo |
-| Defensa central | Romper la [[Prompt Injection y la Tríada Letal|Tríada Letal]] | Minimizar y **verificar antes de instalar** |
+| Defensa central | Romper la [Tríada Letal](<Prompt Injection y la Tríada Letal.md>) | Minimizar y **verificar antes de instalar** |
 
 ## Los vectores en tu mundo concreto
 - **Plugins de la comunidad de Obsidian.** Corren con **Node.js**: acceso total a tu sistema de archivos y a la red. Un plugin malicioso —o uno bueno cuya cuenta fue comprometida— es *malware* con permiso de leer todo el vault (y más).
 - **Skills y hooks de Claude Code.** Son scripts (bash/python) que **corren automáticamente** en eventos de sesión (ver Anatomía de los hooks del vault). Copiar una skill o un hook de internet = **ejecutar su código** cada vez que dispara el evento. Un hook `SessionStart` malicioso corre apenas abrís la carpeta.
 - **`npm install` / `pip install` en proyectos externos.** Muchos paquetes ejecutan **scripts post-install** (código que corre solo al instalar). Además arrastran **dependencias transitivas**: confiás no solo en el paquete, sino en las dependencias de sus dependencias (cientos).
 - **Extensiones de VS Code / editores.** Mismo modelo que los plugins: código con tus permisos.
-- **Repos que clonás y abrís con un agente.** Su `.claude/`, sus hooks, su `CLAUDE.md` pueden traer scripts *y* instrucciones para el agente → acá **este vector cruza con** [[Prompt Injection y la Tríada Letal]]: abrir un repo desconocido con un agente de permisos amplios es doblemente peligroso.
+- **Repos que clonás y abrís con un agente.** Su `.claude/`, sus hooks, su `CLAUDE.md` pueden traer scripts *y* instrucciones para el agente → acá **este vector cruza con** [Prompt Injection y la Tríada Letal](<Prompt Injection y la Tríada Letal.md>): abrir un repo desconocido con un agente de permisos amplios es doblemente peligroso.
 
 ## Cómo suelen atacar (tipos)
 - **Typosquatting:** un paquete con nombre casi idéntico al real (`reqeusts` en vez de `requests`). Te equivocás de letra y instalás el malicioso.
@@ -54,7 +56,7 @@ El código corre con **tus** permisos, no con los suyos: no hay una caja que lo 
 6. **Nunca abras un repo desconocido con un agente potente.** Si tenés que explorarlo con IA, hacelo con permisos mínimos y sin acceso a tu vault ni a tus conectores — por el cruce con prompt injection.
 
 ## Checklist embrión (antes de instalar cualquier cosa)
-> Esto es el germen de lo que vivirá completo en [[SOP de Seguridad]].
+> Esto es el germen de lo que vivirá completo en [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>).
 - [ ] ¿Lo necesito, o ya tengo cómo hacerlo sin instalar nada?
 - [ ] ¿Es open source y puedo ver el código?
 - [ ] ¿Autor y mantenimiento creíbles (actividad, comunidad, historia)?
@@ -69,15 +71,15 @@ El código corre con **tus** permisos, no con los suyos: no hay una caja que lo 
 - **Lo barato de instalar es caro de auditar.** El costo real de un plugin no es instalarlo, es responder por todo lo que arrastra.
 
 ## Conexiones
-- El vector gemelo (engañar al modelo, no ejecutar código) → [[Prompt Injection y la Tríada Letal]].
+- El vector gemelo (engañar al modelo, no ejecutar código) → [Prompt Injection y la Tríada Letal](<Prompt Injection y la Tríada Letal.md>).
 - Qué scripts corren solos en tu vault y cómo están hechos → Anatomía de los hooks del vault.
-- El *cómo* operativo con checklists por caso → [[SOP de Seguridad]].
-- Gobernanza multi-agente (por qué los hooks se aíslan al proyecto) → [[Orquestación Multi-Agente Abierta]].
+- El *cómo* operativo con checklists por caso → [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>).
+- Gobernanza multi-agente (por qué los hooks se aíslan al proyecto) → [Orquestación Multi-Agente Abierta](<../../00 Sistema/Orquestación Multi-Agente Abierta.md>).
 
 ## Referencias
 - OWASP Top 10 for LLM Applications — LLM03: Supply Chain — https://owasp.org/www-project-top-10-for-large-language-model-applications/
 - OWASP — Software Supply Chain Security — https://owasp.org/www-project-software-component-verification-standard/
-- Auditoría de superficie de ataque (permisos, hooks, MCP) — ver [[SOP de Seguridad]] §2.
+- Auditoría de superficie de ataque (permisos, hooks, MCP) — ver [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) §2.
 
 ## Cómo leer esta nota
-Es el *porqué* de un vector. Para el *cómo* (checklists concretos por tipo: plugin, skill/hook, rutina cloud, repo externo) → [[SOP de Seguridad]]. Para el vector gemelo → [[Prompt Injection y la Tríada Letal]].
+Es el *porqué* de un vector. Para el *cómo* (checklists concretos por tipo: plugin, skill/hook, rutina cloud, repo externo) → [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>). Para el vector gemelo → [Prompt Injection y la Tríada Letal](<Prompt Injection y la Tríada Letal.md>).

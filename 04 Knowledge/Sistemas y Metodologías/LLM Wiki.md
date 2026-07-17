@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "LLM Wiki"
 tags: [llm, wiki, knowledge, sistema]
 life_areas: [profesional]
 domains: [ia, conocimiento, arquitectura]
@@ -9,8 +10,9 @@ projects: []
 sources: [Andrej Karpathy]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-014"
+resource:
 ---
 
 # LLM Wiki

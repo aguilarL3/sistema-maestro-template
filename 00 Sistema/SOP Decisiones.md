@@ -1,11 +1,13 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Decisiones"
 tags: [sop, decisiones]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "SOP-006"
+resource:
 ---
 
 > [!info] Una decisión sin contexto se pierde
@@ -39,11 +41,11 @@ Sirve para:
 
 ## Referencias
 - [[Plantilla Decisiones]]
-- [[SOP Revisiones]]
+- [SOP Revisiones](<SOP Revisiones.md>)
 
 
 ## Lecturas relacionadas
-- [[00 Inicio Rapido]]
-- [[Glosario de términos]]
-- [[Investigación y auditoría de marcos]]
-- [[MOC - Investigación del Sistema]]
+- [00 Inicio Rapido](<../00 Inicio Rapido.md>)
+- [Glosario de términos](<Glosario de términos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
+- [MOC - Investigación del Sistema](<../02 MOCs/MOC - Investigación del Sistema.md>)

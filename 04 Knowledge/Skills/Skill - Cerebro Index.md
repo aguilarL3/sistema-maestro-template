@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Cerebro Index — Índice del Cerebro Digital"
 tags: [skill, ia, claude-code, cerebro-digital, index, navegacion, tokens]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
@@ -15,6 +16,7 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟨 Borrador
+resource:
 ---
 
 # Skill | Cerebro Index — Índice del Cerebro Digital
@@ -100,14 +102,14 @@ Ver archivo ejecutable: `.claude/commands/cerebro-index.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro Audit]] → diagnóstico completo que usa el índice como base
-- [[Skill - Cerebro CE]] → conexiones que el índice debe reflejar
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) → diagnóstico completo que usa el índice como base
+- [Skill - Cerebro CE](<Skill - Cerebro CE.md>) → conexiones que el índice debe reflejar
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]]
-- [[SOP Index]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>)
+- [SOP Index](<../../00 Sistema/SOP Index.md>)
 - LLM Wiki — Andrej Karpathy
 - Video: "¿Un Agente de IA que te acompañe toda la vida? Así se construye"

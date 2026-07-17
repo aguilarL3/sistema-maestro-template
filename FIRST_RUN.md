@@ -6,4 +6,4 @@ Este vault todavía no está personalizado. Dos caminos:
 
 **A mano:** (1) copiá `owner.env.example` a `owner.env`, completalo y corré `./personalize.sh`; (2) llená los stubs de `01 Index/` (Vision, Objetivos, Mapa Personal); (3) borrá este archivo.
 
-Después: leé [[00 Inicio Rapido]].
+Después: leé [00 Inicio Rapido](<00 Inicio Rapido.md>).

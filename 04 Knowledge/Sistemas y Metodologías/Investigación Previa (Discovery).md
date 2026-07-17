@@ -1,19 +1,21 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Investigación Previa (Discovery)"
 tags: [discovery, investigacion, prior-art, spike, build-vs-buy, metodologia, carrera]
 origen: "MOC - Master Learning System"
 estado: 🟢 Activo
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "EXP-013"
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP Discovery]] (el cómo) | [[Ciclo de Vida de Capacidades IA]] | [[Blueprint de Sistemas]] | [[Glosario de términos]]
+>[SOP Discovery](<../../00 Sistema/SOP Discovery.md>) (el cómo) | [Ciclo de Vida de Capacidades IA](<Ciclo de Vida de Capacidades IA.md>) | [Blueprint de Sistemas](<../../00 Sistema/Blueprint de Sistemas.md>) | [Glosario de términos](<../../00 Sistema/Glosario de términos.md>)
 
 # Investigación Previa (Discovery)
 
-Nota de **estudio**: entender a fondo por qué se investiga antes de construir, los conceptos del oficio y —sobre todo— cómo hacerlo bien sin caer en sus trampas. El **cómo operativo** (checklist) vive en [[SOP Discovery]]; esto es el **porqué y el cómo pensarlo**.
+Nota de **estudio**: entender a fondo por qué se investiga antes de construir, los conceptos del oficio y —sobre todo— cómo hacerlo bien sin caer en sus trampas. El **cómo operativo** (checklist) vive en [SOP Discovery](<../../00 Sistema/SOP Discovery.md>); esto es el **porqué y el cómo pensarlo**.
 
 > **La idea en una frase:** antes de construir cualquier cosa, averiguá si ya existe y si está documentada. Casi siempre alguien ya recorrió parte del camino — empezar desde ahí es más rápido que descifrarlo solo.
 
@@ -83,9 +85,9 @@ Tres frases para recordar:
 
 ## 5. Dónde encaja en el sistema
 
-- Es la **Fase 0** del [[Ciclo de Vida de Capacidades IA]] — va *antes* de Build.
-- Es el **paso 0** del [[Blueprint de Sistemas]] — antes de crear el AGENTS.md de un sistema nuevo.
-- El protocolo ejecutable está en [[SOP Discovery]].
+- Es la **Fase 0** del [Ciclo de Vida de Capacidades IA](<Ciclo de Vida de Capacidades IA.md>) — va *antes* de Build.
+- Es el **paso 0** del [Blueprint de Sistemas](<../../00 Sistema/Blueprint de Sistemas.md>) — antes de crear el AGENTS.md de un sistema nuevo.
+- El protocolo ejecutable está en [SOP Discovery](<../../00 Sistema/SOP Discovery.md>).
 
 ---
 
@@ -96,4 +98,4 @@ Tres frases para recordar:
 - Build vs Buy — Product School (productschool.com/blog/leadership/build-vs-buy)
 
 ## Cómo estudiar esta nota
-Leé §1 (por qué) y §3 (los modos de falla) — son el corazón. El §2 es el vocabulario. Cuando vayas a construir algo, releé el §4 (la mentalidad) y ejecutá con [[SOP Discovery]].
+Leé §1 (por qué) y §3 (los modos de falla) — son el corazón. El §2 es el vocabulario. Cuando vayas a construir algo, releé el §4 (la mentalidad) y ejecutá con [SOP Discovery](<../../00 Sistema/SOP Discovery.md>).

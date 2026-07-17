@@ -14,7 +14,9 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.1
 estado: 🟦 En pruebas
-tipo_doc: How-to
+type: How-to
+title: "Skill | Revisión Mensual — el orquestador"
+resource:
 ---
 
 # Skill | Revisión Mensual — el orquestador
@@ -35,10 +37,10 @@ Unificar la revisión mensual del sistema en un solo comando y un solo informe, 
 
 ## 🧩 Contexto de uso
 
-- **¿Cuándo usarla?** En la revisión mensual (atada al ciclo "Mensual" del [[CLAUDE]] / [[SOP Revisiones]]).
+- **¿Cuándo usarla?** En la revisión mensual (atada al ciclo "Mensual" del [CLAUDE](<../../CLAUDE.md>) / [SOP Revisiones](<../../00 Sistema/SOP Revisiones.md>)).
 - **¿Cuándo NO usarla?** Para una auditoría puntual de una sola dimensión — ahí usá la skill específica (`/cerebro-ce`, `/mantenimiento-sistema`).
 - **Dependencias:** Las skills base (Cerebro Audit, Mantenimiento) y sus convenciones de frontmatter.
-- **Flujo donde se integra:** Revisión mensual → `/revision-mensual` → un informe → resolvemos en el chat → cambios al [[CHANGELOG del Sistema]].
+- **Flujo donde se integra:** Revisión mensual → `/revision-mensual` → un informe → resolvemos en el chat → cambios al [CHANGELOG del Sistema](<../../00 Sistema/CHANGELOG del Sistema.md>).
 
 ---
 
@@ -134,21 +136,21 @@ Ver archivo ejecutable: `.claude/commands/revision-mensual.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro Audit]] → la lógica del subagente A (conexiones)
-- [[Skill - Mantenimiento Sistema]] → la lógica del subagente B (frescura)
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) → la lógica del subagente A (conexiones)
+- [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) → la lógica del subagente B (frescura)
 - Esta skill las orquesta; no las reemplaza (siguen sirviendo para auditorías puntuales)
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]] — §13 (flujo de auditoría) y arquitectura 2 capas
-- [[SOP Interoperabilidad IA]] — capa Capacidad + §8 mantenimiento
-- [[SOP Conectores]] — entre lo auditado, la frescura de `Conectores/`
-- [[Blueprint de Sistemas]] — el mantenimiento que el checklist exige
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>) — §13 (flujo de auditoría) y arquitectura 2 capas
+- [SOP Interoperabilidad IA](<../../00 Sistema/SOP Interoperabilidad IA.md>) — capa Capacidad + §8 mantenimiento
+- [SOP Conectores](<../../00 Sistema/SOP Conectores.md>) — entre lo auditado, la frescura de `Conectores/`
+- [Blueprint de Sistemas](<../../00 Sistema/Blueprint de Sistemas.md>) — el mantenimiento que el checklist exige
 - Anthropic — multi-agent research system (orquestador-worker)
 - Anthropic — subagents docs (cuándo paralelizar)
 
 ---
 
-◀ [[Skill - Mantenimiento Sistema]] | MOC: [[Catálogo de Skills]] | [[Skill Siguiente]] ▶
+◀ [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) | MOC: [Catálogo de Skills](<Catálogo de Skills.md>) | [[Skill Siguiente]] ▶

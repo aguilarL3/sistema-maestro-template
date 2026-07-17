@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Cerebro Digital"
 tags: [cerebrodigital, sistema, knowledge]
 life_areas: [profesional, personal]
 domains: [vida, diarios, conocimientos]
@@ -9,8 +10,9 @@ projects: []
 sources: [Marcos Emowe]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-010"
+resource:
 ---
 
 # Cerebro Digital

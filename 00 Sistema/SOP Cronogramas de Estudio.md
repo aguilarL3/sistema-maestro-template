@@ -1,12 +1,14 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP — Cronogramas de Estudio"
 tags: [SOP, estudio, cronograma]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
-ultima_revision: 2026-06-16
+timestamp: 2026-06-16T00:00:00Z
 fecha_creacion: 2026-06-17
 id: "SOP-005"
+resource:
 ---
 
 >[!abstract] Plantilla semanal
@@ -116,6 +118,6 @@ Sí:
 ---
 
 ## Referencias
-- [[Dashboard-Estudio]]
-- [[SOP Sistema de Estudio]]
+- [Dashboard-Estudio](<../Dashboard-Estudio.md>)
+- [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>)
 - [[Plantilla Weekly Dashboard]]

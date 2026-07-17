@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Revisión de Seguridad — decidir antes de instalar"
 tags: [skill, seguridad, ia, claude-code, cadena-de-suministro, prompt-injection]
 origen: "[[MOC - Seguridad]]"
 fecha_creacion: 2026-07-09
@@ -15,26 +16,27 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟦 En pruebas
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP de Seguridad]] | [[Prompt Injection y la Tríada Letal]] | [[Cadena de Suministro y Código de Terceros]] | [[Catálogo de Skills]] | [[MOC - Seguridad]]
+>[SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) | [Prompt Injection y la Tríada Letal](<../Temas/Prompt Injection y la Tríada Letal.md>) | [Cadena de Suministro y Código de Terceros](<../Temas/Cadena de Suministro y Código de Terceros.md>) | [Catálogo de Skills](<Catálogo de Skills.md>) | [MOC - Seguridad](<../../02 MOCs/MOC - Seguridad.md>)
 
 # Skill | Revisión de Seguridad — decidir antes de instalar
 
-> **TL;DR:** A demanda (`/revisar-seguridad <target>`), recorre el checklist del [[SOP de Seguridad]] §3 sobre algo que estás por instalar/abrir (plugin, skill/hook, npm, repo, contenido) y devuelve un **veredicto** con razones. **Recomienda, no garantiza** — es la capa 5 (criterio), y NUNCA ejecuta el target.
+> **TL;DR:** A demanda (`/revisar-seguridad <target>`), recorre el checklist del [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) §3 sobre algo que estás por instalar/abrir (plugin, skill/hook, npm, repo, contenido) y devuelve un **veredicto** con razones. **Recomienda, no garantiza** — es la capa 5 (criterio), y NUNCA ejecuta el target.
 
 ---
 
 ## 🎯 Objetivo
 
-Operacionalizar los checklists "antes de instalar" del SOP de Seguridad en un comando único, para no revisarlos a mano cada vez. Convierte los dos [[Prompt Injection y la Tríada Letal|fundamentos]] de seguridad en una decisión concreta: *¿lo instalo o no?*
+Operacionalizar los checklists "antes de instalar" del SOP de Seguridad en un comando único, para no revisarlos a mano cada vez. Convierte los dos [fundamentos](<../Temas/Prompt Injection y la Tríada Letal.md>) de seguridad en una decisión concreta: *¿lo instalo o no?*
 
 - **Input esperado:** el target (`$ARGUMENTS`), ej. "el plugin obsidian-X" o "--tipo hook --archivo .claude/hooks/nuevo.sh".
 - **Output esperado:** en el chat — checklist recorrido + hallazgos + veredicto 🟢/🟡/🔴/⚠️.
 - **Quién la invoca:** {{OWNER}} vía `/revisar-seguridad` — **a demanda**, cuando está por sumar algo.
 
-> **Por qué skill y no hook:** la revisión se quiere *cuando {{OWNER}} va a instalar algo*, no en cada evento. Y —clave— la investigación de seguridad dice que un control de seguridad NO debe delegarse al modelo: por eso esta skill es **asistencia de decisión** (capa 5), mientras que la prevención real vive en los deterministas security-guard (capa 2) y la allowlist (capa 1). Ver [[SOP de Seguridad]] §2.
+> **Por qué skill y no hook:** la revisión se quiere *cuando {{OWNER}} va a instalar algo*, no en cada evento. Y —clave— la investigación de seguridad dice que un control de seguridad NO debe delegarse al modelo: por eso esta skill es **asistencia de decisión** (capa 5), mientras que la prevención real vive en los deterministas security-guard (capa 2) y la allowlist (capa 1). Ver [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) §2.
 
 ---
 
@@ -42,7 +44,7 @@ Operacionalizar los checklists "antes de instalar" del SOP de Seguridad en un co
 
 - **¿Cuándo usarla?** Antes de instalar un plugin de Obsidian, aceptar una skill/hook de otro lado, sumar un paquete npm/pip, abrir un repo externo, o procesar un Raw dudoso.
 - **¿Cuándo NO usarla?** No reemplaza a los controles deterministas: no es un guardrail, es una segunda opinión. Para *bloquear* de verdad → capas 1/2.
-- **Dependencias:** el target debe ser inspeccionable (código legible, o nombre para buscar reputación). Los checklists viven en [[SOP de Seguridad]] §3.
+- **Dependencias:** el target debe ser inspeccionable (código legible, o nombre para buscar reputación). Los checklists viven en [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) §3.
 
 ---
 
@@ -108,16 +110,16 @@ Ver ejecutable: `.claude/commands/revisar-seguridad.md` (estructura ROL/CONTEXTO
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Mantenimiento Sistema]] → su Dimensión 3 corre `security-audit.sh` (capa 4, detectivo periódico); esta skill es el complemento *a demanda*.
-- [[Skill - Nota de Estudio]] → mismo patrón de skill-a-demanda.
+- [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) → su Dimensión 3 corre `security-audit.sh` (capa 4, detectivo periódico); esta skill es el complemento *a demanda*.
+- [Skill - Nota de Estudio](<Skill - Nota de Estudio.md>) → mismo patrón de skill-a-demanda.
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP de Seguridad]] (los checklists §3 que ejecuta) · [[Prompt Injection y la Tríada Letal]] · [[Cadena de Suministro y Código de Terceros]]
-- [[SOP Skills]] · [[Catálogo de Skills]]
+- [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>) (los checklists §3 que ejecuta) · [Prompt Injection y la Tríada Letal](<../Temas/Prompt Injection y la Tríada Letal.md>) · [Cadena de Suministro y Código de Terceros](<../Temas/Cadena de Suministro y Código de Terceros.md>)
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>) · [Catálogo de Skills](<Catálogo de Skills.md>)
 
 ---
 
-◀ [[Skill - Mantenimiento Sistema]] | MOC: [[MOC - Seguridad]] | [[Skill - Nota de Estudio]] ▶
+◀ [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) | MOC: [MOC - Seguridad](<../../02 MOCs/MOC - Seguridad.md>) | [Skill - Nota de Estudio](<Skill - Nota de Estudio.md>) ▶

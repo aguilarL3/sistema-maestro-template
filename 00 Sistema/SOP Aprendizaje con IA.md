@@ -1,17 +1,19 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP — Aprendizaje con IA"
 tags: [SOP, ia, aprendizaje]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 domains: [ia, aprendizaje]
 responsable: "{{OWNER}}"
 id: "SOP-IA-APRENDIZAJE-001"
-ultima_revision: 2026-06-16
+timestamp: 2026-06-16T00:00:00Z
 fecha_creacion: 2026-06-17
+resource:
 ---
 
 >[!info] Relacionado
->Para uso general de IA en el vault: [[SOP IA]]
+>Para uso general de IA en el vault: [SOP IA](<SOP IA.md>)
 
 # SOP — Aprendizaje con IA
 
@@ -117,6 +119,6 @@ SÍ: conectar áreas / construir proyectos / aplicar conocimiento / documentar /
 ---
 
 ## Referencias
-- [[SOP IA]]
-- [[SOP Sistema de Estudio]]
-- [[AGENTS]]
+- [SOP IA](<SOP IA.md>)
+- [SOP Sistema de Estudio](<SOP Sistema de Estudio.md>)
+- [AGENTS](<../AGENTS.md>)

@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Cerebro CE — Conectar Elementos"
 tags: [skill, ia, claude-code, cerebro-digital, ce-re-bro, conectar]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
@@ -15,6 +16,7 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟨 Borrador
+resource:
 ---
 
 # Skill | Cerebro CE — Conectar Elementos
@@ -99,14 +101,14 @@ Ver archivo ejecutable: `.claude/commands/cerebro-ce.md`
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Cerebro RE]] → reagrupamiento, siguiente dimensión
-- [[Skill - Cerebro BRO]] → estructura interna de notas
-- [[Skill - Cerebro Audit]] → corre las tres dimensiones juntas
+- [Skill - Cerebro RE](<Skill - Cerebro RE.md>) → reagrupamiento, siguiente dimensión
+- [Skill - Cerebro BRO](<Skill - Cerebro BRO.md>) → estructura interna de notas
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) → corre las tres dimensiones juntas
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]]
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>)
 - Metodología CE-RE-BRO — Marcos Emowe (Cerebro Digital)
 - Video: "Tres formas de organizar tus notas que el papel no permite"

@@ -1,12 +1,14 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Diario"
 tags: [sop, diario, tracking]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-004"
 fecha_creacion: 2026-07-03
-ultima_revision: 2026-07-03
+timestamp: 2026-07-03T00:00:00Z
+resource:
 ---
 
 > [!info] El diario es centro operativo
@@ -68,14 +70,14 @@ El diario debe ayudarte a vivir mejor, no a agobiarte.
 
 ## Referencias
 - [[00 Sistema/001_plantillas/Plantilla Diario]]
-- [[SOP Revisiones]]
-- [[SOP Maestro]]
+- [SOP Revisiones](<SOP Revisiones.md>)
+- [SOP Maestro](<SOP Maestro.md>)
 
 ## Antes de usarlo, lee
-- [[Cerebro Digital]]
-- [[GTD]]
+- [Cerebro Digital](<../04 Knowledge/Sistemas y Metodologías/Cerebro Digital.md>)
+- [GTD](<../04 Knowledge/Sistemas y Metodologías/GTD.md>)
 - [[00 Sistema/001_plantillas/Plantilla Diario]]
-- [[Glosario de términos]]
+- [Glosario de términos](<Glosario de términos.md>)
 
 ## Qué debes registrar aquí
 - lo que pasó hoy

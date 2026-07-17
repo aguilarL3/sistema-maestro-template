@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Zettelkasten"
 tags: [metodologia, zettelkasten, knowledge, sistema]
 life_areas: [personal, profesional]
 domains: [conocimiento, pensamiento]
@@ -9,8 +10,9 @@ projects: []
 sources: [Niklas Luhmann, Sonke Ahrens]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 id: "EXP-018"
+resource:
 ---
 
 # Zettelkasten

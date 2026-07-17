@@ -1,5 +1,6 @@
 ---
-tipo_doc: Explanation
+type: Explanation
+title: "Catálogo de Tipos de Documentación"
 tags: [metodologia, documentacion, diataxis, knowledge, sistema]
 life_areas: [profesional, personal]
 domains: [comunicacion, conocimiento, carrera]
@@ -9,16 +10,17 @@ projects: []
 sources: [Daniele Procida (Diátaxis), Michael Nygard (ADR), Google SRE, Keep a Changelog, ISO 9001, The Good Docs Project]
 estado: 🟢 Activo
 id: "EXP-001"
-ultima_revision: 2026-06-28
+timestamp: 2026-06-28T00:00:00Z
 fecha_creacion: 2026-06-28
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Tipos de Documentación]] (referencia corta para *decidir* rápido) | [[Blueprint de Sistemas]] | [[SOP Maestro]] | [[Glosario de términos]]
+>[Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>) (referencia corta para *decidir* rápido) | [Blueprint de Sistemas](<../../00 Sistema/Blueprint de Sistemas.md>) | [SOP Maestro](<../../00 Sistema/SOP Maestro.md>) | [Glosario de términos](<../../00 Sistema/Glosario de términos.md>)
 
 # Catálogo de Tipos de Documentación
 
-Nota de estudio (curso) sobre **todos los tipos de documentación que existen por convención**. Mientras que [[Tipos de Documentación]] es una referencia corta para *consultar* qué crear, esta nota es para **entender a fondo** cada tipo: qué es, cuándo usarlo, su spec canónica y cómo se aplica (o no) en este vault.
+Nota de estudio (curso) sobre **todos los tipos de documentación que existen por convención**. Mientras que [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>) es una referencia corta para *consultar* qué crear, esta nota es para **entender a fondo** cada tipo: qué es, cuándo usarlo, su spec canónica y cómo se aplica (o no) en este vault.
 
 > **Insight central:** la documentación no se organiza por *tema* sino por **intención de quien lee**. Antes de escribir, preguntá: ¿esta persona quiere **aprender**, **hacer una tarea**, **consultar un dato**, **entender un porqué**, **decidir**, o **saber qué pasó**? Cada intención pide un tipo distinto. Mezclar intenciones en un mismo documento es el error más común.
 
@@ -83,7 +85,7 @@ Cada tipo con: **qué es · cuándo usarlo · ejemplo · spec canónica (si tien
 **Tutorial** — *aprender haciendo*
 - Lleva al principiante de la mano por una experiencia completa de principio a fin.
 - Cuándo: alguien nuevo necesita su primera victoria. Prioriza que funcione, no que sea exhaustivo.
-- Ejemplo: [[00 Inicio Rapido]].
+- Ejemplo: [00 Inicio Rapido](<../../00 Inicio Rapido.md>).
 - Spec: Diátaxis.
 
 **Getting Started / Quickstart** — *poner a andar rápido*
@@ -92,7 +94,7 @@ Cada tipo con: **qué es · cuándo usarlo · ejemplo · spec canónica (si tien
 
 **Curso / Training** — *aprendizaje estructurado y secuencial*
 - Conjunto ordenado de lecciones con progresión pedagógica.
-- En el vault: `04 Knowledge/Cursos/` (rige Zettelkasten/Evergreen, no `tipo_doc`).
+- En el vault: `04 Knowledge/Cursos/` (rige Zettelkasten/Evergreen, no `type`).
 
 ### 🔧 Grupo B — Para HACER UNA TAREA
 
@@ -128,12 +130,12 @@ Cada tipo con: **qué es · cuándo usarlo · ejemplo · spec canónica (si tien
 **Reference** — *consultar un dato preciso*
 - Descripción técnica, ordenada y completa, hecha para buscar, no para leer de corrido.
 - Cuándo: el lector ya sabe qué busca y quiere el dato exacto.
-- Ejemplo: [[Tipos de Documentación]], [[Glosario de términos]].
+- Ejemplo: [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>), [Glosario de términos](<../../00 Sistema/Glosario de términos.md>).
 - Spec: Diátaxis.
 
 **Glosario** — *definir el vocabulario*
 - Subtipo de reference: términos y sus significados dentro del sistema.
-- Ejemplo: [[Glosario de términos]].
+- Ejemplo: [Glosario de términos](<../../00 Sistema/Glosario de términos.md>).
 
 **API / Spec técnica** — *contrato exacto de una interfaz*
 - Define entradas, salidas, parámetros, errores. Relevante en software.
@@ -150,12 +152,12 @@ Cada tipo con: **qué es · cuándo usarlo · ejemplo · spec canónica (si tien
 **Explanation (Discussion)** — *entender el contexto y el porqué*
 - Aclara, da contexto, discute alternativas. Se lee para comprender, no para hacer.
 - Cuándo: el lector quiere el "por qué" detrás de las decisiones.
-- Ejemplo: [[Filosofía del Sistema]], [[Principios]], esta misma nota.
+- Ejemplo: [Filosofía del Sistema](<../../00 Sistema/Filosofía del Sistema.md>), [Principios](<../../01 Index/Principios.md>), esta misma nota.
 - Spec: Diátaxis.
 
 **Policy (Política)** — *qué se debe hacer y por qué (alto nivel)*
 - Regla de gobernanza que rara vez cambia. Está por encima de los SOP.
-- Ejemplo en el vault: [[Valores]], [[Principios]].
+- Ejemplo en el vault: [Valores](<../../01 Index/Valores.md>), [Principios](<../../01 Index/Principios.md>).
 
 **Principios / Filosofía** — *las creencias que guían el diseño*
 - Subtipo de explanation/policy: el marco mental que justifica todo lo demás.
@@ -179,7 +181,7 @@ Cada tipo con: **qué es · cuándo usarlo · ejemplo · spec canónica (si tien
 
 **Changelog** — *qué cambió y cuándo*
 - Lista cronológica de cambios, orientada a humanos.
-- Ejemplo: [[CHANGELOG del Sistema]].
+- Ejemplo: [CHANGELOG del Sistema](<../../00 Sistema/CHANGELOG del Sistema.md>).
 - Spec: **Keep a Changelog** + **Semantic Versioning (SemVer)**.
 
 **Bitácora / Log** — *registro cronológico de un proceso*
@@ -219,17 +221,17 @@ Tipos/archivos que tienen **spec canónica** y por eso "dictan" buenas práctica
 ## Parte 4 — Mapa: qué aplica a ESTE vault
 
 ✅ **Ya tenés (con ejemplo):**
-- Tutorial → [[00 Inicio Rapido]]
+- Tutorial → [00 Inicio Rapido](<../../00 Inicio Rapido.md>)
 - How-to → SOPs
-- Reference → [[Glosario de términos]], [[Tipos de Documentación]]
-- Explanation → [[Principios]], [[Filosofía del Sistema]], esta nota
+- Reference → [Glosario de términos](<../../00 Sistema/Glosario de términos.md>), [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>)
+- Explanation → [Principios](<../../01 Index/Principios.md>), [Filosofía del Sistema](<../../00 Sistema/Filosofía del Sistema.md>), esta nota
 - ADR → [[Plantilla Decisiones]]
-- Changelog / Bitácora → [[CHANGELOG del Sistema]], `Migracion...`
+- Changelog / Bitácora → [CHANGELOG del Sistema](<../../00 Sistema/CHANGELOG del Sistema.md>), `Migracion...`
 - Índice/MOC → `02 MOCs/`, `llms.txt`
 - Plantilla → `001_plantillas/`
-- Policy → [[Valores]], [[Principios]]
+- Policy → [Valores](<../../01 Index/Valores.md>), [Principios](<../../01 Index/Principios.md>)
 
-⚠️ **Te faltan nombrar formalmente (candidatos para el [[SOP Documentación]]):**
+⚠️ **Te faltan nombrar formalmente (candidatos para el [SOP Documentación](<../../00 Sistema/SOP Documentación.md>)):**
 - **Runbook** — hoy disuelto en "Troubleshooting"
 - **Postmortem** — para cuando el sistema falla (distinto del changelog)
 - **Checklist** — como tipo reconocido
@@ -248,8 +250,8 @@ No lo leas de corrido de una vez. Recorrido sugerido:
 4. Cuando audites el vault, contrastá con la **Parte 4** para detectar tipos faltantes o mal clasificados.
 
 ## Relación con otros marcos
-- Complementa a [[Tipos de Documentación]] (referencia operativa corta).
-- El [[Blueprint de Sistemas]] dice *qué capas* crear; este catálogo dice *qué tipo de documento* es cada pieza.
+- Complementa a [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>) (referencia operativa corta).
+- El [Blueprint de Sistemas](<../../00 Sistema/Blueprint de Sistemas.md>) dice *qué capas* crear; este catálogo dice *qué tipo de documento* es cada pieza.
 - Alimenta directamente al futuro **SOP Documentación** (estándar de *cómo* documentar).
 
 ## Referencias

@@ -16,17 +16,17 @@ FRAMEWORK_PATHS=(
   "04 Knowledge/Investigación del Sistema"
   "01 Index/Principios.md" "01 Index/Valores.md"
   "02 MOCs/MOC - Investigación del Sistema.md"
-  "04 Knowledge/README.md" "04 Knowledge/Temas/README.md"
   "04 Knowledge/Temas/Prompt Injection y la Tríada Letal.md"
   "04 Knowledge/Temas/Cadena de Suministro y Código de Terceros.md"
   "02 MOCs/MOC - Seguridad.md"
-  "03 Proyectos/README.md" "05 Diario/README.md"
   "05 Diario/Bitácora Agentes/_Acerca de esta bitácora.md"
-  "06 Raw/README.md" "99 Archivo/README.md"
+  "03 Proyectos/.gitkeep" "06 Raw/.gitkeep" "99 Archivo/.gitkeep"
   "CLAUDE.md" "AGENTS.md" "llms.txt" "00 Inicio Rapido.md"
   "Matriz Definitiva.md" "SOPS.md" "Vault System Map.md"
-  "README.md" "VERSION" "vault-manifest.json" "setup.sh" "update.sh" "personalize.sh" "owner.env.example" "LICENSE"
+  "README.md" "VERSION" "vault-manifest.json" "setup.sh" "update.sh" "migrate-okf.sh" "personalize.sh" "owner.env.example" "LICENSE"
 )
+# Nota: los index.md de carpeta son artefactos GENERADOS (generate-index.py en pre-commit),
+# no se sincronizan — cada instancia regenera el suyo desde su propio frontmatter.
 
 MODE="${1:-interactive}"
 git remote get-url "$REMOTE" >/dev/null 2>&1 || { echo "Falta remote '$REMOTE'. Corré ./setup.sh"; exit 1; }

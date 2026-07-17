@@ -1,16 +1,18 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "SOP Hooks y Automatización"
 tags: [sop, hooks, automatizacion, multiagente, git]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-HOOKS-001"
-ultima_revision: 2026-07-02
+timestamp: 2026-07-02T00:00:00Z
 fecha_creacion: 2026-07-01
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Orquestación Multi-Agente Abierta]] (§12–§13) | [[Catálogo de Hooks y Locks]] | [[SOP Git y Flujo de Trabajo]] | [[SOP Interoperabilidad IA]] | [[SOP Skills]]
+>[Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) (§12–§13) | [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) | [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) | [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) | [SOP Skills](<SOP Skills.md>)
 
 # SOP Hooks y Automatización
 
@@ -41,7 +43,7 @@ Eventos más útiles para el vault: `SessionStart` (cargar contexto), `PostToolU
 | **Wiring** | `.claude/settings.json` (`hooks`) | Conecta evento → script. Cross-CLI: `.codex/hooks.json` puede apuntar a los mismos scripts. |
 | **Estado runtime** | `.vault-meta/` (gitignored) | Marcas de sesión, locks y **kill-switches** locales. No es contenido del vault. |
 | **How-to** | este SOP | Cómo trabajar con hooks. |
-| **Reference** | [[Catálogo de Hooks y Locks]] | Qué hace cada hook/lock. |
+| **Reference** | [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) | Qué hace cada hook/lock. |
 | **Concepto** | Hooks y ciclo de vida del agente | Por qué existen (nota de estudio). |
 
 > Es el mismo patrón de capas que Skills y Prompts: **ejecutable** en `.claude/`, **documentación** en el vault (`00 Sistema` + `04 Knowledge/Automatización`).
@@ -89,7 +91,7 @@ Dónde vive el `settings.json` decide **en qué carpetas** se disparan los hooks
    ```
 4. **Validar JSON:** `python -c "import json;json.load(open('.claude/settings.json',encoding='utf-8'))"`.
 5. **Activar:** abrir `/hooks` en Claude Code o reiniciar (el watcher no siempre recarga en caliente).
-6. **Documentar:** agregar la fila al [[Catálogo de Hooks y Locks]] y a `.claude/hooks/README.md`.
+6. **Documentar:** agregar la fila al [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) y a `.claude/hooks/README.md`.
 
 ---
 
@@ -122,7 +124,7 @@ Cuando dos agentes escriben en paralelo el **mismo** archivo, worktrees no alcan
   Otros comandos: `peek <archivo>` (ver dueño/edad), `owner <archivo>` (imprime el dueño si el lock está vigente — salida machine-friendly), `list` (inventario de todos los locks), `clear-stale` (limpiar vencidos). TTL por defecto 120s (`WIKI_LOCK_TTL`), reintentos `WIKI_LOCK_RETRIES`, espera `WIKI_LOCK_SLEEP`, identidad `WIKI_LOCK_AGENT`.
 - **Auto-commit consciente de locks:** el hook `auto-commit.sh` consulta `wiki-lock owner` antes de commitear: si otro agente tiene el archivo bloqueado, no lo commitea (trabajo en curso ajeno). Para que el auto-commit reconozca tus propios locks como propios, exportá `WIKI_LOCK_AGENT` con la misma identidad que usás al `acquire`.
 - No se cablea en `settings.json`: un lock debe envolver **toda** la edición (acquire antes, release después), no dispararse por-evento. Los locks viven en `.vault-meta/locks/` (gitignored).
-- Ver detalle en [[Catálogo de Hooks y Locks]].
+- Ver detalle en [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>).
 
 ---
 
@@ -133,7 +135,7 @@ Cuando dos agentes escriben en paralelo el **mismo** archivo, worktrees no alcan
 - **Kill-switch por hook** en `.vault-meta/<nombre>.disabled` (local, gitignored). Documentar *cuándo* es aceptable desactivar:
   - `autocommit.disabled` → **sesiones interactivas curadas** (para no ensuciar el historial con commits `chore(agent):`). Reactivar para corridas autónomas.
   - `diary.disabled` → normalmente **siempre ON**; desactivar solo en pruebas.
-- **Identidad de commit** en hooks que commitean: `git -c user.name=… user.email=…@agent.local` (no contamina la config; ver [[Orquestación Multi-Agente Abierta]] §5).
+- **Identidad de commit** en hooks que commitean: `git -c user.name=… user.email=…@agent.local` (no contamina la config; ver [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) §5).
 - Cambios a hooks: proponer, revisar y recién integrar (como cualquier código del sistema).
 
 ---
@@ -154,10 +156,10 @@ Cuando dos agentes escriben en paralelo el **mismo** archivo, worktrees no alcan
 
 ## 10. Referencias
 
-- [[Orquestación Multi-Agente Abierta]] · [[Catálogo de Hooks y Locks]] · Hooks y ciclo de vida del agente
-- [[SOP Git y Flujo de Trabajo]] · [[SOP Interoperabilidad IA]] · [[SOP Skills]]
+- [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) · [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) · Hooks y ciclo de vida del agente
+- [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) · [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>) · [SOP Skills](<SOP Skills.md>)
 - Prior art: `obsidian-mind` (hooks TS), `claude-obsidian` (hooks shell + `wiki-lock.sh`)
 - Buenas prácticas git hooks — https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
 
 ## Cómo leer este SOP
-Si vas a **crear** un hook, seguí §5 (+ §6 si bloquea). Si vas a **entender** qué hay, andá al [[Catálogo de Hooks y Locks]]. Si algo falla, §9.
+Si vas a **crear** un hook, seguí §5 (+ §6 si bloquea). Si vas a **entender** qué hay, andá al [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>). Si algo falla, §9.

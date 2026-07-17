@@ -5,7 +5,9 @@ Filosofía (adaptada de obsidian-second-brain `heal_links.py`/`triage_links.py`
 a las reglas del vault: "proponer, nunca decidir solo" · "nunca borrar"):
 
   - Detección: NO reimplementa nada. Corre `check-links.sh --tsv`, así su
-    conteo es idéntico al del chequeador (una sola fuente de verdad).
+    conteo es idéntico al del chequeador (una sola fuente de verdad). Maneja
+    ambos tipos que reporta el checker (columna `kind`): wikilinks `[[..]]` y
+    links markdown `[txt](<..>)`; el repunte md va a nombre pelado `](<Nuevo.md>)`.
   - Clasifica cada roto, sin IA, por parecido de nombre (difflib):
       · repunte seguro : existe EXACTAMENTE una nota muy parecida  -> se sugiere
       · ambiguo        : dos o más notas parecidas                 -> decidí vos
@@ -78,7 +80,8 @@ def get_broken():
     for ln in res.stdout.splitlines():
         parts = ln.split("\t")
         if len(parts) >= 3 and parts[1].isdigit():
-            rows.append((parts[0], int(parts[1]), parts[2]))
+            kind = parts[3] if len(parts) >= 4 else "wiki"
+            rows.append((parts[0], int(parts[1]), parts[2], kind))
     return rows
 
 
@@ -95,7 +98,7 @@ def split_link(raw):
 
 
 def rebuild(raw, new_stem):
-    """Reconstruye el link cambiando solo el destino, preservando sección y alias."""
+    """Reconstruye el wikilink cambiando solo el destino, preservando sección y alias."""
     _, anchor, alias = split_link(raw)
     out = new_stem
     if anchor is not None:
@@ -105,11 +108,52 @@ def rebuild(raw, new_stem):
     return out
 
 
-def classify(raw, index):
+def md_inner(raw):
+    """Quita los corchetes angulares de un raw markdown: '<a/b.md>' -> 'a/b.md'."""
+    return raw[1:-1] if raw.startswith("<") and raw.endswith(">") else raw
+
+
+def target_stem(raw, kind):
+    """Nombre base (sin carpeta/.md/#ancla) para buscar match por parecido, según tipo."""
+    if kind == "md":
+        t = md_inner(raw).split("#", 1)[0].strip()
+        if "/" in t:
+            t = t.rsplit("/", 1)[-1]
+        if t.lower().endswith(".md"):
+            t = t[:-3]
+        return t
+    return split_link(raw)[0]
+
+
+def old_literal(raw, kind):
+    """Substring exacto a buscar/reemplazar en el archivo."""
+    return "](" + raw + ")" if kind == "md" else "[[" + raw + "]]"
+
+
+def new_literal(raw, kind, new_stem):
+    """Substring de reemplazo, preservando sección/alias (wiki) o ancla (md).
+
+    md repunta a nombre pelado `](<Nuevo.md>)` — patrón "nace por nombre, se
+    endurece a ruta" del vault: harden-links lo lleva a ruta relativa después.
+    """
+    if kind == "md":
+        inner = md_inner(raw)
+        anchor = inner.split("#", 1)[1] if "#" in inner else None
+        return "](<" + new_stem + ".md" + ("#" + anchor if anchor else "") + ">)"
+    return "[[" + rebuild(raw, new_stem) + "]]"
+
+
+def show_link(raw, kind):
+    """Representación legible para el reporte."""
+    return "[..](" + raw + ")" if kind == "md" else "[[" + raw + "]]"
+
+
+def classify(raw, kind, index):
     """-> ('fix', nuevo_stem) | ('ambiguous', [stems]) | ('no_target', None) | ('skip', None)."""
-    if any(c in raw for c in PLACEHOLDER):
+    content = md_inner(raw) if kind == "md" else raw   # no confundir <> de md con placeholders
+    if any(c in content for c in PLACEHOLDER):
         return "skip", None
-    target, _, _ = split_link(raw)
+    target = target_stem(raw, kind)
     if not target:
         return "skip", None
     lb = target.lower()
@@ -126,39 +170,39 @@ def classify(raw, index):
 def propose():
     rows = get_broken()
     index = build_index()
-    fixes = defaultdict(list)       # (raw, new_stem) -> [(archivo, línea)]
-    ambiguous = defaultdict(list)   # raw -> [(archivo, línea, [candidatos])]
-    no_target = defaultdict(list)   # raw -> [(archivo, línea)]
-    for f, line, raw in rows:
-        kind, tgt = classify(raw, index)
-        if kind == "fix":
-            fixes[(raw, tgt)].append((f, line))
-        elif kind == "ambiguous":
-            ambiguous[raw].append((f, line, tgt))
-        elif kind == "no_target":
-            no_target[raw].append((f, line))
+    fixes = defaultdict(list)       # (raw, kind, new_stem) -> [(archivo, línea)]
+    ambiguous = defaultdict(list)   # (raw, kind) -> [(archivo, línea, [candidatos])]
+    no_target = defaultdict(list)   # (raw, kind) -> [(archivo, línea)]
+    for f, line, raw, kind in rows:
+        k, tgt = classify(raw, kind, index)
+        if k == "fix":
+            fixes[(raw, kind, tgt)].append((f, line))
+        elif k == "ambiguous":
+            ambiguous[(raw, kind)].append((f, line, tgt))
+        elif k == "no_target":
+            no_target[(raw, kind)].append((f, line))
 
     print(f"\nheal-links (propuesta) — {len(rows)} enlace(s) roto(s)\n")
 
     print(f"── Repuntes seguros (match único, sin IA): {len(fixes)} ──")
     if fixes:
         print("   Aplicá tras revisar (o `heal-links.py --apply`).")
-        for (raw, tgt), locs in sorted(fixes.items()):
-            print(f"   [[{raw}]]  ->  [[{rebuild(raw, tgt)}]]   ({len(locs)} uso/s)")
+        for (raw, kind, tgt), locs in sorted(fixes.items()):
+            print(f"   {show_link(raw, kind)}  ->  {new_literal(raw, kind, tgt)}   ({len(locs)} uso/s)")
             for f, line in locs:
                 print(f"        {f}:{line}")
     else:
         print("   (ninguno)")
 
     print(f"\n── Ambiguos (2+ notas parecidas — decidí vos): {len(ambiguous)} ──")
-    for raw, occ in sorted(ambiguous.items()):
+    for (raw, kind), occ in sorted(ambiguous.items()):
         cands = occ[0][2]
-        print(f"   [[{raw}]]  ~  {', '.join('[[%s]]' % c for c in cands)}   ({len(occ)} uso/s)")
+        print(f"   {show_link(raw, kind)}  ~  {', '.join('[[%s]]' % c for c in cands)}   ({len(occ)} uso/s)")
 
     print(f"\n── Sin destino (crear la nota o quitar el enlace): {len(no_target)} ──")
     print("   Triage de contenido — decisión de {{OWNER}}. Agrupados por link distinto:")
-    for raw, locs in sorted(no_target.items(), key=lambda kv: (-len(kv[1]), kv[0])):
-        print(f"   [[{raw}]]   ({len(locs)} uso/s)  ej. {locs[0][0]}:{locs[0][1]}")
+    for (raw, kind), locs in sorted(no_target.items(), key=lambda kv: (-len(kv[1]), kv[0][0])):
+        print(f"   {show_link(raw, kind)}   ({len(locs)} uso/s)  ej. {locs[0][0]}:{locs[0][1]}")
 
     print("\nDRY RUN: no se cambió nada.\n")
 
@@ -171,24 +215,23 @@ def apply_loop(max_fixes):
         before = len(rows)
         index = build_index()
         nxt = None
-        for f, line, raw in rows:
-            kind, tgt = classify(raw, index)
-            if kind == "fix":
-                literal = f"[[{raw}]]"
-                if literal in (ROOT / f).read_text(encoding="utf-8", errors="replace"):
-                    nxt = (f, raw, tgt)
+        for f, line, raw, kind in rows:
+            k, tgt = classify(raw, kind, index)
+            if k == "fix":
+                if old_literal(raw, kind) in (ROOT / f).read_text(encoding="utf-8", errors="replace"):
+                    nxt = (f, raw, kind, tgt)
                     break
         if nxt is None:
             print("  no quedan repuntes seguros aplicables. fin.")
             break
-        f, raw, tgt = nxt
+        f, raw, kind, tgt = nxt
         path = ROOT / f
         text = path.read_text(encoding="utf-8", errors="replace")
-        new_inner = rebuild(raw, tgt)
-        path.write_text(text.replace(f"[[{raw}]]", f"[[{new_inner}]]"), encoding="utf-8")
+        old, new = old_literal(raw, kind), new_literal(raw, kind, tgt)
+        path.write_text(text.replace(old, new), encoding="utf-8")
         after = len(get_broken())
         applied += 1
-        print(f"  {applied:>2}: [[{raw}]] -> [[{new_inner}]]  en {f}   rotos {before}->{after}")
+        print(f"  {applied:>2}: {show_link(raw, kind)} -> {new}  en {f}   rotos {before}->{after}")
         if after >= before:
             print("  el conteo no bajó — guard de no-progreso, freno.")
             break

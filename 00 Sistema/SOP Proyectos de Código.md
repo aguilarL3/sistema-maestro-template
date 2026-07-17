@@ -1,16 +1,18 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Proyectos de Código"
 tags: [sop, desarrollo, codigo, proyectos, agentes, kickoff]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-013"
-ultima_revision: 2026-07-11
+timestamp: 2026-07-11T00:00:00Z
 fecha_creacion: 2026-07-11
+resource:
 ---
 
 >[!info] Documentación relacionada
->Discovery - Entorno de Desarrollo con Agentes - 2026-07-11 (el porqué y las fuentes) | [[Baseline de Seguridad]] | [[SOP Proyectos]] | [[SOP Discovery]]
+>Discovery - Entorno de Desarrollo con Agentes - 2026-07-11 (el porqué y las fuentes) | [[Baseline de Seguridad]] | [SOP Proyectos](<SOP Proyectos.md>) | [SOP Discovery](<SOP Discovery.md>)
 
 # SOP Proyectos de Código
 
@@ -78,7 +80,7 @@ Cuando hay más de una esfera (tu vault personal + vaults/repos de empresa), dó
 
 ## 2. Kickoff de un proyecto nuevo (checklist, ~30-45 min)
 
-- [ ] **0. Discovery** del proyecto si no está hecho ([[SOP Discovery]]).
+- [ ] **0. Discovery** del proyecto si no está hecho ([SOP Discovery](<SOP Discovery.md>)).
 - [ ] **1. PRD/MVP en el vault** dueño: qué, para quién, criterio de éxito, qué NO incluye. Con criterio MVP — no diseñar la DB completa en prosa (el detalle técnico se descubre construyendo).
 - [ ] **2. `git init` FUERA del vault** (ej. `~/dev/<proyecto>/`). Repo privado propio.
 - [ ] **3. [[Baseline de Seguridad]]** — los 5 pasos del How-to (settings deny, guard, secret-scan, pre-commit, bloque en CLAUDE.md).
@@ -136,7 +138,7 @@ El kickoff §2 con el seed: pasos 2-4 ya vienen resueltos (copiar la carpeta y c
 
 ## Referencias
 - Discovery - Entorno de Desarrollo con Agentes - 2026-07-11 — fuentes: [Best practices — Claude Code](https://code.claude.com/docs/en/best-practices) · [AGENTS.md](https://agents.md/) · [github/spec-kit](https://github.com/github/spec-kit) · [Harper Reed](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/)
-- [[SOP Proyectos]] — el protocolo de la *nota* de proyecto en el vault (este SOP lo complementa para proyectos con código)
+- [SOP Proyectos](<SOP Proyectos.md>) — el protocolo de la *nota* de proyecto en el vault (este SOP lo complementa para proyectos con código)
 
 ## Cómo leer este documento
 Para arrancar un proyecto: checklist §2. Para saber qué va dónde: §1. Para trabajar día a día: §3. La regla del template está en §6.

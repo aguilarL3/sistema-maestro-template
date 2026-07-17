@@ -1,5 +1,6 @@
 ---
-tipo_doc: How-to
+type: How-to
+title: "Skill | Nota de Estudio — aprender lo que se construyó"
 tags: [skill, ia, claude-code, aprendizaje, explanation, divulgacion]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-07-02
@@ -15,10 +16,11 @@ scope: vault
 domains: [ia, automatizacion]
 version: v1.0
 estado: 🟦 En pruebas
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[SOP Skills]] | [[Catálogo de Skills]] | [[Tipos de Documentación]] | [[SOP Documentación]] | Hooks y ciclo de vida del agente
+>[SOP Skills](<../../00 Sistema/SOP Skills.md>) | [Catálogo de Skills](<Catálogo de Skills.md>) | [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>) | [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) | Hooks y ciclo de vida del agente
 
 # Skill | Nota de Estudio — aprender lo que se construyó
 
@@ -42,7 +44,7 @@ estado: 🟦 En pruebas
 
 - **¿Cuándo usarla?** Después de construir/decidir algo que valga la pena aprender.
 - **¿Cuándo NO usarla?** Para documentación *operativa* (cómo usar algo) → eso es una guía **How-to**, no esta skill.
-- **Dependencias:** el artefacto a explicar debe existir (código/archivos legibles); [[SOP Documentación]] para el frontmatter e IDs.
+- **Dependencias:** el artefacto a explicar debe existir (código/archivos legibles); [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) para el frontmatter e IDs.
 - **Flujo:** construir algo → `/nota-estudio <eso>` → nota Explanation → enlazada al resto.
 
 ---
@@ -55,7 +57,7 @@ estado: 🟦 En pruebas
 | `Task` | **Un** subagente que investiga alternativas/prior-art (aislado) |
 | `WebSearch` | El subagente compara con cómo lo hacen otros |
 | `Write` | Crear la nota Explanation |
-| `Edit` | Registrar el `id` en [[SOP Documentación]] §7.1 |
+| `Edit` | Registrar el `id` en [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) §7.1 |
 
 **Carpetas que toca:** Lee cualquiera; escribe en `04 Knowledge/Temas/` (o la que pida el tema) + edita el registro de IDs. No toca el código original.
 
@@ -120,17 +122,17 @@ Ver ejecutable: `.claude/commands/nota-estudio.md` (estructura ROL/CONTEXTO/TARE
 
 ## 🔗 Skills relacionadas
 
-- [[Skill - Mantenimiento Sistema]] → también usa un subagente `Task` (juez) — mismo patrón de orquestación mínima.
-- [[Skill - Cerebro Audit]] / [[Skill - Revisión Mensual]] → orquestadores de referencia.
+- [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) → también usa un subagente `Task` (juez) — mismo patrón de orquestación mínima.
+- [Skill - Cerebro Audit](<Skill - Cerebro Audit.md>) / [Skill - Revisión Mensual](<Skill - Revisión Mensual.md>) → orquestadores de referencia.
 
 ---
 
 ## 📖 Referencias
 
-- [[SOP Skills]] · [[SOP Documentación]] · [[Tipos de Documentación]] (Diátaxis)
+- [SOP Skills](<../../00 Sistema/SOP Skills.md>) · [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) · [Tipos de Documentación](<../../00 Sistema/Tipos de Documentación.md>) (Diátaxis)
 - Hooks y ciclo de vida del agente (skill vs hook)
 - Inspiración: el pedido recurrente de {{OWNER}} de notas de aprendizaje por cada build.
 
 ---
 
-◀ [[Skill - Mantenimiento Sistema]] | MOC: [[Catálogo de Skills]] | [[Skill - Revisión Mensual]] ▶
+◀ [Skill - Mantenimiento Sistema](<Skill - Mantenimiento Sistema.md>) | MOC: [Catálogo de Skills](<Catálogo de Skills.md>) | [Skill - Revisión Mensual](<Skill - Revisión Mensual.md>) ▶

@@ -1,9 +1,11 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Decisión - [Tema]"
 tags: [decisiones, plantilla]
 estado: 🧭 Incubación / 🏗️ Desarrollo / ✅ Consolidado
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
+resource:
 ---
 
 > [!info] Plantilla de decisión

@@ -1,22 +1,24 @@
 ---
-tipo_doc: SOP
+type: SOP
+title: "SOP Multi-Agente — operar varios agentes sin que se pisen"
 tags: [sop, multiagente, worktrees, commits, orquestacion, agentes]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-014"
-ultima_revision: 2026-07-11
+timestamp: 2026-07-11T00:00:00Z
 fecha_creacion: 2026-07-11
+resource:
 ---
 
 >[!info] Documentación relacionada
->[[Orquestación Multi-Agente Abierta]] (el *porqué* — este SOP es su §4-6 promovido, según su propio plan §10) | [[SOP Git y Flujo de Trabajo]] (base que se extiende) | Verifier pre-commit (self-review) | [[MOC - Agentes]]
+>[Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) (el *porqué* — este SOP es su §4-6 promovido, según su propio plan §10) | [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) (base que se extiende) | Verifier pre-commit (self-review) | [[MOC - Agentes]]
 
 # SOP Multi-Agente — operar varios agentes sin que se pisen
 
 ## Objetivo
 
-El *cómo* operativo para trabajar con varios agentes (Claude Code, Codex, Antigravity…) en el vault: aislamiento por worktrees, zonas de propiedad, identidad de commit y el flujo completo por corrida. Todo validado en la práctica (ensayo 2026-06-30 + operación diaria). El *porqué* y el marco conceptual viven en [[Orquestación Multi-Agente Abierta]].
+El *cómo* operativo para trabajar con varios agentes (Claude Code, Codex, Antigravity…) en el vault: aislamiento por worktrees, zonas de propiedad, identidad de commit y el flujo completo por corrida. Todo validado en la práctica (ensayo 2026-06-30 + operación diaria). El *porqué* y el marco conceptual viven en [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>).
 
 ---
 
@@ -70,7 +72,7 @@ Reparto por tipo de tarea, cobertura completa:
 
 ## 3. Identidad y mensaje de commit (quién hizo qué)
 
-Extiende [[SOP Git y Flujo de Trabajo]] §4. Dos palancas: **identidad** (autor) y **mensaje** (trailer). Usar **ambas**.
+Extiende [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) §4. Dos palancas: **identidad** (autor) y **mensaje** (trailer). Usar **ambas**.
 
 | Agente | `user.name` | `user.email` |
 |---|---|---|
@@ -136,9 +138,9 @@ FASE 3 — Verificar
 ```
 
 ## Referencias
-- [[Orquestación Multi-Agente Abierta]] — el porqué, los riesgos (§7), portabilidad (§9), las 3 capas (§12).
-- [[SOP Git y Flujo de Trabajo]] — la base de git que este SOP extiende.
-- [[Catálogo de Hooks y Locks]] · [[MOC - Agentes]] — las piezas que participan.
+- [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) — el porqué, los riesgos (§7), portabilidad (§9), las 3 capas (§12).
+- [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) — la base de git que este SOP extiende.
+- [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) · [[MOC - Agentes]] — las piezas que participan.
 
 ## Cómo leer este SOP
-Para operar: §4 (el flujo). Para configurar por primera vez: FASE 0 + §3. Para entender por qué es así: [[Orquestación Multi-Agente Abierta]].
+Para operar: §4 (el flujo). Para configurar por primera vez: FASE 0 + §3. Para entender por qué es así: [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>).

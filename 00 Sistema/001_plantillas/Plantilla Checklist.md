@@ -1,12 +1,14 @@
 ---
-tipo_doc: Checklist
+type: Checklist
+title: "Checklist - [Nombre del Proceso]"
 tags: [checklist]
 estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "CHK-XXX"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
+resource:
 ---
 
 >[!info] Documentación relacionada

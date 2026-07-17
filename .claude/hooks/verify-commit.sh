@@ -34,6 +34,8 @@ STRICT=0
 # y se registran en Catálogo de Skills / SOP Prompts, no en SOP Documentación §7.1.
 in_scope() {
   case "$1" in
+    # index.md de carpeta: OKF estricto, SIN frontmatter (SOP Documentación §4.5; adopción 2026-07-17)
+    */index.md|index.md) return 1 ;;
     "04 Knowledge/Cursos/"*|"04 Knowledge/Skills/"*|"04 Knowledge/Prompts/"*|"00 Sistema/001_plantillas/"*|"04 Knowledge/{{OWNER}} Career OS/"*) return 1 ;;
     "00 Sistema/"*|"01 Index/"*|"02 MOCs/"*|"04 Knowledge/"*) return 0 ;;
     *) return 1 ;;
@@ -62,9 +64,12 @@ while IFS= read -r f; do
   fi
 
   miss=""
-  for key in tipo_doc estado ultima_revision id; do
-    printf '%s\n' "$fm" | grep -qE "^${key}:" || miss="${miss} ${key}"
-  done
+  # Dual-key OKF (RUN-001 F2, pre-armado 2026-07-17): acepta la clave propia O su
+  # equivalente OKF (tipo_doc|type, ultima_revision|timestamp) durante la transición.
+  printf '%s\n' "$fm" | grep -qE '^(tipo_doc|type):' || miss="${miss} tipo_doc"
+  printf '%s\n' "$fm" | grep -qE '^estado:' || miss="${miss} estado"
+  printf '%s\n' "$fm" | grep -qE '^(ultima_revision|timestamp):' || miss="${miss} ultima_revision"
+  printf '%s\n' "$fm" | grep -qE '^id:' || miss="${miss} id"
   if [ -n "$miss" ]; then
     report="${report}  ✗ ${f}: falta(n) campo(s):${miss}\n"
     errors=$((errors+1))
@@ -73,6 +78,13 @@ while IFS= read -r f; do
   # Aviso: tags con '#'. Cubre inline (tags: [#x]) y multilínea (- "#x").
   if printf '%s\n' "$fm" | grep -qE '(^tags:.*#|^[[:space:]]*-[[:space:]]*["'"'"']?#)'; then
     report="${report}  ⚠ ${f}: tags con '#' (usar [a, b] sin '#')\n"
+    warns=$((warns+1))
+  fi
+
+  # Aviso: sin description (OKF T1, adoptado 2026-07-17) — una oración que
+  # alimenta los index.md generados. Warn-only: se agrega al tocar.
+  if ! printf '%s\n' "$fm" | grep -qE '^description:'; then
+    report="${report}  ⚠ ${f}: sin description (OKF — agregar una oración al tocar)\n"
     warns=$((warns+1))
   fi
 done < <(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)

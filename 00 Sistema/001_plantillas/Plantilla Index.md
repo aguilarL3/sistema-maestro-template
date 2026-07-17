@@ -1,9 +1,11 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "Index - [Tema]"
 tags: [index, plantilla]
 estado: 🧭 Incubación / 🏗️ Desarrollo / ✅ Consolidado
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
+resource:
 ---
 
 > [!info] Plantilla de índice

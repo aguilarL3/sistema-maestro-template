@@ -1,22 +1,24 @@
 ---
-tipo_doc: Plantilla
+type: Plantilla
+title: "[Título del Concepto]"
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-ultima_revision: 2026-07-03
+timestamp: 2026-07-03T00:00:00Z
+resource:
 ---
 
 >[!warning] Plugin requerido
 >Esta plantilla usa **Templater**. Si la fecha aparece como `<% tp.date.now(...) %>`, instalá el plugin Templater desde Configuración → Plugins de comunidad.
 
 ---
-tipo_doc: Explanation          # tipo Diátaxis que corresponda (§4.3 SOP Documentación)
+type: Explanation          # tipo Diátaxis que corresponda (§4.3 SOP Documentación)
 tags: [tema]                   # minúsculas, SIN #, formato [a, b]
 estado: 🌱 Semilla / 🏗️ Desarrollo / ✅ Consolidado
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "EXP-000"                  # prefijo por tipo + número libre (§7.1 SOP Documentación)
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-ultima_revision: <% tp.date.now("YYYY-MM-DD") %>
+timestamp: <% tp.date.now("YYYY-MM-DD") %>
 moc_principal: "[[MOC - ]]"
 life_areas: []
 domains: []
@@ -45,12 +47,12 @@ Contexto, detalles técnicos, comandos, ejemplos, código reutilizable.
 - Fuente: [[]]
 
 ## Evolución
-Cómo cambia este conocimiento con el tiempo. Actualizá cada vez que aparezca nueva información relevante (y subí `ultima_revision`).
+Cómo cambia este conocimiento con el tiempo. Actualizá cada vez que aparezca nueva información relevante (y subí `timestamp`).
 - **Qué aprendí desde la última vez:**
 - **Qué cambió / qué corregí:**
 
 > [!info] Esta plantilla absorbe a la "Nota Evergreen"
-> No hay tipo aparte para notas vivas. Una **nota evergreen** = esta misma nota con `estado: 🌱 Semilla` que revisás y hacés crecer periódicamente. La fecha de creación queda en `fecha_creacion`; cada revisión de fondo actualiza `ultima_revision`.
+> No hay tipo aparte para notas vivas. Una **nota evergreen** = esta misma nota con `estado: 🌱 Semilla` que revisás y hacés crecer periódicamente. La fecha de creación queda en `fecha_creacion`; cada revisión de fondo actualiza `timestamp`.
 
 > [!tip] Regla de oro
 > Si este concepto apareció 3 o más veces en distintas fuentes → merece vivir aquí como nota permanente.
