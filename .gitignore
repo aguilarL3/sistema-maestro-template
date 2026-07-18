@@ -58,6 +58,8 @@ secrets.yaml
 secrets.yml
 # Config local de Claude Code (permisos personales; no se comparte)
 .claude/settings.local.json
+# Identidad de la instancia (la escribe el onboarding; owner.env.example sí se versiona)
+owner.env
 # Python bytecode
 __pycache__/
 *.pyc
