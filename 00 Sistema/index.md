@@ -4,7 +4,7 @@
 
 # Explanation
 
-* [Filosofía del Sistema](<Filosofía del Sistema.md>)
+* [Filosofía del Sistema](<Filosofía del Sistema.md>) - El porqué del Sistema Maestro: los 6 pilares con su rationale y las fuentes que inspiran cada uno.
 * [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>)
 
 # How-to

@@ -6,7 +6,7 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "TUT-002"
-timestamp: 2026-07-04T00:00:00Z
+timestamp: 2026-07-17T00:00:00Z
 fecha_creacion: 2026-06-17
 resource:
 ---
@@ -49,6 +49,8 @@ Solo si Templater faltara (las plantillas lo usan para las fechas automáticas):
 | `05 Diario` | Registro cotidiano: hábitos, reflexión, prioridades, seguimiento |
 | `06 Raw` | Fuentes sin procesar: artículos, videos, libros, ideas brutas |
 | `99 Archivo` | Todo lo que terminó o ya no está activo |
+
+> **El vault habla un estándar abierto.** El sistema implementa el [Open Knowledge Format (OKF)](<04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) de Google Cloud: cada nota lleva frontmatter estándar (`type`, `timestamp`, `title`, `description`), cada carpeta tiene un `index.md` **generado automáticamente** (no lo edites a mano — se regenera al commitear), y los enlaces siguen una regla simple: **markdown `[Título](<ruta.md>)` para notas que existen, wikilink `[[...]]` para conocimiento aún no escrito**. No tenés que memorizar nada de esto: las plantillas y los hooks lo hacen por vos. Detalle en [SOP Documentación](<00 Sistema/SOP Documentación.md>) §4 y §6.1.
 
 ---
 
@@ -183,9 +185,9 @@ Domingo  → 15 min de revisión CE-RE-BRO
 ## Referencias clave
 
 - [Home](<Home.md>) — punto de entrada principal
-- [[00 Sistema/SOP Maestro]] — manual completo del sistema
-- [[00 Sistema/Filosofía del Sistema]] — por qué cada decisión de diseño
+- [SOP Maestro](<00 Sistema/SOP Maestro.md>) — manual completo del sistema
+- [Filosofía del Sistema](<00 Sistema/Filosofía del Sistema.md>) — por qué cada decisión de diseño (con las fuentes originales de cada marco)
 - [Dashboard-CEO](<Dashboard-CEO.md>) — vista de vida completa
 - [Dashboard-Estudio](<Dashboard-Estudio.md>) — hub operativo de estudio
-- [[00 Sistema/SOP Revisiones]] — auditoría semanal y mensual CE-RE-BRO
-- [[CLAUDE.md]] — contexto del sistema para trabajar con IA
+- [SOP Revisiones](<00 Sistema/SOP Revisiones.md>) — auditoría semanal y mensual CE-RE-BRO
+- [CLAUDE](<CLAUDE.md>) — contexto del sistema para trabajar con IA

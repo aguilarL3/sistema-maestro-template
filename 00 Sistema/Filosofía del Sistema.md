@@ -1,11 +1,12 @@
 ---
 type: Explanation
 title: "Filosofía del Sistema"
+description: "El porqué del Sistema Maestro: los 6 pilares con su rationale y las fuentes que inspiran cada uno."
 tags: [filosofia, sistema, onboarding]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
-timestamp: 2026-07-11T00:00:00Z
+timestamp: 2026-07-17T00:00:00Z
 fecha_creacion: 2026-06-17
 id: "EXP-002"
 resource:
@@ -113,6 +114,8 @@ Esta idea conecta directamente con el Memex de Vannevar Bush (1945): un almacén
 - complejidad técnica innecesaria
 - dependencia de una sola herramienta o interfaz
 - sobreingeniería que genera fricción de mantenimiento
+
+**Evolución — el pilar se volvió estándar (2026):** en junio de 2026 Google Cloud formalizó este patrón como estándar abierto: el [Open Knowledge Format (OKF)](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) — conocimiento como bundle de Markdown + frontmatter + grafo de enlaces, mantenido por agentes bajo disciplina editorial. Este vault lo implementa **por completo** (claves `type`/`timestamp`/`title`/`description`/`resource`, índices `index.md` generados, links markdown para conocimiento existente): la arquitectura elegida por este pilar quedó validada por un estándar de industria, y el conocimiento del sistema es **interoperable** — puede viajar a otros sistemas y organizaciones hablando un formato común. Detalle operativo en [SOP Documentación](<SOP Documentación.md>) §4 y §6.1.
 
 ---
 
@@ -289,17 +292,25 @@ Después de uso sostenido, el Sistema Maestro se convierte en:
 ---
 
 ## Referencias
-- [AGENTS](<../AGENTS.md>)
-- [SOP Maestro](<SOP Maestro.md>)
-- [Glosario de términos](<Glosario de términos.md>)
-- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>)
-- [Valores](<../01 Index/Valores.md>)
-- [Principios](<../01 Index/Principios.md>)
-- [Vision](<../01 Index/Vision.md>)
-- [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>)
-- [Cerebro Digital](<../04 Knowledge/Sistemas y Metodologías/Cerebro Digital.md>)
-- [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>)
-- [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>)
-- [Zettelkasten](<../04 Knowledge/Sistemas y Metodologías/Zettelkasten.md>)
-- [Evergreen Notes](<../04 Knowledge/Sistemas y Metodologías/Evergreen Notes.md>)
-- [CE-RE-BRO](<../04 Knowledge/Sistemas y Metodologías/CE-RE-BRO.md>)
+
+**Del sistema:**
+- [AGENTS](<../AGENTS.md>) · [SOP Maestro](<SOP Maestro.md>) · [Glosario de términos](<Glosario de términos.md>)
+- [Investigación y auditoría de marcos](<../04 Knowledge/Investigación del Sistema/Investigación y auditoría de marcos.md>) — el estudio completo de cada marco, con su fuente
+- [Valores](<../01 Index/Valores.md>) · [Principios](<../01 Index/Principios.md>) · [Vision](<../01 Index/Vision.md>)
+- [SOP Documentación](<SOP Documentación.md>) — cómo el vault implementa el estándar OKF (frontmatter §4, enlaces §6.1)
+
+**Marcos y fuentes originales:**
+
+| Marco | Estudio en el vault | Fuente original |
+|---|---|---|
+| LLM Wiki | [LLM Wiki](<../04 Knowledge/Sistemas y Metodologías/LLM Wiki.md>) | Andrej Karpathy — [gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) |
+| Open Knowledge Format | [Open Knowledge Format (OKF)](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) | Google Cloud — [spec](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) · [repo](https://github.com/GoogleCloudPlatform/knowledge-catalog) · [blog](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing) |
+| Cerebro Digital | [Cerebro Digital](<../04 Knowledge/Sistemas y Metodologías/Cerebro Digital.md>) | Marcos Emowe — [cerebrodigital.club](https://www.cerebrodigital.club) |
+| Yo S.A. | [Yo SA](<../04 Knowledge/Sistemas y Metodologías/Yo SA.md>) | Rubén Loan — [curso](https://rubenloan.com/cursos/yo-sa) |
+| Career OS | [Career OS](<../04 Knowledge/Sistemas y Metodologías/Career OS.md>) | curso (sin URL pública) |
+| Zettelkasten | [Zettelkasten](<../04 Knowledge/Sistemas y Metodologías/Zettelkasten.md>) | Niklas Luhmann — [zettelkasten.de](https://zettelkasten.de) |
+| Evergreen Notes | [Evergreen Notes](<../04 Knowledge/Sistemas y Metodologías/Evergreen Notes.md>) | Andy Matuschak — [notas](https://notes.andymatuschak.org/Evergreen_notes) |
+| GTD | [GTD](<../04 Knowledge/Sistemas y Metodologías/GTD.md>) | David Allen — *Getting Things Done* · [gettingthingsdone.com](https://gettingthingsdone.com) |
+| PARA | [PARA](<../04 Knowledge/Sistemas y Metodologías/PARA.md>) | Tiago Forte — [artículo](https://fortelabs.com/blog/para/) · *Building a Second Brain* |
+| MOCs | [MOC](<../04 Knowledge/Sistemas y Metodologías/MOC.md>) | Nick Milo — [linkingyourthinking.com](https://www.linkingyourthinking.com) |
+| CE-RE-BRO | [CE-RE-BRO](<../04 Knowledge/Sistemas y Metodologías/CE-RE-BRO.md>) | concepto propio del sistema |

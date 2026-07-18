@@ -15,7 +15,7 @@ okf_version: "0.1"
 * [Dashboard CEO](<Dashboard-CEO.md>)
 * [Dashboard Estudio](<Dashboard-Estudio.md>)
 * [Home](<Home.md>)
-* [SOPS](<SOPS.md>)
+* [SOPS](<SOPS.md>) - Índice completo de los 28 SOPs y las 14 plantillas del sistema, agrupados por área.
 * [Vault System Map](<Vault System Map.md>)
 
 # Otros

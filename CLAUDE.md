@@ -291,13 +291,14 @@ Estos conceptos no vienen de una fuente externa. Fueron creados durante el dise�
 | Marco | Autor | Fuente |
 |---|---|---|
 | LLM Wiki | Andrej Karpathy | https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f |
+| Open Knowledge Format (OKF) | Google Cloud | https://github.com/GoogleCloudPlatform/knowledge-catalog (spec: `okf/SPEC.md`) |
 | Cerebro Digital | Marcos Emowe | https://www.cerebrodigital.club |
 | Yo S.A. | Rubén Loan | https://rubenloan.com/cursos/yo-sa |
-| Zettelkasten | Niklas Luhmann | — |
-| Evergreen Notes | Andy Matuschak | — |
-| GTD | David Allen | Getting Things Done |
-| PARA | Tiago Forte | Building a Second Brain |
-| MOCs | Nick Milo | — |
+| Zettelkasten | Niklas Luhmann | https://zettelkasten.de |
+| Evergreen Notes | Andy Matuschak | https://notes.andymatuschak.org/Evergreen_notes |
+| GTD | David Allen | *Getting Things Done* · https://gettingthingsdone.com |
+| PARA | Tiago Forte | *Building a Second Brain* · https://fortelabs.com/blog/para/ |
+| MOCs | Nick Milo | https://www.linkingyourthinking.com |
 
 ---
 
