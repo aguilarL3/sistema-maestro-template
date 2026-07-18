@@ -4,6 +4,7 @@ title: "Skill | Mantenimiento Sistema — frescura + consistencia"
 tags: [skill, ia, claude-code, mantenimiento, frescura, consistencia, llm-as-judge]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-26
+timestamp: 2026-06-26T00:00:00Z
 fecha_actualizacion: 2026-06-26
 modelo_objetivo: claude-sonnet-4-6
 version_modelo: claude-sonnet-4-6

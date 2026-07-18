@@ -4,6 +4,7 @@ title: "Skill | Revisión de Seguridad — decidir antes de instalar"
 tags: [skill, seguridad, ia, claude-code, cadena-de-suministro, prompt-injection]
 origen: "[[MOC - Seguridad]]"
 fecha_creacion: 2026-07-09
+timestamp: 2026-07-09T00:00:00Z
 fecha_actualizacion: 2026-07-09
 modelo_objetivo: claude-opus-4-8
 version_modelo: claude-opus-4-8

@@ -4,6 +4,7 @@ title: "Prompt | Entrevista Previa (Claude Pregunta por Vos)"
 tags: [prompt, prompt-engineering, ai, patron-reutilizable, claude]
 origen: "[[MOC - Prompt Engineering]]"
 fecha_creacion: 2026-06-24
+timestamp: 2026-06-24T00:00:00Z
 fecha_actualizacion: 2026-06-24
 modelo_objetivo: claude
 version_modelo: claude-sonnet-4.6
