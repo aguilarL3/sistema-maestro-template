@@ -6,5 +6,12 @@
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
 # 1) Gate de seguridad: bloquea secretos antes de que entren al historial.
 bash "$ROOT/.claude/hooks/secret-scan.sh" || exit 1
-# 2) Verifier de conocimiento (frontmatter + tags).
+# 2) Índices OKF: regenera el index.md de las carpetas con .md staged y lo suma al commit.
+PY="$(command -v python3 || command -v python || true)"
+if [ -n "$PY" ]; then
+  "$PY" "$ROOT/.claude/hooks/generate-index.py" --staged 2>/dev/null | while IFS= read -r idx; do
+    [ -n "$idx" ] && git -C "$ROOT" add -- "$idx" 2>/dev/null
+  done
+fi
+# 3) Verifier de conocimiento (frontmatter + tags).
 exec bash "$ROOT/.claude/hooks/verify-commit.sh"

@@ -200,7 +200,7 @@ def propose():
         print(f"   {show_link(raw, kind)}  ~  {', '.join('[[%s]]' % c for c in cands)}   ({len(occ)} uso/s)")
 
     print(f"\n── Sin destino (crear la nota o quitar el enlace): {len(no_target)} ──")
-    print("   Triage de contenido — decisión de {{OWNER}}. Agrupados por link distinto:")
+    print("   Triage de contenido — decisión del dueño del vault. Agrupados por link distinto:")
     for (raw, kind), locs in sorted(no_target.items(), key=lambda kv: (-len(kv[1]), kv[0][0])):
         print(f"   {show_link(raw, kind)}   ({len(locs)} uso/s)  ej. {locs[0][0]}:{locs[0][1]}")
 

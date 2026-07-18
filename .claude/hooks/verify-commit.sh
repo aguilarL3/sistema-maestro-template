@@ -36,7 +36,7 @@ in_scope() {
   case "$1" in
     # index.md de carpeta: OKF estricto, SIN frontmatter (SOP Documentación §4.5; adopción 2026-07-17)
     */index.md|index.md) return 1 ;;
-    "04 Knowledge/Cursos/"*|"04 Knowledge/Skills/"*|"04 Knowledge/Prompts/"*|"00 Sistema/001_plantillas/"*|"04 Knowledge/{{OWNER}} Career OS/"*) return 1 ;;
+    "04 Knowledge/Cursos/"*|"04 Knowledge/Skills/"*|"04 Knowledge/Prompts/"*|"00 Sistema/001_plantillas/"*|"04 Knowledge/"*" Career OS/"*) return 1 ;;
     "00 Sistema/"*|"01 Index/"*|"02 MOCs/"*|"04 Knowledge/"*) return 0 ;;
     *) return 1 ;;
   esac

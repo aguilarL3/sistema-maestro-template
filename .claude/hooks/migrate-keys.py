@@ -11,7 +11,7 @@ primeros '---') de cada .md no excluido, sin tocar el cuerpo ni index.md:
   - Renombres:
       tipo_doc: X            ->  type: X
       ultima_revision: FECHA ->  timestamp: FECHA T00:00:00Z  (ISO 8601 datetime)
-  - Altas (decisión de {{OWNER}} 2026-07-17: van en las 222 notas):
+  - Altas (van en todas las notas):
       title:    derivado del H1 del cuerpo (fallback = nombre de archivo),
                 insertado tras 'type', entre comillas. NO se pisa si ya existe.
       resource: clave scaffoldeada VACÍA al final del frontmatter (el valor —URI

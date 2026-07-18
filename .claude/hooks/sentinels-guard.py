@@ -65,7 +65,7 @@ def main():
                 block(
                     "[CENTINELA @user] La edición toca contenido protegido "
                     "(<!-- @user -->) en «%s». Ese bloque es propiedad humana: no lo "
-                    "edites ni lo reescribas. Editá fuera del bloque, o pedile a {{OWNER}} "
+                    "edites ni lo reescribas. Editá fuera del bloque, o pedile al dueño del vault "
                     "que lo cambie. (Desactivar guard: crear .vault-meta/sentinels.disabled)" % fp
                 )
         allow()
