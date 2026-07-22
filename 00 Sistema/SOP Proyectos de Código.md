@@ -12,13 +12,13 @@ resource:
 ---
 
 >[!info] Documentación relacionada
->Discovery - Entorno de Desarrollo con Agentes - 2026-07-11 (el porqué y las fuentes) | [[Baseline de Seguridad]] | [SOP Proyectos](<SOP Proyectos.md>) | [SOP Discovery](<SOP Discovery.md>)
+>[Spec-Driven Development](<../04 Knowledge/Sistemas y Metodologías/Spec-Driven Development.md>) (el porqué y el flujo) | [[Baseline de Seguridad]] | [SOP Proyectos](<SOP Proyectos.md>) | [SOP Discovery](<SOP Discovery.md>)
 
 # SOP Proyectos de Código
 
 ## Objetivo
 
-Definir cómo nace y se trabaja un **proyecto de código** (app, CRM, dashboard codificado) en el ecosistema: qué hace el vault, qué hace el repo, qué cruza la frontera y cómo. Validado contra la industria en el Discovery 2026-07-11 (Anthropic, OpenAI, Google, Cursor, spec-kit, BMAD, Harper Reed).
+Definir cómo nace y se trabaja un **proyecto de código** (app, CRM, dashboard codificado) en el ecosistema: qué hace el vault, qué hace el repo, qué cruza la frontera y cómo. Validado contra la industria (Anthropic, OpenAI, Google, Cursor, spec-kit, BMAD, Harper Reed).
 
 > **Regla base:** el vault piensa el producto; el repo lo construye. El código **nunca** vive dentro de un vault, y el repo **nunca** depende del vault para funcionar.
 
@@ -137,7 +137,7 @@ El kickoff §2 con el seed: pasos 2-4 ya vienen resueltos (copiar la carpeta y c
 | Sesiones sin verificación ejecutable | El humano se vuelve el loop de verificación | Checklist §2 paso 7 |
 
 ## Referencias
-- Discovery - Entorno de Desarrollo con Agentes - 2026-07-11 — fuentes: [Best practices — Claude Code](https://code.claude.com/docs/en/best-practices) · [AGENTS.md](https://agents.md/) · [github/spec-kit](https://github.com/github/spec-kit) · [Harper Reed](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/)
+- Fuentes del flujo: [Best practices — Claude Code](https://code.claude.com/docs/en/best-practices) · [AGENTS.md](https://agents.md/) · [github/spec-kit](https://github.com/github/spec-kit) · [Harper Reed](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/)
 - [SOP Proyectos](<SOP Proyectos.md>) — el protocolo de la *nota* de proyecto en el vault (este SOP lo complementa para proyectos con código)
 
 ## Cómo leer este documento
