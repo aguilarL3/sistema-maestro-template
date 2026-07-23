@@ -13,6 +13,10 @@ if ! git remote get-url upstream >/dev/null 2>&1; then
 else
   echo "✓ remote 'upstream' ya existe"
 fi
+
+# Capa multi-persona: solo hace algo si owner.env declara VAULT_MODE=equipo.
+if [ -f team-mode.sh ]; then bash ./team-mode.sh; fi
+
 echo ""
 echo "Siguientes pasos:"
 echo "  1. Abrí esta carpeta como vault en Obsidian → 'Trust author and enable plugins'"

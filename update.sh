@@ -23,8 +23,13 @@ FRAMEWORK_PATHS=(
   "03 Proyectos/.gitkeep" "06 Raw/.gitkeep" "99 Archivo/.gitkeep"
   "CLAUDE.md" "AGENTS.md" "llms.txt" "00 Inicio Rapido.md"
   "Matriz Definitiva.md" "SOPS.md" "Vault System Map.md"
-  "README.md" "VERSION" "vault-manifest.json" "setup.sh" "update.sh" "migrate-okf.sh" "personalize.sh" "owner.env.example" "LICENSE"
+  "README.md" "VERSION" "vault-manifest.json" "setup.sh" "update.sh" "migrate-okf.sh" "personalize.sh" "team-mode.sh" "owner.env.example" "LICENSE"
+  ".github/CODEOWNERS.example" ".github/workflows/verify.yml" ".github/workflows/template-update.yml"
 )
+# Ojo: se lista el .example, NO ".github" entero. Un `.github/CODEOWNERS` propio
+# (que existe en tu repo y no en el upstream) aparecería en el diff como borrado
+# y rompería el checkout. Los archivos de .github que sean framework se agregan
+# acá uno por uno.
 # Nota: los index.md de carpeta son artefactos GENERADOS (generate-index.py en pre-commit),
 # no se sincronizan — cada instancia regenera el suyo desde su propio frontmatter.
 
@@ -56,6 +61,8 @@ echo "$CHANGED" | while IFS= read -r f; do
 done
 echo ""
 if [ -f owner.env ]; then bash ./personalize.sh; fi
+# Re-aplica la capa multi-persona (no-op en modo personal; nunca pisa lo existente).
+if [ -f team-mode.sh ]; then bash ./team-mode.sh; fi
 if printf '%s\n' "$CHANGED" | grep -qx "update.sh"; then
   echo "⚠ update.sh se actualizó a sí mismo — corré ./update.sh una vez más para aplicar la whitelist nueva."
 fi

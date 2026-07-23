@@ -19,11 +19,22 @@
 #
 # Kill-switch: .vault-meta/verifier.disabled  → no verifica (exit 0).
 # FAIL-OPEN: cualquier error inesperado del propio script → exit 0 (no frena trabajo).
+#
+# Dos modos de selección de archivos (las REGLAS son las mismas en ambos):
+#   (por defecto)              → lo STAGED. Es el modo del hook pre-commit.
+#   --range <BASE> <HEAD>      → lo que cambió entre dos refs. Es el modo de CI:
+#                                en un PR no hay nada staged. Ver .github/workflows/verify.yml
 set -uo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${CLAUDE_PROJECT_DIR:-$PWD}")"
 cd "$ROOT" 2>/dev/null || exit 0
 [ -f .vault-meta/verifier.disabled ] && exit 0
+
+RANGE_BASE=""; RANGE_HEAD=""
+if [ "${1:-}" = "--range" ]; then
+  RANGE_BASE="${2:-}"; RANGE_HEAD="${3:-HEAD}"
+  [ -n "$RANGE_BASE" ] || { echo "verify-commit: --range necesita <BASE> [HEAD]" >&2; exit 0; }
+fi
 
 STRICT=0
 { [ -f .vault-meta/verifier.strict ] || [ "${VERIFIER_STRICT:-0}" = "1" ]; } && STRICT=1
@@ -42,8 +53,21 @@ in_scope() {
   esac
 }
 
-# Contenido STAGED (no el working tree) del archivo.
-staged() { git show ":$1" 2>/dev/null; }
+# Contenido de la versión que se va a verificar (NO el working tree):
+# lo staged, o el archivo tal como quedó en HEAD del rango.
+staged() {
+  if [ -n "$RANGE_BASE" ]; then git show "$RANGE_HEAD:$1" 2>/dev/null
+  else git show ":$1" 2>/dev/null; fi
+}
+
+# Lista de archivos a verificar, según el modo.
+changed_files() {
+  if [ -n "$RANGE_BASE" ]; then
+    git diff --name-only --diff-filter=ACM "$RANGE_BASE...$RANGE_HEAD" 2>/dev/null
+  else
+    git diff --cached --name-only --diff-filter=ACM 2>/dev/null
+  fi
+}
 
 errors=0; warns=0; report=""
 
@@ -87,18 +111,25 @@ while IFS= read -r f; do
     report="${report}  ⚠ ${f}: sin description (OKF — agregar una oración al tocar)\n"
     warns=$((warns+1))
   fi
-done < <(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+done < <(changed_files)
 
 # --- Reporte ---
+SCOPE="los archivos staged"
+[ -n "$RANGE_BASE" ] && SCOPE="lo que cambió en $RANGE_BASE...$RANGE_HEAD"
+
 if [ "$errors" -gt 0 ] || [ "$warns" -gt 0 ]; then
   echo "verify-commit: $errors error(es), $warns aviso(s):"
   printf "%b" "$report"
 else
-  echo "verify-commit: OK (frontmatter y tags conformes en los archivos staged)."
+  echo "verify-commit: OK (frontmatter y tags conformes en $SCOPE)."
 fi
 
 if [ "$STRICT" -eq 1 ] && [ "$errors" -gt 0 ]; then
-  echo "verify-commit: MODO ESTRICTO → commit bloqueado. Corregí los errores, o desactivá con .vault-meta/verifier.disabled"
+  if [ -n "$RANGE_BASE" ]; then
+    echo "verify-commit: MODO ESTRICTO → PR bloqueado. Corregí el frontmatter de los archivos listados."
+  else
+    echo "verify-commit: MODO ESTRICTO → commit bloqueado. Corregí los errores, o desactivá con .vault-meta/verifier.disabled"
+  fi
   exit 1
 fi
 exit 0

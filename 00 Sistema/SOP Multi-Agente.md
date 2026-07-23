@@ -2,6 +2,7 @@
 type: SOP
 title: "SOP Multi-Agente — operar varios agentes sin que se pisen"
 tags: [sop, multiagente, worktrees, commits, orquestacion, agentes]
+description: "Aislamiento por worktrees, zonas de propiedad, identidad de commit y el flujo por corrida; §5 para varias personas con varios agentes."
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
@@ -70,6 +71,8 @@ Reparto por tipo de tarea, cobertura completa:
 
 > Las zonas son **convención**, no muro — el muro es el worktree (§1). Un agente sale de su zona **solo con pedido explícito**.
 
+> **En vault compartido la convención se puede endurecer:** `.github/CODEOWNERS` traduce esta tabla a una regla que git aplica —GitHub pide la revisión del dueño de cada ruta y, con `main` protegido, no deja mergear sin ella. Es el Nivel 1 de §1 convertido en muro. Ver `.github/CODEOWNERS.example` y [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) §11.
+
 ## 3. Identidad y mensaje de commit (quién hizo qué)
 
 Extiende [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) §4. Dos palancas: **identidad** (autor) y **mensaje** (trailer). Usar **ambas**.
@@ -84,6 +87,36 @@ Extiende [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) §4. Dos 
 > **⚠️ Trampa verificada (ensayo 2026-06-30):** `cd worktree && git config user.email …` escribe en la config **compartida** del repo (contamina `main`). Métodos correctos:
 > - **(a)** firmar cada commit: `git -c user.name="Claude" -c user.email="claude@agent.local" commit …` ✅ recomendado
 > - **(b)** identidad persistente por worktree: `git config extensions.worktreeConfig true` → `git config --worktree user.email …`
+
+### 3.1 En vault compartido: el autor es el humano, el agente es trailer
+
+La tabla de arriba —agente como **autor**— funciona en un vault de un solo dueño: ahí el responsable es obvio, es el único que hay. **En un vault con varias personas deja de funcionar: un commit cuyo autor es `claude@agent.local` es un commit sin nadie que responda por él.**
+
+Dos razones, y ninguna es teórica:
+
+1. **La revisión se relaja sola.** Está medido en repos públicos: los PRs de autoría agéntica reciben revisión solo-humana en ~8% de los casos, contra ~25% de los humanos. Si el autor es una máquina, la gente asume que ya lo revisó otro.
+2. **La responsabilidad no se delega.** El consenso legal 2026 es consistente: la autonomía **redistribuye** la responsabilidad, no la elimina — recae en el humano que despliega, autoriza o se beneficia. Un agente no puede dar garantías ni responder por un cambio.
+
+**Regla en modo equipo:** el autor del commit es **la persona que lanzó al agente**; el agente se registra como trailer y co-autor.
+
+```
+Author: Persona B <persona-b@…>
+
+feat(knowledge): extraer 3 notas atómicas de la fuente X
+
+Agent: claude
+Worktree: agent/claude
+Co-Authored-By: Claude <claude@agent.local>
+```
+
+Así `git shortlog -sn` sigue respondiendo *quién responde*, y `git log --grep="Agent:"` sigue respondiendo *qué escribió una máquina*. No se pierde la trazabilidad del agente; se le agrega la del humano.
+
+```powershell
+git log --grep="Agent: claude" --oneline    # qué hizo el agente
+git shortlog -sn                             # quién responde por cada cambio
+```
+
+> En vault personal (un solo dueño) seguí con la tabla de §3 tal cual: firmar como agente está bien y hace más legible el histórico. Esta subsección aplica desde la segunda persona.
 
 **Mensaje** (sobre Conventional Commits):
 ```
@@ -137,10 +170,73 @@ FASE 3 — Verificar
  15. Auditoría CE-RE-BRO si hubo cambios estructurales grandes.
 ```
 
+## 5. Varias personas con varios agentes cada una
+
+> Aplica solo en **modo equipo** (`VAULT_MODE=equipo` en `owner.env`). El flujo de git compartido —repo por organización, clon por persona, PR, branch protection, hotspots— vive en [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) §11 y **no se repite acá**. Esta sección resuelve solo lo que aparece al cruzar los dos ejes.
+
+### 5.1 Dos ejes, dos aislamientos
+
+Son problemas distintos y se resuelven en capas distintas:
+
+| Eje | Qué aísla | Mecanismo |
+|---|---|---|
+| **Varios agentes**, una persona | que dos agentes no toquen el mismo archivo en disco | worktree (§1) |
+| **Varias personas**, un vault | que dos personas no publiquen a `main` a la vez | clon + rama + PR (SOP Git §11) |
+
+Se anidan, no compiten:
+
+```
+<organización>/vault  (main protegido, CODEOWNERS)
+   │
+   ├── clon de Persona A ── worktrees: agent/claude, agent/codex
+   ├── clon de Persona B ── worktrees: agent/claude
+   └── clon de Persona C ── sin agentes
+```
+
+Cada persona integra **sus propios** worktrees a su rama (FASE 2 del §4, localmente). Lo que llega al PR es **una rama por persona**, no una por agente. Sin esto, tres personas con tres agentes abren nueve PRs y la revisión se vuelve inviable.
+
+### 5.2 Las zonas de propiedad se cruzan
+
+La tabla de §2 reparte por **tipo de tarea** (qué agente escribe qué). En modo equipo hay un segundo reparto por **persona** (`CODEOWNERS`). Un agente tiene que respetar **los dos**:
+
+> Un agente puede escribir donde su zona de §2 **y** la zona de su humano se solapan. Fuera de esa intersección, propone; no escribe.
+
+Ejemplo: el agente de Persona B tiene a `04 Knowledge/Cursos/` en su zona de §2, y Persona B es code owner de `04 Knowledge/`. Escribe. Ese mismo agente **no** toca `00 Sistema/` aunque esté en la zona del lead — porque su humano no lo es.
+
+### 5.3 La bitácora deja de ser un handoff lineal
+
+El hook de sesión inyecta **la última entrada** de la bitácora. Con una persona eso es exactamente "dónde quedé". Con tres, la última entrada puede ser de otra persona en otro tema: sigue siendo contexto útil del vault, pero **ya no es la continuación de tu trabajo**.
+
+Reglas en modo equipo:
+
+- La entrada abre identificando a **la persona y al agente**: `## 2026-07-22 — Persona B / Claude Code`.
+- El campo *"qué debe saber el próximo agente"* se escribe pensando en **cualquiera del equipo**, no en tu yo de mañana. Nada de referencias implícitas a lo que solo vos sabés.
+- El archivo está cubierto por `merge=union` (`.gitattributes`), así que dos entradas simultáneas se conservan; revisá el **orden cronológico** después de un merge conflictivo — union no ordena.
+
+### 5.4 Verificación: quién juzga el trabajo de quién
+
+El verifier tier-2 es un subagente que se despacha antes de commitear, en el clon de quien trabaja. Sigue igual. Lo que **cambia** es que deja de ser el último control: en modo equipo hay un segundo par de ojos obligatorio —el code owner de la ruta, en el PR— y un tercero automático, el gate del servidor (SOP Git §11.5).
+
+> Regla: **el agente no aprueba su propio PR, y su humano tampoco.** Es la contrapartida operativa de §3.1 — si el humano firma como autor, no puede ser también quien revisa.
+
+### 5.5 Activación
+
+```bash
+# owner.env
+VAULT_MODE=equipo
+TEAM_MEMBERS="Persona A,Persona B,Persona C"
+
+./team-mode.sh      # o ./setup.sh — lo corre solo
+```
+
+Crea `05 Diario/<Persona>/` por cada nombre e instala `.github/CODEOWNERS` desde el ejemplo. **No reparte las zonas por vos**: quién es dueño de qué es una decisión de gobernanza, no algo que una plantilla pueda adivinar. El script imprime lo que queda pendiente en GitHub (branch protection).
+
+Idempotente y no destructivo: nunca pisa un archivo existente, y en modo personal no hace nada.
+
 ## Referencias
 - [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) — el porqué, los riesgos (§7), portabilidad (§9), las 3 capas (§12).
 - [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) — la base de git que este SOP extiende.
 - [Catálogo de Hooks y Locks](<../04 Knowledge/Automatización/Catálogo de Hooks y Locks.md>) · [[MOC - Agentes]] — las piezas que participan.
 
 ## Cómo leer este SOP
-Para operar: §4 (el flujo). Para configurar por primera vez: FASE 0 + §3. Para entender por qué es así: [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>).
+Para operar: §4 (el flujo). Para configurar por primera vez: FASE 0 + §3. Si el vault tiene más de un dueño humano: además §3.1 y §5. Para entender por qué es así: [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>).

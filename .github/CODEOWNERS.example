@@ -1,0 +1,75 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CODEOWNERS — zonas de propiedad, pero ejecutables por git
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# SOLO PARA VAULTS COMPARTIDOS (varias personas). En un vault personal no hace
+# falta: dejá este archivo como .example y no lo actives.
+#
+# Para activarlo:
+#   1. cp .github/CODEOWNERS.example .github/CODEOWNERS
+#   2. Reemplazá @persona-a / @persona-b / @persona-c por handles REALES de
+#      GitHub (deben tener permiso de escritura, o la regla se ignora en silencio).
+#   3. En GitHub → Settings → Rules/Branches → proteger `main` con
+#      "Require review from Code Owners". Sin ese paso esto es solo una
+#      sugerencia: pide review, pero no bloquea el merge.
+#
+# Qué hace: cuando un PR toca una ruta, GitHub pide automáticamente la revisión
+# de quien la posee. Convierte las "zonas de propiedad" del SOP Multi-Agente §2
+# —que son una convención, y por lo tanto frágiles— en una regla que git aplica.
+#
+# ⚠️ ESPACIOS EN LAS RUTAS — leelo antes de editar.
+# Las carpetas de este vault tienen espacios ("00 Sistema"), y CODEOWNERS parte
+# cada línea por whitespace: lo primero es la ruta, lo demás son DUEÑOS. Sin
+# escapar, `/00 Sistema/ @persona-a` se lee como ruta `/00` y dueño `Sistema/`
+# — la regla no hace lo que parece y GitHub no siempre avisa.
+# La solución es escapar cada espacio con backslash:  /00\ Sistema/
+# (Es el mismo tipo de trampa que en .gitattributes, pero con otra sintaxis:
+#  allá no hay escape posible y se usa el comodín `?`.)
+#
+# Otras dos reglas que se olvidan:
+#   · Gana la ÚLTIMA línea que matchea, no la más específica → ordená de
+#     general a específico.
+#   · Una ruta, un dueño inequívoco. Evitá reglas superpuestas.
+#
+# Nombres de ejemplo: Persona A / Persona B / Persona C. Reemplazalos.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Por defecto: el lead revisa todo lo que no tenga dueño explícito abajo.
+*                               @persona-a
+
+# ── Ley y estructura del sistema ─────────────────────────────────────────────
+# Alto riesgo: cambiarlas altera cómo se comporta TODO agente del vault.
+# Un solo dueño, siempre. No delegar.
+/AGENTS.md                      @persona-a
+/CLAUDE.md                      @persona-a
+/llms.txt                       @persona-a
+/Matriz\ Definitiva.md          @persona-a
+/00\ Sistema/                   @persona-a
+/.claude/                       @persona-a
+/.githooks/                     @persona-a
+/.github/                       @persona-a
+
+# ── Navegación (hotspots: los tocan casi todas las tareas) ───────────────────
+# Ver SOP Git §11.3 — regla de un solo escritor. No paralelizar acá.
+/01\ Index/                     @persona-a
+/02\ MOCs/                      @persona-a
+
+# ── Trabajo compartido ───────────────────────────────────────────────────────
+/03\ Proyectos/                 @persona-b @persona-c
+/04\ Knowledge/                 @persona-a @persona-b @persona-c
+/06\ Raw/                       @persona-a @persona-b @persona-c
+
+# ── Registro personal: cada quien es dueño de su carpeta ─────────────────────
+# Una subcarpeta por persona elimina de raíz el grueso de los conflictos:
+# el diario es el archivo que más se edita y el que menos se comparte.
+# (Ojo: acá hay DOS espacios que escapar por línea.)
+/05\ Diario/Persona\ A/         @persona-a
+/05\ Diario/Persona\ B/         @persona-b
+/05\ Diario/Persona\ C/         @persona-c
+
+# La bitácora de agentes es append-only y está cubierta por `merge=union`
+# en .gitattributes, pero igual la revisa el lead (es el handoff del sistema).
+/05\ Diario/Bitácora\ Agentes/  @persona-a
+
+# ── Congelado ────────────────────────────────────────────────────────────────
+/99\ Archivo/                   @persona-a

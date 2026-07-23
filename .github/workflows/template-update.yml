@@ -1,0 +1,211 @@
+# Vigila el template upstream y abre un PR cuando hay versión nueva.
+#
+# Por qué existe: `./update.sh --check` funciona, pero alguien tiene que acordarse
+# de correrlo. Con un vault propio eso ya se olvida; con varios vaults de clientes
+# no pasa nunca. Este workflow lo convierte en algo que llega solo, como PR
+# revisable — el mismo patrón que usan cruft/copier para plantillas de proyecto.
+#
+# Nada se mergea solo: abre el PR, lo revisás y decidís. Tu contenido no se toca
+# (update.sh trabaja sobre una whitelist explícita de framework).
+#
+# ── Configuración (una vez, en el repo derivado) ─────────────────────────────
+# Settings → Secrets and variables → Actions → Variables:
+#   OWNER          (requerido)  igual que en tu owner.env
+#   OWNER_EMAIL    (opcional)
+#   OWNER_GITHUB   (opcional)
+#   VAULT_MODE     (opcional)   personal | equipo
+#   TEAM_MEMBERS   (opcional)   solo en modo equipo
+#   UPSTREAM_URL   (opcional)   si tu template no es el de por defecto
+# Settings → Actions → General → Workflow permissions:
+#   "Read and write" + "Allow GitHub Actions to create and approve pull requests"
+#
+# owner.env está gitignoreado (es identidad de la instancia), por eso el workflow
+# lo reconstruye desde esas variables: sin él, update.sh dejaría los placeholders
+# {{OWNER}} sin reemplazar en el PR.
+#
+# No usa actions de terceros a propósito: solo actions/checkout y el `gh` que ya
+# viene en el runner. Una action de terceros en un workflow con permiso de
+# escritura es superficie de cadena de suministro. Ver SOP de Seguridad.
+#
+# ── Límite conocido ──────────────────────────────────────────────────────────
+# El token de Actions NO puede crear ni actualizar archivos de .github/workflows/.
+# Si una versión nueva cambia un workflow, el PR llega SIN esa parte y lo avisa:
+# esos archivos se traen a mano con `./update.sh` local. La alternativa sería un
+# PAT con scope `workflow` guardado como secreto en cada repo derivado — un
+# secreto de larga vida por vault, peor negocio que un paso manual ocasional.
+
+name: template-update
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"   # lunes 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_URL: ${{ vars.UPSTREAM_URL || 'https://github.com/aguilarL3/sistema-maestro-template.git' }}
+      BRANCH: chore/template-update
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ¿Este repo ES el template?
+        id: guard
+        run: |
+          ORIGIN="$(git remote get-url origin)"
+          # Normaliza para comparar (con/sin .git, con/sin credenciales).
+          norm() { printf '%s' "$1" | sed -E 's#^https://[^@]*@#https://#; s#\.git$##'; }
+          if [ "$(norm "$ORIGIN")" = "$(norm "$UPSTREAM_URL")" ]; then
+            echo "Este repo es el template mismo — nada que vigilar."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: ¿Hay versión nueva?
+        id: check
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          git remote add upstream "$UPSTREAM_URL" 2>/dev/null || git remote set-url upstream "$UPSTREAM_URL"
+          git fetch upstream main --quiet
+          LOCAL="$(cat VERSION 2>/dev/null || echo '?')"
+          REMOTE="$(git show upstream/main:VERSION 2>/dev/null || echo '?')"
+          echo "local=$LOCAL · upstream=$REMOTE"
+          echo "local=$LOCAL"   >> "$GITHUB_OUTPUT"
+          echo "remote=$REMOTE" >> "$GITHUB_OUTPUT"
+          if [ "$LOCAL" = "$REMOTE" ]; then
+            echo "Al día." >> "$GITHUB_STEP_SUMMARY"
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Los valores entran por `env:`, NO interpolados con ${{ }} dentro del script:
+      # un `${{ }}` en un `run:` se sustituye como TEXTO antes de que corra el shell,
+      # así que un valor con comillas o $(...) se ejecutaría. Hardening estándar de
+      # GitHub Actions. Como variables adicionales, se escriben con printf '%s'.
+      - name: Reconstruir el archivo de identidad
+        if: steps.check.outputs.update == 'true'
+        env:
+          V_OWNER:        ${{ vars.OWNER }}
+          V_OWNER_EMAIL:  ${{ vars.OWNER_EMAIL }}
+          V_OWNER_GITHUB: ${{ vars.OWNER_GITHUB }}
+          V_VAULT_MODE:   ${{ vars.VAULT_MODE }}
+          V_TEAM_MEMBERS: ${{ vars.TEAM_MEMBERS }}
+        run: |
+          if [ -z "$V_OWNER" ]; then
+            echo "::error::Falta la variable de repo OWNER. Sin ella, update.sh dejaría los placeholders {{OWNER}} sin reemplazar. Configurala en Settings → Secrets and variables → Actions → Variables."
+            exit 1
+          fi
+          {
+            printf 'OWNER="%s"\n'        "$V_OWNER"
+            printf 'OWNER_EMAIL="%s"\n'  "$V_OWNER_EMAIL"
+            printf 'OWNER_GITHUB="%s"\n' "$V_OWNER_GITHUB"
+            printf 'VAULT_MODE=%s\n'     "${V_VAULT_MODE:-personal}"
+            printf 'TEAM_MEMBERS="%s"\n' "$V_TEAM_MEMBERS"
+          } > owner.env
+
+      - name: Aplicar la actualización
+        if: steps.check.outputs.update == 'true'
+        id: apply
+        run: |
+          # `bash ./update.sh` y no `./update.sh`: el bit de ejecución no siempre
+          # sobrevive un clon hecho desde Windows.
+          bash ./update.sh --force | tee /tmp/update.log
+          rm -f owner.env          # gitignoreado igual, pero no lo dejamos en el runner
+
+          # GITHUB_TOKEN NO puede crear ni actualizar archivos de .github/workflows/
+          # (GitHub rechaza el push: "refusing to allow a GitHub App to create or
+          # update workflow ... without workflows permission"). Si el update los
+          # tocó, se revierten y el PR lo dice: esos se actualizan a mano con
+          # ./update.sh local. Preferimos esto a exigir un PAT con scope `workflow`,
+          # que sería un secreto de larga vida en cada repo derivado.
+          WF=false
+          if [ -n "$(git status --porcelain -- .github/workflows)" ]; then
+            WF=true
+            git reset    -q -- .github/workflows || true
+            git checkout -q -- .github/workflows 2>/dev/null || true
+            git clean    -qfd  .github/workflows || true
+          fi
+          echo "workflows=$WF" >> "$GITHUB_OUTPUT"
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            # No terminar en silencio: si lo único que cambió fueron los workflows,
+            # hay trabajo pendiente y nadie se enteraría.
+            {
+              echo "### Hay versión nueva, pero el bot no puede aplicarla sola"
+              echo ""
+              if [ "$WF" = "true" ]; then
+                echo "Lo único que cambió está en \`.github/workflows/\`, que el token de Actions no puede modificar."
+              else
+                echo "La versión difiere pero ningún archivo de la whitelist de framework cambió."
+              fi
+              echo ""
+              echo "Corré \`./update.sh\` localmente y commiteá el resultado."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Abrir o actualizar el PR
+        if: steps.apply.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LOCAL_V: ${{ steps.check.outputs.local }}
+          REMOTE_V: ${{ steps.check.outputs.remote }}
+          WF_SKIPPED: ${{ steps.apply.outputs.workflows }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add -A
+          git commit -m "chore: actualizar framework del template a $REMOTE_V
+
+          Generado por el workflow template-update. Solo archivos de framework
+          (whitelist de update.sh / vault-manifest.json). Contenido intacto."
+          # Trae la rama si ya existía de una corrida anterior: sin la referencia
+          # remota local, --force-with-lease puede abortar por "stale info".
+          git fetch origin "$BRANCH" --quiet 2>/dev/null || true
+          git push --force-with-lease origin "$BRANCH"
+
+          # El commit recién hecho contiene exactamente los archivos actualizados.
+          FILES="$(git show --name-only --format= HEAD | sed '/^$/d; s/^/- /')"
+
+          WF_NOTE=""
+          if [ "$WF_SKIPPED" = "true" ]; then
+            WF_NOTE="> ⚠️ **Los workflows de \`.github/workflows/\` NO están en este PR.** El token de Actions no tiene permiso para modificarlos. Después de mergear, corré \`./update.sh\` localmente una vez para traerlos."
+          fi
+
+          BODY="$(cat <<EOF
+          Hay una versión nueva del template: **$LOCAL_V → $REMOTE_V**.
+
+          Solo se tocaron archivos de **framework** (la whitelist de \`update.sh\`, espejada en \`vault-manifest.json\`). Tu contenido —notas, proyectos, diario, MOCs, \`01 Index\`— no se modifica.
+
+          ### Archivos actualizados
+          $FILES
+
+          $WF_NOTE
+
+          ### Antes de mergear
+          - Revisá \`00 Sistema/CHANGELOG del Sistema.md\` en este diff: dice qué cambió y si hay algo *breaking*.
+          - Si el diff toca \`update.sh\`, corré \`./update.sh\` una vez más localmente después de mergear (la whitelist nueva recién aplica entonces).
+
+          <sub>Automático — workflow \`template-update\`.</sub>
+          EOF
+          )"
+
+          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            gh pr edit "$BRANCH" --title "chore: template $LOCAL_V → $REMOTE_V" --body "$BODY"
+            echo "PR existente actualizado." >> "$GITHUB_STEP_SUMMARY"
+          else
+            gh pr create --head "$BRANCH" --title "chore: template $LOCAL_V → $REMOTE_V" --body "$BODY"
+            echo "PR abierto." >> "$GITHUB_STEP_SUMMARY"
+          fi

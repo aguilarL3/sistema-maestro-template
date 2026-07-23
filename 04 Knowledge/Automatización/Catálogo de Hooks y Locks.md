@@ -78,6 +78,40 @@ A diferencia de los hooks del harness (§ Hooks activos, disparados por Claude C
 |---|---|---|---|---|
 | **Verifier pre-commit — tier-1 determinista** (`.githooks/pre-commit` → `.claude/hooks/verify-commit.sh`) | Self-review determinista: relee los archivos **staged** y valida frontmatter obligatorio (4 campos) + formato de tags en docs de zonas obligatorias (§13.3 gap "verifier"). También corre a mano: `bash .claude/hooks/verify-commit.sh`. Lo mecánico. | **Warn-only** por defecto (reporta, no frena); **estricto** con `.vault-meta/verifier.strict` o `VERIFIER_STRICT=1` (bloquea si hay errores). Fail-open. | `.vault-meta/verifier.disabled` | 🟢 Activo |
 
+### El mismo gate, del lado del servidor
+
+Los git hooks corren en el clon de quien commitea, y solo si esa persona corrió `./setup.sh`. Para que eso no dependa de la máquina de nadie, **`.github/workflows/verify.yml`** invoca **los mismos scripts** en cada PR — no es una implementación paralela que pueda divergir:
+
+```bash
+bash .claude/hooks/secret-scan.sh   --range <base> <head>
+bash .claude/hooks/verify-commit.sh --range <base> <head>
+```
+
+El flag `--range` existe porque en un PR no hay nada staged: selecciona lo que cambió entre dos refs en lugar del índice. Las reglas son idénticas en los dos modos. Reparto de severidad y configuración: [SOP Git y Flujo de Trabajo](<../../00 Sistema/SOP Git y Flujo de Trabajo.md>) §11.5.
+
+## Workflows de GitHub Actions (`.github/workflows/`)
+
+Corren en el servidor, no en tu máquina. Son la capa que no depende de que cada clon esté bien configurado.
+
+| Workflow | Cuándo | Qué hace | Bloquea |
+|---|---|---|---|
+| **`verify.yml`** | cada PR + manual | Invoca `secret-scan.sh` y `verify-commit.sh` en modo `--range`, más enlaces e índices como informativos. Ver arriba. | Solo `secret-scan` (y frontmatter si `VERIFIER_STRICT: "1"`) |
+| **`template-update.yml`** | lunes 09:00 UTC + manual | Compara tu `VERSION` con la del template upstream y, si hay versión nueva, corre `update.sh --force` y **abre un PR** con los archivos de framework actualizados. | No mergea nada solo |
+
+### Sobre `template-update.yml`
+
+`./update.sh --check` ya existía, pero alguien tiene que acordarse de correrlo — con un vault propio eso se olvida, con varios vaults de clientes no pasa nunca. El workflow convierte la actualización en algo que **llega solo, como PR revisable** (el patrón que usan cruft/copier para plantillas de proyecto).
+
+Tres detalles de diseño que importan:
+
+- **Se autodesactiva en el template mismo.** Compara `origin` con `UPSTREAM_URL` normalizando (con/sin `.git`, con/sin credenciales); si son el mismo repo, no hace nada. Sin esto el template intentaría actualizarse contra sí mismo cada lunes.
+- **Reconstruye `owner.env` desde variables del repo** (`OWNER`, `OWNER_EMAIL`, `OWNER_GITHUB`, `VAULT_MODE`, `TEAM_MEMBERS`). `owner.env` está gitignoreado por ser identidad de la instancia; sin él, `personalize.sh` no correría y el PR llegaría con `{{OWNER}}` sin reemplazar. Si falta la variable `OWNER`, el workflow **falla con un error explícito** en vez de abrir un PR malo.
+- **Cero actions de terceros.** Solo `actions/checkout` y el `gh` que ya trae el runner. Una action de terceros dentro de un workflow con permiso de escritura es superficie de cadena de suministro. Ver [SOP de Seguridad](<../../00 Sistema/SOP de Seguridad.md>).
+
+**Límite conocido — los workflows se actualizan a mano.** El token de Actions **no puede crear ni modificar archivos de `.github/workflows/`** (GitHub rechaza el push). Si una versión nueva cambia un workflow, el bot lo revierte, abre el PR con el resto y lo avisa en el cuerpo; si lo único que cambió eran workflows, no abre PR y deja la nota en el resumen de la corrida. En ambos casos se resuelve con un `./update.sh` local. La alternativa —un PAT con scope `workflow` guardado como secreto en cada vault derivado— sería un secreto de larga vida por repo: peor negocio que un paso manual ocasional.
+
+Configuración en el repo derivado: variables en Settings → Secrets and variables → Actions, y "Read and write" + "Allow GitHub Actions to create and approve pull requests" en Settings → Actions → General.
+
 ## Subagentes (`.claude/agents/`)
 
 Agentes que el agente principal **despacha** (vía Task) en **contexto fresco**, para tareas que necesitan una segunda opinión independiente. No se disparan por evento: los invoca el owner cuando corresponde.

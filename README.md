@@ -46,6 +46,17 @@ cd mi-sistema
 
 La personalización es automática: el onboarding escribe `owner.env` y corre `personalize.sh` (los updates re-personalizan solos). Sin agente: `cp owner.env.example owner.env`, editalo y `./personalize.sh`.
 
+### ¿Varias personas en el mismo vault?
+
+El sistema asume un dueño humano, pero soporta equipos como capa **opt-in**. En `owner.env`:
+
+```bash
+VAULT_MODE=equipo
+TEAM_MEMBERS="Persona A,Persona B,Persona C"
+```
+
+`./team-mode.sh` —lo corren solos `setup.sh` y `update.sh`— crea una carpeta de diario por persona e instala `.github/CODEOWNERS`, que convierte las zonas de propiedad en una regla que git aplica. El flujo completo (un repo por organización, un clon por persona, ramas cortas, PR, escritor único sobre los archivos que todos tocan) está en `SOP Git y Flujo de Trabajo` §11; el cruce con los agentes, en `SOP Multi-Agente` §5. En modo `personal` —el default— nada de esto se activa.
+
 ## Cómo recibir actualizaciones
 
 El template evoluciona. **Tu contenido nunca se toca**: `update.sh` solo reemplaza archivos de framework (whitelist explícita, espejada en `vault-manifest.json`). El repo distingue tres categorías:
@@ -60,6 +71,14 @@ El template evoluciona. **Tu contenido nunca se toca**: `update.sh` solo reempla
 ./update.sh --check    # ¿hay versión nueva?
 ./update.sh            # interactivo (o --dry-run / --force)
 ```
+
+### …o que te lleguen solas
+
+`--check` funciona, pero hay que acordarse de correrlo. El workflow **`.github/workflows/template-update.yml`** lo hace por vos: cada lunes compara tu versión con la del template y, si hay una nueva, abre un **PR** con los archivos de framework actualizados. Nada se mergea solo — lo revisás y decidís.
+
+Para activarlo en tu repo, en Settings → Secrets and variables → Actions → Variables: `OWNER` (requerido; `owner.env` está gitignoreado, así que el workflow lo reconstruye desde ahí), y opcionalmente `OWNER_EMAIL`, `OWNER_GITHUB`, `VAULT_MODE`, `TEAM_MEMBERS`, `UPSTREAM_URL`. Además, en Settings → Actions → General: permisos de *read and write* y permitir que Actions cree PRs.
+
+Un límite que conviene saber: el token de Actions no puede modificar archivos de `.github/workflows/`. Si una versión nueva cambia un workflow, el PR llega sin esa parte y lo dice; se completa con un `./update.sh` local.
 
 ## Estructura
 

@@ -41,6 +41,7 @@ okf_version: "0.1"
 * [owner.env](<owner.env.example>)
 * [personalize](<personalize.sh>)
 * [setup](<setup.sh>)
+* [team-mode](<team-mode.sh>)
 * [update](<update.sh>)
 * [vault-manifest](<vault-manifest.json>)
 * [VERSION](<VERSION>)

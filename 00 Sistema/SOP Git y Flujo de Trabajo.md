@@ -2,6 +2,7 @@
 type: How-to
 title: "SOP Git y Flujo de Trabajo"
 tags: [sop, git, infraestructura, workflow]
+description: "Flujo operativo diario del vault con Git: comandos, convenciones, troubleshooting y §11 para vaults compartidos."
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
@@ -372,6 +373,107 @@ git branch -D experimento-X
 - Conventional Commits spec: https://www.conventionalcommits.org/
 - Obsidian Git plugin docs: https://publish.obsidian.md/git-doc
 - Atlassian Git tutorials: https://www.atlassian.com/git/tutorials
+
+---
+
+## 11. Vault compartido (varias personas)
+
+> **Aplica solo si el vault tiene más de un dueño humano** — un equipo, un estudio, una organización. En un vault personal saltate esta sección entera: §1-§10 alcanzan.
+>
+> No confundir con [SOP Multi-Agente](<SOP Multi-Agente.md>), que resuelve **varios agentes, un dueño, una máquina** (worktrees). Acá el eje es otro: **varias personas, varias máquinas, varias cuentas**. Los dos ejes se combinan sin problema — cada persona puede correr sus propios agentes en worktrees dentro de su clon.
+
+En los ejemplos: **Persona A** (lead), **Persona B**, **Persona C**; la empresa es `<organización>`.
+
+### 11.1 El modelo: un repo por organización, un clon por persona
+
+```
+        GitHub — <organización>/vault   (main protegido)
+                        ▲
+        ┌───────────────┼───────────────┐
+     clon A          clon B          clon C
+   Persona A       Persona B       Persona C
+   rama: a/<tema>  rama: b/<tema>  rama: c/<tema>
+        │               │               │
+   (worktrees de sus agentes, si los usa)
+```
+
+El aislamiento entre personas **es el clon**; el worktree sigue siendo el aislamiento entre agentes de una misma persona.
+
+**Un repo por organización.** No metas varias organizaciones en un repo separándolas por ramas: un merge distraído filtra datos de una en otra, y los permisos de GitHub son por repo, no por rama. Repos separados = aislamiento real + control de acceso real.
+
+### 11.2 Reglas del flujo
+
+| Regla | Por qué |
+|---|---|
+| Nadie commitea directo a `main` | `main` es el vault que todos abren en Obsidian; tiene que estar siempre sano |
+| Rama por persona + tema: `b/moc-clientes` | trazable y acotada |
+| Ramas cortas — se abren y cierran el mismo día | el markdown en prosa mergea mal; cuanto menos vive la rama, menos diverge |
+| PR → revisión → squash merge | la revisión de markdown cuesta minutos y evita drift estructural |
+| `git pull` al abrir sesión, PR al cerrarla | ritual fijo; sin esto se edita sobre versiones viejas |
+| Integrar de a una y **rebasear las ramas restantes** sobre el `main` nuevo | evita el conflicto tardío en cascada |
+
+**Configuración en GitHub** (Settings → Rules, sobre `main`):
+
+- Require a pull request before merging
+- Require review from Code Owners → ver `.github/CODEOWNERS.example`
+- Require status checks to pass → el workflow de verificación
+- Block force pushes
+
+> ⚠️ **Al editar `CODEOWNERS`: escapá los espacios de las rutas.** Las carpetas de este vault los tienen (`00 Sistema`), y CODEOWNERS parte cada línea por whitespace — lo primero es la ruta, lo demás son **dueños**. Sin escapar, `/00 Sistema/ @persona-a` se lee como ruta `/00` con dueño `Sistema/`: la regla no protege nada y falla en silencio. Se escribe `/00\ Sistema/`. Es la misma clase de trampa que en `.gitattributes`, con otra sintaxis (allá no hay escape y se usa el comodín `?`).
+
+### 11.3 Regla del escritor único sobre los hotspots
+
+El modo de falla dominante cuando varios actores trabajan en paralelo no son las notas: son los **archivos que casi toda tarea toca**. En este vault:
+
+```
+index.md · llms.txt · 01 Index/** · 02 MOCs/** · Dashboard-*.md · SOPS.md
+```
+
+Sobre esos archivos **no se paraleliza: se serializa**. Los edita el lead, o los edita una persona por vez. Es la regla que más conflictos evita por unidad de esfuerzo.
+
+### 11.4 Registro personal: una carpeta por persona
+
+```
+05 Diario/
+├── Persona A/
+├── Persona B/
+├── Persona C/
+└── Bitácora Agentes/     ← compartida, append-only (merge=union)
+```
+
+El diario es el archivo más editado y el menos compartido: separarlo por persona elimina de raíz el grueso de los conflictos. La bitácora de agentes sí es común —es el handoff del sistema— y por eso está cubierta por `merge=union` en `.gitattributes`.
+
+> ⚠️ **El hook de sesión inyecta la ÚLTIMA entrada de la bitácora.** Con varias personas trabajando en paralelo eso deja de ser un handoff coherente: la última entrada puede ser de otra persona en otro tema. En modo equipo, leé el handoff como *contexto del vault*, no como *continuación de tu trabajo*.
+
+### 11.5 El gate corre también en el servidor
+
+Los hooks de `.githooks/` (secret-scan, verifier de frontmatter) corren en el clon de cada persona, y solo si esa persona corrió `setup.sh`. **En un vault compartido eso no es una garantía, es una esperanza.**
+
+Por eso el mismo verificador corre como status check del PR: **`.github/workflows/verify.yml`**. No es un chequeo paralelo que pueda divergir — invoca **los mismos scripts** de `.claude/hooks/`, en modo rango:
+
+```bash
+bash .claude/hooks/secret-scan.sh   --range <base> <head>
+bash .claude/hooks/verify-commit.sh --range <base> <head>
+```
+
+(En un PR no hay nada staged; el modo `--range` selecciona lo que cambió entre la base y la cabeza en lugar del índice. Las reglas son idénticas en los dos modos.)
+
+| Chequeo | En el PR | Por qué |
+|---|---|---|
+| **secret-scan** | 🔴 bloquea | Un secreto que llegó a una rama publicada **ya se filtró**. Rotarlo primero, limpiar el historial después. |
+| **verify-commit** (frontmatter) | ⚠️ avisa | El sistema normaliza el frontmatter **al tocar**, no retroactivamente. Para bloquear: `VERIFIER_STRICT: "1"` en el workflow. |
+| **check-links** | ℹ️ informa | Los rotos incluyen promesas `[[wikilink]]` intencionales; bloquear sería ruido. |
+| **índices generados** | ℹ️ informa | Si regenerar da diff ≠ 0, alguien commiteó sin el hook. |
+
+Con `main` protegido y "Require status checks to pass", un clon mal configurado deja de poder mergear.
+
+### 11.6 Alternativa: edición simultánea real (CRDT)
+
+Existen plugins de Obsidian para co-edición en tiempo real (Relay, Peerdraft, Team Relay — todos sobre CRDT/Yjs), con un modelo de *compartir carpetas, no vaults*: lo compartido se sincroniza y lo personal queda privado. Resuelven lo único que git no resuelve — dos personas en el mismo párrafo a la vez.
+
+**Cuándo considerarlos:** equipo no técnico que no va a abrir una terminal nunca.
+
+**Por qué no reemplazan a git acá:** sin commit no hay pre-commit hook, ni verifier, ni secret-scan, ni historial revisable. Este sistema está construido sobre el gate del commit. Si se adoptan, que sea **encima** de git, no en lugar de git.
 
 ---
 
