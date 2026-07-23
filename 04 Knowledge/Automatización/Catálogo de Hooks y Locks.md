@@ -72,19 +72,26 @@ Scripts en `.claude/hooks/` que **no** se cablean a eventos: se corren a mano (o
 
 ## Git hooks (versionados en `.githooks/`)
 
-A diferencia de los hooks del harness (§ Hooks activos, disparados por Claude Code), estos corren en **cada `git commit`** — lo haga un agente o un humano. Se versionan en `.githooks/` y se activan con `git config core.hooksPath .githooks` (setup local, una vez por clon, como `core.longpaths`).
+A diferencia de los hooks del harness (§ Hooks activos, disparados por Claude Code), estos corren en **cada `git commit`** — lo haga un agente o un humano. Se versionan en `.githooks/` y se activan con `git config core.hooksPath .githooks` (setup local, una vez por clon, como `core.longpaths`). Como `core.hooksPath` apunta a la **carpeta**, un hook nuevo que llegue por `update.sh` queda activo sin volver a configurar nada.
 
 | Hook | Qué hace | Modo | Kill-switch | Estado |
 |---|---|---|---|---|
 | **Verifier pre-commit — tier-1 determinista** (`.githooks/pre-commit` → `.claude/hooks/verify-commit.sh`) | Self-review determinista: relee los archivos **staged** y valida frontmatter obligatorio (4 campos) + formato de tags en docs de zonas obligatorias (§13.3 gap "verifier"). También corre a mano: `bash .claude/hooks/verify-commit.sh`. Lo mecánico. | **Warn-only** por defecto (reporta, no frena); **estricto** con `.vault-meta/verifier.strict` o `VERIFIER_STRICT=1` (bloquea si hay errores). Fail-open. | `.vault-meta/verifier.disabled` | 🟢 Activo |
+| **Verificador de centinelas** (`.githooks/pre-commit` → `.claude/hooks/sentinels-verify.py`) | Equivalente **agnóstico** del guardián `PreToolUse`: toma los bloques `<!-- @user -->` de la versión anterior de cada `.md` que cambió y exige que sigan textuales en la nueva. Cubre alteración **y borrado del archivo**. Ignora los marcadores que viven dentro de bloques de código (las guías del vault los usan como ejemplo). Corre también en el PR (`verify.yml`). | **Bloquea** (exit 1). Escapes: `SENTINELS_OK=1`. Fail-open ante error. | `.vault-meta/sentinels.disabled` (compartido con el guard) | 🟢 Activo |
+| **Guardia de push** (`.githooks/pre-push`) | Equivalente **agnóstico** de la regla `FORCE_PUSH` de `security-guard`: bloquea el push **no fast-forward**, que es lo que `--force` de verdad hace. Detecta el **efecto**, no la bandera → tampoco pasa un `git push origin +main`. Avisa (sin bloquear) al borrar una rama remota. | **Bloquea** (exit 1). Escape: `ALLOW_FORCE_PUSH=1`. Fail-open si no puede determinar la relación entre los commits. | `.vault-meta/prepush.disabled` | 🟢 Activo |
+
+> **Por qué existen los dos de abajo.** El guardián `PreToolUse` es temprano y preciso, pero **solo protege a Claude Code**: los hooks de `.claude/settings.json` no corren en Codex ni en ningún otro harness. Estos corren en el gate de git, que sí es universal. Tarde, pero para todos. El reparto es deliberado: el guard evita que el agente **escriba**; el verificador evita que lo escrito **entre a la historia**. Ver `AGENTS.md` §Trabajo en paralelo con otros agentes.
+>
+> Lo que **no** tiene equivalente agnóstico —y sigue siendo un hueco declarado— es la salida de red por shell y la lectura de archivos de credenciales: ninguna de las dos es observable en un commit.
 
 ### El mismo gate, del lado del servidor
 
 Los git hooks corren en el clon de quien commitea, y solo si esa persona corrió `./setup.sh`. Para que eso no dependa de la máquina de nadie, **`.github/workflows/verify.yml`** invoca **los mismos scripts** en cada PR — no es una implementación paralela que pueda divergir:
 
 ```bash
-bash .claude/hooks/secret-scan.sh   --range <base> <head>
-bash .claude/hooks/verify-commit.sh --range <base> <head>
+bash    .claude/hooks/secret-scan.sh      --range <base> <head>
+python3 .claude/hooks/sentinels-verify.py --range <base> <head>
+bash    .claude/hooks/verify-commit.sh    --range <base> <head>
 ```
 
 El flag `--range` existe porque en un PR no hay nada staged: selecciona lo que cambió entre dos refs en lugar del índice. Las reglas son idénticas en los dos modos. Reparto de severidad y configuración: [SOP Git y Flujo de Trabajo](<../../00 Sistema/SOP Git y Flujo de Trabajo.md>) §11.5.
@@ -95,7 +102,7 @@ Corren en el servidor, no en tu máquina. Son la capa que no depende de que cada
 
 | Workflow | Cuándo | Qué hace | Bloquea |
 |---|---|---|---|
-| **`verify.yml`** | cada PR + manual | Invoca `secret-scan.sh` y `verify-commit.sh` en modo `--range`, más enlaces e índices como informativos. Ver arriba. | Solo `secret-scan` (y frontmatter si `VERIFIER_STRICT: "1"`) |
+| **`verify.yml`** | cada PR + manual (`gh workflow run verify.yml`) | Invoca `secret-scan.sh`, `sentinels-verify.py` y `verify-commit.sh` en modo `--range`, más enlaces e índices como informativos. Ver arriba. Sin payload de PR verifica el último commit. | `secret-scan` y `sentinels-verify` (y frontmatter si `VERIFIER_STRICT: "1"`) |
 | **`template-update.yml`** | lunes 09:00 UTC + manual | Compara tu `VERSION` con la del template upstream y, si hay versión nueva, corre `update.sh --force` y **abre un PR** con los archivos de framework actualizados. | No mergea nada solo |
 
 ### Sobre `template-update.yml`

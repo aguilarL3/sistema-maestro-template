@@ -166,7 +166,17 @@ Este vault se edita con varios agentes a la vez (Claude Code, Codex, y los que v
 - **Identidad propia en cada commit:** `git -c user.name="<agente>" -c user.email="<agente>@agent.local" commit` + trailer `Agent: <agente>` en el mensaje. Usá `git -c` por commit: `git config` dentro de un worktree escribe en la config compartida y contamina `main`.
 - **Pausá el auto-sync de Obsidian** mientras corran en paralelo.
 
-> **Si no sos Claude Code, trabajás sin red hasta el commit.** Los hooks declarados en `.claude/settings.json` (inyección de contexto de sesión, `security-guard`, centinelas de edición, registro automático en la bitácora) son específicos de ese harness y **no se ejecutan** en otros agentes. Lo que sí corre para todos es el gate de `git commit` (`core.hooksPath=.githooks`: secret-scan → index → verifier). En consecuencia, si sos otro agente: quedate dentro de tu zona asignada, no toques `00 Sistema/` ni los archivos-ley sin pedido explícito, y **registrá tu handoff en la bitácora de agentes antes de cerrar** — a vos nadie te lo va a recordar.
+> **Si no sos Claude Code, trabajás casi sin red hasta el commit.** Los hooks declarados en `.claude/settings.json` (inyección de contexto de sesión, `security-guard`, guardián de centinelas, registro automático en la bitácora) son específicos de ese harness y **no se ejecutan** en otros agentes. Lo que sí corre para todos, con `core.hooksPath=.githooks`, es el gate de git: en `commit` → secret-scan → **centinelas `@user`** → índices → verifier; en `push` → bloqueo de reescritura de historia publicada. Es tarde pero es universal. Lo que **no** tiene equivalente agnóstico —y por lo tanto queda enteramente en tu criterio— es el control de salida de red por shell y de lectura de archivos de credenciales: eso no se puede observar en un commit. En consecuencia, si sos otro agente: quedate dentro de tu zona asignada, no toques `00 Sistema/` ni los archivos-ley sin pedido explícito, no leas `.env` ni credenciales ni saques datos del vault por `curl`, y **registrá tu handoff en la bitácora de agentes antes de cerrar** — a vos nadie te lo va a recordar.
+
+### Si el vault tiene más de un dueño humano
+
+Se reconoce por `VAULT_MODE=equipo` en `owner.env`. Cambian tres cosas, y ninguna es opcional — el detalle está en [SOP Multi-Agente](<00 Sistema/SOP Multi-Agente.md>) §5 y [SOP Git y Flujo de Trabajo](<00 Sistema/SOP Git y Flujo de Trabajo.md>) §11:
+
+- **El autor del commit es la persona, no vos.** `Author:` = quien te lanzó; vos bajás a trailer `Agent:` + `Co-Authored-By:`. Esto **invierte** la regla de identidad de arriba, que vale solo en vault de un solo dueño. Un commit firmado por `<agente>@agent.local` es un commit sin nadie que responda por él, y además se revisa menos.
+- **Tu zona se cruza con la de tu humano.** Escribís donde tu zona por tarea (SOP Multi-Agente §2) **y** la zona de tu humano (`.github/CODEOWNERS`) se solapan. Fuera de esa intersección proponés, no escribís.
+- **Al PR llega una rama por persona, no una por agente.** Tus worktrees los integra tu humano localmente antes de abrir el PR. Y ese PR no lo aprueban ni vos ni tu humano.
+
+> La bitácora deja de ser tu handoff: con varias personas, la última entrada puede ser de otro en otro tema. Leela como contexto del vault, no como continuación de tu trabajo. Al escribir la tuya, identificá **persona y agente** (`## 2026-07-23 — Persona B / Codex`) y redactá el "qué debe saber el próximo" para cualquiera del equipo, no para tu yo de mañana.
 
 ---
 

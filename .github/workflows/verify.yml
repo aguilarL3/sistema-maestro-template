@@ -8,6 +8,9 @@
 #
 # Qué bloquea y qué no (deliberado):
 #   secret-scan   → BLOQUEA. Un secreto en una rama publicada ya se filtró.
+#   sentinels     → BLOQUEA. Los bloques <!-- @user --> son propiedad humana; que
+#                   un PR los altere no se negocia. Es el equivalente agnóstico
+#                   del guard PreToolUse, que solo protege a Claude Code.
 #   verify-commit → avisa. La regla "no retroactivo" del sistema dice que el
 #                   frontmatter se normaliza al tocar, no de golpe. Para
 #                   bloquear: poné VERIFIER_STRICT en "1" más abajo.
@@ -64,6 +67,12 @@ jobs:
           BASE: ${{ steps.range.outputs.base }}
           HEAD: ${{ steps.range.outputs.head }}
         run: bash .claude/hooks/secret-scan.sh --range "$BASE" "$HEAD"
+
+      - name: Centinelas @user (bloquea)
+        env:
+          BASE: ${{ steps.range.outputs.base }}
+          HEAD: ${{ steps.range.outputs.head }}
+        run: python3 .claude/hooks/sentinels-verify.py --range "$BASE" "$HEAD"
 
       # ── AVISO (bloquea solo con VERIFIER_STRICT=1) ───────────────────────────
       - name: Frontmatter y tags

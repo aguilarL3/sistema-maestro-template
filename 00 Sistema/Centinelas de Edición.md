@@ -52,7 +52,16 @@ Reglas:
 
 ## 3. El guardián (enforcement automático)
 
-La convención no depende de que el agente "se acuerde": la **obliga** un hook.
+La convención no depende de que el agente "se acuerde": la **obligan** dos hooks, en dos momentos distintos.
+
+| Capa | Cuándo | A quién cubre |
+|---|---|---|
+| `sentinels-guard.sh` + `.py` | `PreToolUse`, antes del `Write`/`Edit` | **solo Claude Code** — los hooks de `settings.json` no corren en otros harness |
+| `sentinels-verify.py` | `git commit` y PR (`verify.yml`) | **cualquier agente y cualquier humano** |
+
+El reparto es deliberado: el guardián evita que el agente **escriba** dentro de tu bloque; el verificador evita que lo escrito **entre a la historia**. El segundo llega tarde, pero es el único que existe si trabajás con Codex o con cualquier otro agente. Ver `AGENTS.md` §Trabajo en paralelo con otros agentes.
+
+### 3.1 El guardián (`PreToolUse`)
 
 - **`.claude/hooks/sentinels-guard.sh`** (+ `sentinels-guard.py`) corre en `PreToolUse` (antes de cada `Write`/`Edit`).
 - Lógica:
@@ -62,7 +71,16 @@ La convención no depende de que el agente "se acuerde": la **obliga** un hook.
 - **FAIL-OPEN:** ante cualquier duda o error, **permite** (nunca frena trabajo legítimo por un bug). Los bloques `@generated` **no** se protegen (son del agente).
 - **Kill-switch:** crear `.vault-meta/sentinels.disabled` desactiva el guard.
 
-> Como hoy ninguna nota tiene centinelas, el guard está activo pero **inerte**: recién actúa cuando empezás a marcar bloques `@user`.
+### 3.2 El verificador (`git commit` y PR)
+
+- **`.claude/hooks/sentinels-verify.py`**, invocado por `.githooks/pre-commit` y por el workflow `verify.yml`.
+- Lógica: toma los bloques `@user` de la versión **anterior** de cada `.md` que cambió y exige que su contenido siga textual en la versión nueva. Cubre también el caso de **borrar el archivo entero** con contenido protegido adentro.
+- **Bloquea** (exit 1). Escapes: `SENTINELS_OK=1 git commit …` para un cambio deliberado tuyo, o el mismo kill-switch `.vault-meta/sentinels.disabled`.
+- Compara **blob contra blob** (lo commiteado vs. lo staged), nunca contra el working tree: así el final de línea CRLF/LF no puede producir un falso positivo.
+
+> **Los marcadores que son ejemplos no cuentan.** Ambos hooks ignoran los que viven dentro de código —bloques ``` y spans entre backticks—. Sin eso, un marcador de apertura suelto en un ejemplo (como el `<!--@user-->` de §2, que ilustra que los espacios son flexibles) empareja con el primer cierre real que aparezca más abajo y crea una **región fantasma** que "protege" media nota y bloquea ediciones legítimas. Pasaba de verdad en esta misma guía; corregido 2026-07-23.
+
+> Como hoy ninguna nota tiene centinelas reales, ambas capas están activas pero **inertes**: recién actúan cuando empezás a marcar bloques `@user`.
 
 ---
 
@@ -74,7 +92,7 @@ La convención no depende de que el agente "se acuerde": la **obliga** un hook.
 4. Si necesitás que la IA sí modifique algo protegido, o quitás la protección (sacás los marcadores) o desactivás el guard temporalmente con el kill-switch.
 
 ### Limitación conocida (v1)
-Una edición que **cruza el borde** de un bloque (parte dentro, parte fuera) puede no detectarse (fail-open). El caso común —editar de lleno dentro de un `@user`— sí se bloquea.
+Una edición que **cruza el borde** de un bloque (parte dentro, parte fuera) puede no detectarse en el guardián `PreToolUse` (fail-open). El caso común —editar de lleno dentro de un `@user`— sí se bloquea. **El verificador de commit no tiene esta limitación**: no mira la operación de edición sino el resultado, así que un bloque alterado por el borde igual se detecta al commitear. Es otra razón por la que las dos capas se complementan.
 
 ## 5. Referencias
 - Por qué existe → [Orquestación Multi-Agente Abierta](<Orquestación Multi-Agente Abierta.md>) §13.3 (prior art: `obsidian-second-brain`, edición con centinelas)

@@ -1,17 +1,37 @@
 #!/usr/bin/env bash
 # Git hook pre-commit (versionado en .githooks/, activado con core.hooksPath).
-# Delega en el verifier del sistema. A diferencia de los hooks del harness
+# Delega en los verificadores del sistema. A diferencia de los hooks del harness
 # (.claude/hooks/ en settings.json), este corre en CADA `git commit`, lo haga
 # un agente o un humano. Ver [[Verifier pre-commit (self-review)]].
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+PY="$(command -v python3 || command -v python || true)"
+
 # 1) Gate de seguridad: bloquea secretos antes de que entren al historial.
 bash "$ROOT/.claude/hooks/secret-scan.sh" || exit 1
-# 2) Índices OKF: regenera el index.md de las carpetas con .md staged y lo suma al commit.
-PY="$(command -v python3 || command -v python || true)"
+
+# 2) Centinelas @user: equivalente agnóstico del guard PreToolUse, que solo
+#    protege a Claude Code. Bloquea si un bloque protegido se alteró.
+#    Sin python -> fail-open (igual que el guard).
+if [ -n "$PY" ]; then
+  "$PY" "$ROOT/.claude/hooks/sentinels-verify.py" || exit 1
+fi
+
+# 3) Índices OKF: regenera el index.md de las carpetas con .md staged y lo suma al commit.
 if [ -n "$PY" ]; then
   "$PY" "$ROOT/.claude/hooks/generate-index.py" --staged 2>/dev/null | while IFS= read -r idx; do
     [ -n "$idx" ] && git -C "$ROOT" add -- "$idx" 2>/dev/null
   done
 fi
-# 3) Verifier de conocimiento (frontmatter + tags).
+
+# 4) Aviso (no bloquea): el commit toca archivos de control o archivos-ley.
+#    Un cambio ahí altera cómo se comporta TODO agente del vault, así que se
+#    hace visible en el momento del commit en vez de descubrirse en el diff.
+CTRL="$(git -C "$ROOT" -c core.quotepath=false diff --cached --name-only -- \
+        .claude .githooks .github .mcp.json AGENTS.md CLAUDE.md llms.txt 2>/dev/null)"
+if [ -n "$CTRL" ]; then
+  echo "pre-commit: ⚠ este commit toca archivos de CONTROL o de ley — revisá que sea intencional:"
+  printf '%s\n' "$CTRL" | sed 's/^/    /'
+fi
+
+# 5) Verifier de conocimiento (frontmatter + tags).
 exec bash "$ROOT/.claude/hooks/verify-commit.sh"

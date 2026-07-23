@@ -15,7 +15,7 @@
 * [SOP Career OS](<SOP Career OS.md>)
 * [SOP Conectores](<SOP Conectores.md>)
 * [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>)
-* [SOP de Seguridad](<SOP de Seguridad.md>)
+* [SOP de Seguridad](<SOP de Seguridad.md>) - Modelo de defensa en capas del vault, checklists antes de instalar y qué hacer ante un secreto filtrado; el gate de git es la única capa agnóstica de harness.
 * [SOP Discovery — Investigación Previa](<SOP Discovery.md>)
 * [SOP Evergreen Notes](<SOP Evergreen Notes.md>)
 * [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) - Flujo operativo diario del vault con Git: comandos, convenciones, troubleshooting y §11 para vaults compartidos.

@@ -2,6 +2,7 @@
 type: How-to
 title: "SOP de Seguridad"
 tags: [sop, seguridad, prompt-injection, cadena-de-suministro, multiagente]
+description: "Modelo de defensa en capas del vault, checklists antes de instalar y qué hacer ante un secreto filtrado; el gate de git es la única capa agnóstica de harness."
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
@@ -41,7 +42,9 @@ De más fuerte (determinista, no depende del modelo) a más débil (asistencia):
 **Qué trae este template (seguro por defecto):**
 - ✅ Capa 1 — bloque `deny` en `.claude/settings.json` (**versionado → viaja en el clon**): red por shell (`curl`/`wget`), `git push --force`, lectura de `.env`/`.pem`/`id_rsa`/`credentials.json`, y salir del proyecto (`Read/Edit(../**)`). Ampliá el `allow` en `settings.local.json` (personal, gitignored) según tu flujo.
 - ✅ Capa 2 — `security-guard.sh` (`PreToolUse Bash|Read`) cableado: bloquea salida de red por shell, lectura de secretos, `git push --force` y escritura por shell a config; escanea el comando entero (ataja evasiones del `deny` por-prefijo). Fail-open + kill-switch `.vault-meta/security-guard.disabled`.
-- ✅ Capa 3 — `secret-scan.sh` en `.githooks/pre-commit`: bloquea el commit si detecta un secreto staged (antes de que entre al historial). `.gitignore` ya ignora `.env*`/claves/credenciales.
+- ✅ Capa 3 — el **gate de git** (`core.hooksPath=.githooks`), la única capa **agnóstica de harness**: `secret-scan.sh` bloquea el commit si detecta un secreto staged (antes de que entre al historial); `sentinels-verify.py` bloquea si el commit altera un bloque `<!-- @user -->`; y `.githooks/pre-push` bloquea el push **no fast-forward** —lo que `--force` de verdad hace— detectando el efecto y no la bandera (`ALLOW_FORCE_PUSH=1` para el caso deliberado). `.gitignore` ya ignora `.env*`/claves/credenciales.
+
+> ⚠️ **Las capas 1 y 2 son de Claude Code solamente.** El `deny` de `settings.json` y `security-guard.sh` no existen para Codex ni para ningún otro harness: ahí el primer control real es la capa 3, y llega recién al commit. Por eso la capa 3 **duplica a propósito** la regla de `--force`. Lo que no se puede duplicar ahí —porque no es observable en un commit— es la salida de red por shell y la lectura de credenciales: contra un agente que no es Claude Code eso queda en la ley (`AGENTS.md` §Trabajo en paralelo con otros agentes) y en la elección de qué agente corrés.
 - ✅ Capa 4 — `security-audit.sh` (checker CLI): corré `bash .claude/hooks/security-audit.sh` periódicamente (o vía [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) Dimensión 3) → secretos committeados, integridad `.gitignore`, hooks/plugins nuevos, wiring.
 - ✅ Capa 5 — [Skill - Revisión de Seguridad](<../04 Knowledge/Skills/Skill - Revisión de Seguridad.md>) (`/revisar-seguridad`): recorre estos checklists §3 a demanda antes de instalar/abrir algo. Asiste, no garantiza.
 

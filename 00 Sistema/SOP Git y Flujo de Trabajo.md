@@ -280,6 +280,8 @@ Si Git aborta un merge, leé el mensaje antes de actuar. La diferencia entre `gi
 ### 6.6 Nunca `git push --force` salvo emergencia
 Sobreescribe el histórico remoto. Si trabajás en multi-device, puede borrar trabajo del otro dispositivo. Si tenés que forzar (por ejemplo después de un reset), usá `--force-with-lease` que es más seguro.
 
+> Desde 2026-07-23 esto **lo aplica un hook**, no la buena memoria: `.githooks/pre-push` bloquea todo push **no fast-forward** (que es lo que `--force` de verdad hace). Detecta el efecto y no la bandera, así que tampoco pasa un `git push origin +main`. Si el force es deliberado: `ALLOW_FORCE_PUSH=1 git push --force-with-lease`. Corre en cualquier harness y también para vos — es el equivalente agnóstico de la regla que `security-guard` solo aplicaba dentro de Claude Code.
+
 ### 6.7 Cuando agregues credenciales o secrets
 **No los commits.** Si por error commiteás un token o password:
 1. Cambiarlo inmediatamente en el sistema de origen.
@@ -452,8 +454,9 @@ Los hooks de `.githooks/` (secret-scan, verifier de frontmatter) corren en el cl
 Por eso el mismo verificador corre como status check del PR: **`.github/workflows/verify.yml`**. No es un chequeo paralelo que pueda divergir — invoca **los mismos scripts** de `.claude/hooks/`, en modo rango:
 
 ```bash
-bash .claude/hooks/secret-scan.sh   --range <base> <head>
-bash .claude/hooks/verify-commit.sh --range <base> <head>
+bash    .claude/hooks/secret-scan.sh      --range <base> <head>
+python3 .claude/hooks/sentinels-verify.py --range <base> <head>
+bash    .claude/hooks/verify-commit.sh    --range <base> <head>
 ```
 
 (En un PR no hay nada staged; el modo `--range` selecciona lo que cambió entre la base y la cabeza en lugar del índice. Las reglas son idénticas en los dos modos.)
@@ -461,6 +464,7 @@ bash .claude/hooks/verify-commit.sh --range <base> <head>
 | Chequeo | En el PR | Por qué |
 |---|---|---|
 | **secret-scan** | 🔴 bloquea | Un secreto que llegó a una rama publicada **ya se filtró**. Rotarlo primero, limpiar el historial después. |
+| **sentinels-verify** | 🔴 bloquea | Los bloques `<!-- @user -->` son propiedad humana. Que un PR los altere no se negocia, y en modo equipo el dueño del bloque puede no ser quien revisa. |
 | **verify-commit** (frontmatter) | ⚠️ avisa | El sistema normaliza el frontmatter **al tocar**, no retroactivamente. Para bloquear: `VERIFIER_STRICT: "1"` en el workflow. |
 | **check-links** | ℹ️ informa | Los rotos incluyen promesas `[[wikilink]]` intencionales; bloquear sería ruido. |
 | **índices generados** | ℹ️ informa | Si regenerar da diff ≠ 0, alguien commiteó sin el hook. |

@@ -35,7 +35,63 @@ def block(msg):
         sys.stderr.write(msg)
     sys.exit(2)
 
-USER_RE = re.compile(r'<!--\s*@user\s*-->(.*?)<!--\s*/@user\s*-->', re.DOTALL)
+OPEN_RE = re.compile(r'<!--\s*@user\s*-->')
+CLOSE_RE = re.compile(r'<!--\s*/@user\s*-->')
+FENCE_RE = re.compile(r'^\s*(```|~~~)')
+INLINE_CODE_RE = re.compile(r'(`+)(?:(?!\1).)*\1')
+
+
+def code_spans(text):
+    """Rangos [inicio, fin) que son código: fences y spans inline entre backticks."""
+    spans = []
+    pos = 0
+    in_fence = False
+    start = 0
+    for line in text.splitlines(keepends=True):
+        if FENCE_RE.match(line):
+            if in_fence:
+                spans.append((start, pos + len(line)))
+                in_fence = False
+            else:
+                in_fence = True
+                start = pos
+        elif not in_fence:
+            for m in INLINE_CODE_RE.finditer(line):
+                spans.append((pos + m.start(), pos + m.end()))
+        pos += len(line)
+    if in_fence:
+        spans.append((start, pos))
+    return spans
+
+
+def user_regions(text):
+    """
+    Contenido de cada bloque @user cerrado, ignorando los marcadores que son
+    CÓDIGO (ejemplos en las guías del vault).
+
+    Sin este filtro, un marcador de apertura suelto dentro de un ejemplo inline
+    empareja con el primer cierre real que aparezca más abajo y crea una REGIÓN
+    FANTASMA que protege media nota — bloqueando ediciones legítimas. Pasaba de
+    verdad en «Centinelas de Edición.md». Mismo criterio que sentinels-verify.py.
+    """
+    spans = code_spans(text)
+
+    def is_code(i):
+        return any(a <= i < b for a, b in spans)
+
+    opens = [m.end() for m in OPEN_RE.finditer(text) if not is_code(m.start())]
+    closes = [m.start() for m in CLOSE_RE.finditer(text) if not is_code(m.start())]
+
+    regions = []
+    ci = 0
+    for o in opens:
+        while ci < len(closes) and closes[ci] < o:
+            ci += 1
+        if ci >= len(closes):
+            break                    # apertura sin cierre: no es un bloque
+        regions.append(text[o:closes[ci]])
+        ci += 1
+    return regions
 
 def main():
     root = sys.argv[1] if len(sys.argv) > 1 else (os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd())
@@ -51,7 +107,7 @@ def main():
         allow()  # archivo nuevo: aún no hay contenido protegido
 
     text = open(path, encoding='utf-8', errors='replace').read()
-    regions = [m.group(1) for m in USER_RE.finditer(text)]
+    regions = user_regions(text)
     if not regions:
         allow()  # el archivo no tiene centinelas @user
 

@@ -146,7 +146,10 @@ FASE 0 — Preparar (una vez)
   3. (Windows) git config core.longpaths true  ← rutas profundas > MAX_PATH ✅
   4. Identidad git por agente (§3) — con `git -c`, NO con `git config`.
   5. Zonas de propiedad definidas (§2).                                     ✅
-  6. git config core.hooksPath .githooks  ← verifier pre-commit, 1×/clon.   ✅
+  6. git config core.hooksPath .githooks  ← gate de git, 1×/clon.           ✅
+     (commit: secret-scan → centinelas @user → índices → verifier;
+      push: bloqueo de reescritura de historia publicada. Apunta a la
+      CARPETA, así que un hook nuevo queda activo sin reconfigurar nada.)
 
 FASE 1 — Lanzar (por corrida)
   5. Commit + push de main (red de seguridad).
