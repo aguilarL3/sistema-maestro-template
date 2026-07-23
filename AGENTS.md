@@ -158,6 +158,18 @@ Origen de la información:
 
 ---
 
+## Trabajo en paralelo con otros agentes
+
+Este vault se edita con varios agentes a la vez (Claude Code, Codex, y los que vengan). El detalle completo está en [SOP Multi-Agente](<00 Sistema/SOP Multi-Agente.md>) §4; lo mínimo no negociable:
+
+- **Un worktree por agente.** El aislamiento real no es la buena voluntad, es un checkout físico separado: `git worktree add -b agent/<nombre> ../vault-<nombre>` (el `-b` crea la rama; sin él, git aborta con `invalid reference` si no existe ya). No existe lock de archivos para `.md` — si dos agentes tienen que tocar el mismo archivo, se serializa.
+- **Identidad propia en cada commit:** `git -c user.name="<agente>" -c user.email="<agente>@agent.local" commit` + trailer `Agent: <agente>` en el mensaje. Usá `git -c` por commit: `git config` dentro de un worktree escribe en la config compartida y contamina `main`.
+- **Pausá el auto-sync de Obsidian** mientras corran en paralelo.
+
+> **Si no sos Claude Code, trabajás sin red hasta el commit.** Los hooks declarados en `.claude/settings.json` (inyección de contexto de sesión, `security-guard`, centinelas de edición, registro automático en la bitácora) son específicos de ese harness y **no se ejecutan** en otros agentes. Lo que sí corre para todos es el gate de `git commit` (`core.hooksPath=.githooks`: secret-scan → index → verifier). En consecuencia, si sos otro agente: quedate dentro de tu zona asignada, no toques `00 Sistema/` ni los archivos-ley sin pedido explícito, y **registrá tu handoff en la bitácora de agentes antes de cerrar** — a vos nadie te lo va a recordar.
+
+---
+
 ## Regla de oro
 
 Si dudas entre:

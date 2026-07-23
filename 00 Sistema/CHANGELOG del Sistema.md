@@ -14,6 +14,11 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.4.1] — 2026-07-23
+**La ley ahora le explica a un agente que no es Claude Code cómo aislarse.**
+- **Añadida la sección "Trabajo en paralelo con otros agentes" a `AGENTS.md`:** worktree por agente (`git worktree add -b agent/<nombre> ../vault-<nombre>` — el `-b` no es opcional: sin él git aborta con `invalid reference` si la rama no existe), identidad propia por commit con `git -c` + trailer `Agent:`, y pausar el auto-sync de Obsidian. Remite a [SOP Multi-Agente](<SOP Multi-Agente.md>) §4 para el flujo completo.
+- **El motivo:** los hooks declarados en `.claude/settings.json` (contexto de sesión, `security-guard`, centinelas de edición, bitácora automática) son específicos de Claude Code y **no corren** en Codex ni en ningún otro harness. Ese agente sí queda cubierto por el gate de `git commit` (`core.hooksPath=.githooks`), pero recién al final. `AGENTS.md` describía el sistema como si todos los agentes tuvieran esas guardas; ahora dice explícitamente que fuera de Claude Code se trabaja sin red hasta el commit, y qué obligaciones asume ese agente a cambio: quedarse en su zona, no tocar los archivos-ley, y registrar su handoff a mano.
+
 ## [1.4.0] — 2026-07-22
 **Las actualizaciones del template dejan de depender de que alguien se acuerde.**
 - **Añadido `.github/workflows/template-update.yml`:** cada lunes (y a demanda) compara tu `VERSION` con la del upstream y, si hay versión nueva, corre `update.sh --force` y **abre un PR** con los archivos de framework actualizados, listando qué cambió. Nada se mergea solo. Es el patrón cruft/copier: `./update.sh --check` ya existía, pero con un vault propio uno se olvida y con varios vaults de clientes no pasa nunca.

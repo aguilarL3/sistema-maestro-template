@@ -1,6 +1,6 @@
 # Changelog
 
-* [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>)
+* [CHANGELOG del Sistema](<CHANGELOG del Sistema.md>) - Registro de cambios del framework (template). Los cambios de tu instancia van en tu bitácora, no acá.
 
 # Explanation
 
@@ -18,7 +18,7 @@
 * [SOP de Seguridad](<SOP de Seguridad.md>)
 * [SOP Discovery — Investigación Previa](<SOP Discovery.md>)
 * [SOP Evergreen Notes](<SOP Evergreen Notes.md>)
-* [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>)
+* [SOP Git y Flujo de Trabajo](<SOP Git y Flujo de Trabajo.md>) - Flujo operativo diario del vault con Git: comandos, convenciones, troubleshooting y §11 para vaults compartidos.
 * [SOP Hooks y Automatización](<SOP Hooks y Automatización.md>)
 * [SOP Interoperabilidad IA](<SOP Interoperabilidad IA.md>)
 * [SOP Maestro](<SOP Maestro.md>)
@@ -41,7 +41,7 @@
 * [SOP IA](<SOP IA.md>)
 * [SOP Index](<SOP Index.md>)
 * [SOP MOCs](<SOP MOCs.md>)
-* [SOP Multi-Agente — operar varios agentes sin que se pisen](<SOP Multi-Agente.md>)
+* [SOP Multi-Agente — operar varios agentes sin que se pisen](<SOP Multi-Agente.md>) - Aislamiento por worktrees, zonas de propiedad, identidad de commit y el flujo por corrida; §5 para varias personas con varios agentes.
 * [SOP Notas Atómicas](<SOP Notas Atómicas.md>)
 * [SOP Proyectos](<SOP Proyectos.md>)
 * [SOP Proyectos de Código](<SOP Proyectos de Código.md>)
