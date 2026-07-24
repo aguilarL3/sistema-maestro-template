@@ -13,7 +13,7 @@ Solo tiene sentido si existe `FIRST_RUN.md` en la raíz (vault sin personalizar)
 2. **¿Solo o en equipo? (1 pregunta).** «¿Este vault es tuyo solo, o lo van a usar varias personas?» Si es solo (lo habitual), no preguntes nada más y seguí. Si son varias, pedí los nombres tal como los quieren ver en Obsidian y agregá al archivo de identidad:
    VAULT_MODE=equipo
    TEAM_MEMBERS="Nombre Uno,Nombre Dos"
-   Después corré `bash ./team-mode.sh` (crea una carpeta de diario por persona e instala `.github/CODEOWNERS`). Avisale que quedan dos cosas que solo puede hacer él/ella: poner los handles reales de GitHub en el CODEOWNERS —con los espacios de las rutas escapados— y proteger `main` en Settings → Rules. Ver `SOP Git y Flujo de Trabajo` §11.
+   Después corré `bash ./team-mode.sh` (crea una carpeta de diario por persona, instala `.github/CODEOWNERS` y **activa el auto-commit consciente del modo**: en `equipo` deja de commitear en `main`/`master`, así el trabajo va por rama + PR). Avisale que quedan dos cosas que solo puede hacer él/ella: poner los handles reales de GitHub en el CODEOWNERS —con los espacios de las rutas escapados— y **proteger `main`** en Settings → Rules (es server-side, ningún script lo garantiza). Recordale también que en modo equipo se trabaja **siempre en una rama** (`git checkout -b <inicial>/<tema>`), nunca directo en `main`. Ver `SOP Git y Flujo de Trabajo` §11.
 3. **Setup técnico.** Si `.vault-meta/` no existe o `git config core.hooksPath` está vacío, corré `./setup.sh`.
 4. **Brújula (01 Index).** Entrevistá para llenar los stubs — máximo 2-3 preguntas por doc, respuestas cortas valen:
    - `01 Index/Vision.md`: ¿hacia dónde va tu vida en 3-5 años? ¿qué es innegociable (valores)?

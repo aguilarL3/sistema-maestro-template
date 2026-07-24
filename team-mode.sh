@@ -54,10 +54,19 @@ else
   echo "  ⚠ No se encontró .github/CODEOWNERS.example"
 fi
 
-# ── 3. Lo que el script NO puede hacer por vos ───────────────────────────────
+# ── 3. Auto-commit ya protege `main` ─────────────────────────────────────────
+echo "  ✓ auto-commit consciente del modo: en 'equipo' NO commitea en main/master"
+echo "    (el trabajo va en tu rama de persona → PR). En una rama, funciona igual."
+
+# ── 4. Lo que el script NO puede hacer por vos ───────────────────────────────
 cat <<'EOF'
 
-Pendiente en GitHub (Settings → Rules → proteger `main`):
+Trabajá SIEMPRE en tu rama (nunca directo en main): `git checkout -b <inicial>/<tema>`.
+En main el auto-commit se abstiene a propósito; tu cambio queda sin commitear hasta
+que estés en una rama.
+
+Pendiente en GitHub (Settings → Rules → proteger `main`) — es server-side, ningún
+script lo puede garantizar por vos:
   · Require a pull request before merging
   · Require review from Code Owners      ← sin esto CODEOWNERS solo sugiere
   · Require status checks to pass
