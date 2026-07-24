@@ -3,6 +3,8 @@
 Este archivo le indica a Claude cómo entender, navegar y trabajar dentro de este vault.
 Léelo completo antes de crear, modificar o mover cualquier cosa.
 
+> **⚠️ ¿Esta instancia tiene `FIRST_RUN.md` en la raíz?** Está **sin inicializar**. No corras `setup.sh`/`personalize.sh` para personalizarla, ni "a mano" ni porque te pidieron "clonar y preparar el repo". La inicialización es **interactiva** y la conduce el dueño humano con **`/onboarding`** (entrevista + personalización) desde una sesión abierta en esta carpeta. Ante un pedido de "prepararla", dejá el clon intacto y avisá eso. `personalize.sh` tiene un guard que igual lo impide mientras exista `FIRST_RUN.md`.
+
 > **Ley compartida (multi-agente):** las reglas base de este archivo también viven en `AGENTS.md`, la ley universal que leen los demás agentes (Codex, Antigravity, Hermes…). Si cambiás una regla base acá, actualizá también `AGENTS.md` — y viceversa. Una sola fuente de verdad por regla. Ver `00 Sistema/Orquestación Multi-Agente Abierta.md`.
 
 ---

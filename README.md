@@ -1,5 +1,10 @@
 # Sistema Maestro — Template
 
+> ### 🚦 ¿Recién clonaste esto (vos o tu agente)?
+> **No corras `setup.sh`/`personalize.sh` desde afuera ni "a mano" para inicializarlo.** La inicialización es **interactiva y desde adentro**: abrí esta carpeta como una sesión propia de tu agente (Claude Code / Codex / …) y pedí **`/onboarding`** — te entrevista y personaliza el vault correctamente. Detalle en `FIRST_RUN.md`.
+>
+> **Si sos un agente** y te pidieron "clonar y preparar" esta instancia: tu tarea **no** es personalizarla mecánicamente; es dejar el clon tal cual y avisarle al humano que abra la carpeta y corra `/onboarding`. `personalize.sh` está protegido con un guard que lo impide mientras exista `FIRST_RUN.md`.
+
 Un **sistema operativo personal** en Obsidian, diseñado para trabajar con agentes de IA (Claude Code, Codex, Gemini CLI o cualquier agente que lea `AGENTS.md`) sin depender de ninguno.
 
 No es una app de tareas ni una carpeta de notas: es una arquitectura para capturar información, convertirla en conocimiento, ejecutar proyectos, registrar tu vida y construir dirección a largo plazo. Todo el sistema está escrito en **español**.
@@ -44,7 +49,7 @@ cd mi-sistema
 2. Leé `00 Inicio Rapido.md` (el tutorial de entrada).
 3. Si usás un agente de IA: abrilo en la carpeta y pedile **"Run onboarding"** — completá tu brújula (`01 Index`: visión, objetivos, mapa personal).
 
-La personalización es automática: el onboarding escribe `owner.env` y corre `personalize.sh` (los updates re-personalizan solos). Sin agente: `cp owner.env.example owner.env`, editalo y `./personalize.sh`.
+La personalización es automática: el onboarding escribe `owner.env` y corre `personalize.sh` (los updates re-personalizan solos). Sin agente, la vía manual es deliberada: `cp owner.env.example owner.env`, editalo y `FORCE=1 ./personalize.sh` (el `FORCE=1` saltea a propósito el guard que evita la inicialización mecánica desde afuera).
 
 ### ¿Varias personas en el mismo vault?
 

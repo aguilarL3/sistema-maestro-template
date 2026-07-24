@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> **⚠️ Agente: ¿esta instancia tiene `FIRST_RUN.md` en la raíz?** Entonces está **sin inicializar**. No corras `setup.sh`/`personalize.sh` para personalizarla vos, ni "a mano" ni porque te pidieron "clonar y preparar el repo". La inicialización es **interactiva** y la conduce el dueño humano con **`/onboarding`** (entrevista + personalización) desde una sesión abierta en esta carpeta. Tu tarea ante un pedido de "prepararla" es dejar el clon intacto y avisar eso. `personalize.sh` tiene un guard que igual lo impide mientras exista `FIRST_RUN.md`.
+
 ## Qué es este vault
 
 Este vault es un sistema operativo personal para estudiar, trabajar, crear proyectos, tomar decisiones y construir conocimiento reutilizable.
