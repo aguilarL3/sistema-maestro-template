@@ -72,6 +72,8 @@ El template evoluciona. **Tu contenido nunca se toca**: `update.sh` solo reempla
 | **Scaffold** | Stubs y ejemplos que llenás vos: brújula (`01 Index`), dashboards, prompts y conector de ejemplo | Se instala una vez; **nunca se pisa** |
 | **Tu contenido** | Notas, proyectos, diario, MOCs propios | **Jamás se toca** |
 
+> **Regla mental — tenés dos remotos:** `origin` es **tu vault** (acá va todo tu trabajo: push, PRs) y `upstream` es **el template, de solo lectura** (recibís updates con `./update.sh`; nunca le pushees). `setup.sh` deja fijado el default de `gh` en `origin` para que `gh pr create` no intente abrir el PR contra el template. Si `gh` no estaba instalado cuando corriste el setup, fijalo una vez a mano: `gh repo set-default <org>/<repo>`.
+
 ```bash
 ./update.sh --check    # ¿hay versión nueva?
 ./update.sh            # interactivo (o --dry-run / --force)

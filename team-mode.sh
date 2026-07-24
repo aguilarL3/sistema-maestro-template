@@ -65,6 +65,10 @@ Trabajá SIEMPRE en tu rama (nunca directo en main): `git checkout -b <inicial>/
 En main el auto-commit se abstiene a propósito; tu cambio queda sin commitear hasta
 que estés en una rama.
 
+Para abrir PRs con `gh`: si no lo hizo el setup (gh no estaba instalado entonces),
+fijá una sola vez el repo default a tu vault, o `gh pr create` falla contra el
+template (origin vs upstream):  gh repo set-default <org>/<repo>
+
 Pendiente en GitHub (Settings → Rules → proteger `main`) — es server-side, ningún
 script lo puede garantizar por vos:
   · Require a pull request before merging
