@@ -68,11 +68,25 @@ El **spec** es el artefacto central de todo el flujo — del que todo lo demás 
 
 Toda esta sección sigue **la misma feature de punta a punta** — "Recordatorios de reunión" de una app para un club de lectura (ejemplo inventado) — para que veas cómo una pieza deriva de la anterior.
 
+>[!example] ¿Qué es una "feature"? (la unidad que recibe su carpeta `specs/<feature>/`)
+>Una feature es un **tajo de valor de usuario** que merece su propio spec: tiene 2-3 user journeys y entrega algo usable por sí solo. Ni el producto entero, ni una tarea suelta.
+>
+>Tomando la app del club de lectura, cada una de estas es **una feature** (su propia carpeta):
+>- `001-recordatorios-reunion` — avisar a los miembros antes de la reunión *(la de esta nota)*
+>- `002-alta-miembro` — registrar un miembro nuevo del club
+>- `003-catalogo-libros` — listar los libros leídos y el que se está leyendo
+>- `004-votacion-proximo-libro` — que los miembros voten el próximo libro
+>
+>**Demasiado grande → no es una feature, es una épica/producto** (se parte): "la app entera del club", "todo el módulo social".
+>**Demasiado chico → no es una feature, es una tarea** (va dentro de `tasks.md`): "agregar el botón de descartar", "cambiar el color del badge", "renombrar una columna".
+>
+>Regla: si merece explicar *qué y por qué* → es feature (su `spec.md`). Si es solo un *paso del cómo* → es tarea (una línea en `tasks.md`). El roadmap del producto elige entre features; el `tasks.md` desglosa una.
+
 ---
 
 ### 3.1 · `spec.md` — el *qué* y el *por qué*
 
-Es el PRD absorbido, ahora vivo. Su trabajo es que cualquiera (humano o agente) sepa **qué construir y por qué**, sin que nadie tenga que preguntarte. Secciones canónicas, con qué hace buena a cada una y su anti-patrón:
+Es el PRD absorbido, ahora vivo (el PRD de esta feature; no el PRD-producto — ver §4). Su trabajo es que cualquiera (humano o agente) sepa **qué construir y por qué**, sin que nadie tenga que preguntarte. Secciones canónicas, con qué hace buena a cada una y su anti-patrón:
 
 | Sección | Qué buscar | Anti-patrón (la mata) |
 |---|---|---|
@@ -282,6 +296,11 @@ La guía popular de **Jose Andonaire** ("Los 6 documentos que necesitás antes d
 | **05 · Esquema de Backend** | Tablas, relaciones, auth, RLS | dentro del **Plan** |
 | **06 · Plan de Implementación** | Fases numeradas de construcción | se volvió **Tasks** |
 | *(no existía)* | Principios del proyecto | la **Constitution** — lo que el PDF *no tenía* |
+
+>[!warning] "PRD" tiene dos niveles — no los mezcles
+>El **PRD** de esta tabla (fila 01) es el de *una feature* y se absorbe en su `spec.md` (repo). Es distinto del **PRD-producto**: la visión completa (qué es el producto, para quién, MVP, reglas de negocio), que vive en la **nota de proyecto del vault** (`03 Proyectos/`) y se exporta como *snapshot con fecha* a `docs/product/PRD.md` del repo (ver [SOP Proyectos de Código](<../../00 Sistema/SOP Proyectos de Código.md>) §1).
+>
+>**Resumen:** PRD-producto → **vault** (+ snapshot en `docs/product/`) · PRD-de-feature → **`specs/<feature>/spec.md`**.
 
 Dos cambios de fondo respecto del PDF:
 

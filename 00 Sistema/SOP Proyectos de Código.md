@@ -51,6 +51,8 @@ Definir cómo nace y se trabaja un **proyecto de código** (app, CRM, dashboard 
 | Seguridad determinista | [[Baseline de Seguridad]]: `.claude/settings.json` deny + guard + secret-scan + pre-commit |
 | Verificación ejecutable (el "verifier" del código) | tests + build + lint en pre-commit; skills built-in `/verify` y `/code-review` |
 
+> **La "constitución" del [Spec-Driven Development](<../04 Knowledge/Sistemas y Metodologías/Spec-Driven Development.md>) es esta fila:** en el flujo hecho a mano (Claude Code, no Spec Kit) **no hay** un archivo `constitution.md` aparte — su rol lo cumplen `CLAUDE.md` + `AGENTS.md` en la raíz. Por eso `specs/<feature>/` tiene **3** archivos (spec·plan·tasks), no 4.
+
 ### Qué necesita el repo del vault (y qué no)
 
 - **Necesita (una vez, al kickoff):** el **pack de contexto** — PRD + MVP + decisiones de producto, copiado a `docs/product/` con fecha de snapshot. **Push consciente, nunca pull** (ver *La frontera personal vs negocio*, abajo).
