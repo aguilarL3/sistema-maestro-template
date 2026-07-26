@@ -1,6 +1,9 @@
 ﻿.obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/plugins/obsidian-git/data.json
+# Estado de la vista de grafo de Obsidian (zoom/scale, filtros): UI personal,
+# Obsidian lo reescribe solo al mover el grafo. No es contenido del vault.
+.obsidian/graph.json
 .trash/
 # Google Drive temp upload artifacts
 .tmp.driveupload/

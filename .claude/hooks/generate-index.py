@@ -188,14 +188,20 @@ def all_dirs():
 
 
 def staged_dirs():
+    # -z + quotepath=false: rutas crudas UTF-8 separadas por NUL. Sin -z, git
+    # entrecomilla y escapa (\303\255) los paths no-ASCII y el `.md"` final
+    # rompe el endswith(".md") -> las carpetas acentuadas nunca se regeneraban.
     try:
         out = subprocess.check_output(
-            ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR"],
+            ["git", "-c", "core.quotepath=false", "diff", "--cached",
+             "--name-only", "-z", "--diff-filter=ACMR"],
             cwd=VAULT).decode("utf-8", "replace")
     except Exception:
         return []
     dirs = set()
-    for line in out.splitlines():
+    for line in out.split("\0"):
+        if not line:
+            continue
         if line.lower().endswith(".md") and os.path.basename(line).lower() != "index.md":
             d = os.path.join(VAULT, os.path.dirname(line)) if os.path.dirname(line) else VAULT
             parts = os.path.relpath(d, VAULT).split(os.sep)
@@ -207,6 +213,14 @@ def staged_dirs():
 
 
 def main():
+    # El pre-commit lee las rutas impresas y hace `git add` de cada una. En
+    # Windows, print() a un pipe emite \r\n: el `read` del hook dejaba un \r
+    # final y `git add "…/index.md\r"` fallaba en silencio. Forzar LF (y UTF-8,
+    # por las rutas acentuadas que en stdout cp1252 podrían reventar).
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", newline="\n")
+    except Exception:
+        pass
     if os.path.isfile(os.path.join(VAULT, ".vault-meta", "index-gen.disabled")):
         return 0
     args = sys.argv[1:]
