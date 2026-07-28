@@ -22,7 +22,7 @@ Información → Conocimiento → Acción → Resultados → Evidencia → Creci
 - **Seguro por defecto**: `deny` en `.claude/settings.json`, security-guard (PreToolUse), secret-scan (pre-commit) y auditoría — más el kit **Baseline de Seguridad**, portable a cualquier repo de código
 - **Multi-agente y agnóstico**: diseñado sobre `AGENTS.md` + git; funciona con cualquier harness
 - **Ejemplos que muestran los patrones**: un conector de sistema externo documentado (Notion, ficticio), prompts versionados de ejemplo y un MOC de muestra — los reemplazás por los tuyos
-- **Plugins de Obsidian incluidos**: Templater, Dataview, Calendar, Kanban, obsidian-git y más — clonás y funciona
+- **Plugins de Obsidian incluidos**: Templater, Dataview, Calendar, Kanban, obsidian-git y más — lo abrís y funciona
 
 ## Cómo se ve una sesión con un agente
 
