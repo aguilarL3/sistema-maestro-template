@@ -1,9 +1,9 @@
 # Sistema Maestro — Template
 
-> ### 🚦 ¿Recién clonaste esto (vos o tu agente)?
-> **No corras `setup.sh`/`personalize.sh` desde afuera ni "a mano" para inicializarlo.** La inicialización es **interactiva y desde adentro**: abrí esta carpeta como una sesión propia de tu agente (Claude Code / Codex / …) y pedí **`/onboarding`** — te entrevista y personaliza el vault correctamente. Detalle en `FIRST_RUN.md`.
+> ### 🚦 ¿Recién obtuviste esto (vos o tu agente)?
+> La forma recomendada de empezar es **"Use this template"** (ver [Instalación](#instalación)), no clonar este repo directo. Y sea como sea que llegaste: **no corras `setup.sh`/`personalize.sh` desde afuera ni "a mano" para inicializarlo.** La inicialización es **interactiva y desde adentro**: abrí esta carpeta como una sesión propia de tu agente (Claude Code / Codex / …) y pedí **`/onboarding`** — te entrevista y personaliza el vault correctamente. Detalle en `FIRST_RUN.md`.
 >
-> **Si sos un agente** y te pidieron "clonar y preparar" esta instancia: tu tarea **no** es personalizarla mecánicamente; es dejar el clon tal cual y avisarle al humano que abra la carpeta y corra `/onboarding`. `personalize.sh` está protegido con un guard que lo impide mientras exista `FIRST_RUN.md`.
+> **Si sos un agente** y te pidieron "traer y preparar" esta instancia (crearla desde el template, clonarla…): tu tarea **no** es personalizarla mecánicamente; es dejar la copia tal cual y avisarle al humano que abra la carpeta y corra `/onboarding`. `personalize.sh` está protegido con un guard que lo impide mientras exista `FIRST_RUN.md`.
 
 Un **sistema operativo personal** en Obsidian, diseñado para trabajar con agentes de IA (Claude Code, Codex, Gemini CLI o cualquier agente que lea `AGENTS.md`) sin depender de ninguno.
 
