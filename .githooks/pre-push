@@ -23,6 +23,28 @@ set -uo pipefail
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
 [ -f "$ROOT/.vault-meta/prepush.disabled" ] && exit 0
+
+# ── Guard: NO pushear un vault PERSONALIZADO al repo del TEMPLATE ──
+# Al clonar el template directamente (en vez de forkear), origin queda apuntando al
+# template; un push publicaría tu nombre/email (en ~110 archivos) en el repo público.
+# Se bloquea si el destino es el template Y este clon ya fue personalizado (existe
+# owner.env). El mantenedor del template pushea desde un checkout SIN owner.env, así
+# que nunca queda bloqueado. git pasa <remote-name> <remote-url> como $1 $2.
+if [ "${ALLOW_TEMPLATE_PUSH:-0}" != "1" ] && [ -f "$ROOT/owner.env" ] \
+   && printf '%s' "${2:-}" | grep -q 'sistema-maestro-template'; then
+  cat >&2 <<'EOF'
+pre-push: ⛔ estás por pushear un vault PERSONALIZADO al repo del TEMPLATE.
+
+Publicaría tu nombre/email (en ~110 archivos) en el template público. Casi seguro
+clonaste el template directamente en vez de forkear. Re-apuntá origin a TU repo:
+    git remote set-url origin https://github.com/<vos>/<tu-vault>.git
+
+Si de verdad sos el mantenedor y querés publicar en el template:
+    ALLOW_TEMPLATE_PUSH=1 git push ...
+EOF
+  exit 1
+fi
+
 [ "${ALLOW_FORCE_PUSH:-0}" = "1" ] && exit 0
 
 ZERO='0000000000000000000000000000000000000000'

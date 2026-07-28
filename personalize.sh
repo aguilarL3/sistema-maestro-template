@@ -27,6 +27,12 @@ fi
 # shellcheck disable=SC1091
 source ./owner.env
 : "${OWNER:?owner.env sin OWNER=}"
+# sed -i NO es portable: GNU no lleva sufijo, BSD/macOS lo exige. Se evita del todo
+# reescribiendo cada archivo vía temp-file (funciona igual en Linux, macOS y Git-Bash).
 find . -path ./.git -prune -o -type f \( -name "*.md" -o -name "*.txt" \) -print0 | \
-  xargs -0 sed -i "s/{{OWNER_EMAIL}}/${OWNER_EMAIL:-}/g; s/{{OWNER_GITHUB}}/${OWNER_GITHUB:-}/g; s/{{OWNER}}/${OWNER}/g"
+  while IFS= read -r -d '' f; do
+    sed -e "s/{{OWNER_EMAIL}}/${OWNER_EMAIL:-}/g" \
+        -e "s/{{OWNER_GITHUB}}/${OWNER_GITHUB:-}/g" \
+        -e "s/{{OWNER}}/${OWNER}/g" "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  done
 echo "✓ Personalizado para: $OWNER"
