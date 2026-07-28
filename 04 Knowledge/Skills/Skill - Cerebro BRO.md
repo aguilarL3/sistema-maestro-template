@@ -4,7 +4,9 @@ title: "Skill | Cerebro BRO — Bloques Relacionados Organizados"
 tags: [skill, ia, claude-code, cerebro-digital, ce-re-bro, bloques, atomicidad]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
-timestamp: 2026-06-24T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-24T00:00:00Z
 fecha_actualizacion: 2026-06-24
 modelo_objetivo: claude-sonnet-4-6
 version_modelo: claude-sonnet-4-6

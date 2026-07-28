@@ -3,7 +3,9 @@ type: Plantilla
 title: "[Título del Concepto]"
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-timestamp: 2026-07-03T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-03T00:00:00Z
 resource:
 ---
 
@@ -18,7 +20,9 @@ prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "EXP-000"                  # prefijo por tipo + número libre (§7.1 SOP Documentación)
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:                     # OKF v0.2: quién generó/editó y cuándo (§4 SOP Documentación)
+  by: human:{{OWNER}}          # actor real; un agente pone su process:<id>
+  at: <% tp.date.now("YYYY-MM-DD") %>T00:00:00Z   # última edición de fondo (ISO 8601)
 moc_principal: "[[MOC - ]]"
 life_areas: []
 domains: []

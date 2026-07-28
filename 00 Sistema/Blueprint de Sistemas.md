@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "BP-SISTEMAS-001"
-timestamp: 2026-07-02T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-02T00:00:00Z
 fecha_creacion: 2026-06-26
 resource:
 ---
@@ -70,7 +72,7 @@ Al montar un sistema nuevo, validá en orden:
 
 ### Capa 3 — Estado
 - [ ] Hay un punto único donde ver "qué cambió" (dashboard, changelog)
-- [ ] Cada doc clave tiene `timestamp` en su frontmatter
+- [ ] Cada doc clave tiene `generated` en su frontmatter
 
 ### Capa 4 — Arquitectura (si conecta sistemas externos)
 - [ ] Cada sistema externo tiene su doc en `Conectores/` ([SOP Conectores](<SOP Conectores.md>))

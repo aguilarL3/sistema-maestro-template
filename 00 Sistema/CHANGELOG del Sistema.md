@@ -5,7 +5,9 @@ tags: [changelog, sistema]
 description: "Registro de cambios del framework (template). Los cambios de tu instancia van en tu bitácora, no acá."
 estado: 🟢 Activo
 id: "LOG-001"
-timestamp: 2026-07-17T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-17T00:00:00Z
 fecha_creacion: 2026-07-04
 resource:
 ---
@@ -13,6 +15,15 @@ resource:
 # CHANGELOG del Sistema
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
+
+## [1.9.0] — 2026-07-28
+**OKF v0.1 → v0.2.** El framework adopta la versión 0.2 del Open Knowledge Format.
+
+- **Cambio breaking de OKF v0.2: `timestamp` → `generated: {by, at}`** en el frontmatter (101 notas del template migradas con `.claude/hooks/migrate-generated.py`, determinista e idempotente). `generated.at` hereda la semántica de `timestamp` (última edición de fondo); `generated.by` suma el actor. Las notas escritas a mano llevan `by: human:{{OWNER}}`; las de un agente, `process:<id>`.
+- **`verify-commit.sh` triple-key:** acepta `generated`/`timestamp`/`ultima_revision` durante la transición. El campo de fecha obligatorio pasa a ser `generated`.
+- **Convención de actor (SOP Documentación §4.7, nueva):** `human:<id>` · `process:<id>` · `<producer>/<version>`.
+- **Añadido opt-in (documentado):** `verified` (eventos `{by, at}`), `stale_after`, y el tipo `Attested Computation`.
+- **Alcance:** 14 plantillas, commands (incl. `onboarding`), SOP Documentación §4, nota OKF (§ Novedades de v0.2), `okf_version` "0.1"→"0.2" (generador + índice raíz), prosa de frescura en SOPs/skills. `migrate-okf.sh` encadena la migración v0.2 (paso 2b) para instancias que vengan de v0.1.
 
 ## [1.5.0] — 2026-07-23
 **Las guardas dejan de ser un privilegio de Claude Code.** La v1.4.1 documentó el hueco; esta lo cierra donde se puede cerrar, y declara con precisión lo que queda abierto.

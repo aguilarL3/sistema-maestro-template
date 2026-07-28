@@ -4,7 +4,9 @@ title: "Notion — Arquitectura del Workspace"
 tags: [notion, arquitectura, documentacion, workspace, ejemplo]
 domains: [ia, automatizacion]
 estado: 🟩 Activo
-timestamp: 2026-07-14T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-14T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "REF-004"
 resource:

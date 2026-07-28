@@ -10,7 +10,9 @@ projects: []
 sources: [Daniele Procida (Diátaxis), Michael Nygard (ADR), Google SRE, Keep a Changelog, ISO 9001, The Good Docs Project]
 estado: 🟢 Activo
 id: "EXP-001"
-timestamp: 2026-06-28T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-28T00:00:00Z
 fecha_creacion: 2026-06-28
 resource:
 ---

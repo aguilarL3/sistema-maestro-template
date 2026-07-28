@@ -88,11 +88,12 @@ while IFS= read -r f; do
   fi
 
   miss=""
-  # Dual-key OKF (RUN-001 F2, pre-armado 2026-07-17): acepta la clave propia O su
-  # equivalente OKF (tipo_doc|type, ultima_revision|timestamp) durante la transición.
+  # Dual-key OKF: acepta la clave propia O su equivalente OKF (tipo_doc|type,
+  # ultima_revision|timestamp) durante la transición. OKF v0.2: `generated:`
+  # (bloque {by, at}) reemplaza a `timestamp`; se acepta cualquiera de los tres.
   printf '%s\n' "$fm" | grep -qE '^(tipo_doc|type):' || miss="${miss} tipo_doc"
   printf '%s\n' "$fm" | grep -qE '^estado:' || miss="${miss} estado"
-  printf '%s\n' "$fm" | grep -qE '^(ultima_revision|timestamp):' || miss="${miss} ultima_revision"
+  printf '%s\n' "$fm" | grep -qE '^(ultima_revision|timestamp|generated):' || miss="${miss} generated"
   printf '%s\n' "$fm" | grep -qE '^id:' || miss="${miss} id"
   if [ -n "$miss" ]; then
     report="${report}  ✗ ${f}: falta(n) campo(s):${miss}\n"

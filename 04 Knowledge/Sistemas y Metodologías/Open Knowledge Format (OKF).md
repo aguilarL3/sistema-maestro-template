@@ -1,12 +1,14 @@
 ---
 type: Explanation
 title: "Open Knowledge Format (OKF)"
-description: "Estándar abierto de Google Cloud (v0.1) para representar conocimiento en Markdown+YAML consumible por agentes; formaliza el LLM Wiki."
+description: "Estándar abierto de Google Cloud (v0.2) para representar conocimiento en Markdown+YAML consumible por agentes; formaliza el LLM Wiki."
 tags: [okf, llm-wiki, estandares, ia, interoperabilidad]
 estado: 🟢 Activo
 id: "EXP-022"
 fecha_creacion: 2026-07-16
-timestamp: 2026-07-17T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-28T00:00:00Z
 life_areas: [profesional]
 domains: [ia, bi]
 sources: [Google Cloud]
@@ -21,7 +23,7 @@ resource:
 
 ## Qué es
 
-Un **estándar abierto** para representar metadatos, contexto y conocimiento curado en un formato portable e interoperable, diseñado para ser consumido por sistemas y agentes de IA. Publicado por **Google Cloud** (Sam McVeety y Amir Hormati, junio 2026) como spec **v0.1**.
+Un **estándar abierto** para representar metadatos, contexto y conocimiento curado en un formato portable e interoperable, diseñado para ser consumido por sistemas y agentes de IA. Publicado por **Google Cloud** (Sam McVeety y Amir Hormati, junio 2026) como spec **v0.1**; hoy en **v0.2** (ver Novedades de v0.2, abajo).
 
 Es la **formalización vendor-neutral del patrón LLM Wiki** de Andrej Karpathy — el blog de lanzamiento lo cita explícitamente. Es decir: la industria estandarizó la arquitectura que este vault adoptó como pilar #1 ([LLM Wiki](<LLM Wiki.md>), EXP-014).
 
@@ -37,7 +39,7 @@ El **contexto fragmentado**: las organizaciones guardan conocimiento interno en 
 
 **Non-goals (igual de importantes):** NO define una taxonomía fija de tipos de concepto; NO prescribe infraestructura de almacenamiento/servicio/consulta; **NO reemplaza los esquemas de dominio (Avro, Protobuf, OpenAPI…) — los referencia**, no los subsume.
 
-## La spec v0.1
+## La spec
 
 ### Bundle (§3) — estructura de carpetas
 
@@ -69,7 +71,7 @@ Cada concepto = un Markdown con frontmatter delimitado por `---`:
 | `description` | recomendado | Resumen de una oración |
 | `resource` | recomendado | URI que identifica el asset subyacente real |
 | `tags` | recomendado | Lista YAML de categorización transversal |
-| `timestamp` | recomendado | Datetime ISO 8601 de última modificación |
+| `generated` | recomendado (v0.2) | Bloque `{by, at}`: actor y datetime ISO 8601 de última modificación (reemplaza a `timestamp`) |
 | *(extensiones)* | permitidas | Los productores pueden agregar campos propios; **los consumidores deben preservar los campos desconocidos** |
 
 Cuerpo: Markdown libre, pero la spec pide **favorecer markdown estructural** (headings, listas, tablas, code fences) sobre prosa libre — "la estructura ayuda tanto a la lectura humana como a la recuperación por agentes" (§4.2). Headings convencionales (ninguno obligatorio): `# Schema` (descripción estructurada), `# Examples` (usos), `# Citations` (fuentes externas, enlaces numerados — pueden apuntar a URLs, rutas del bundle, o a un subdirectorio **`references/` que espeja material externo como conceptos OKF de primera clase**, §8).
@@ -83,7 +85,9 @@ title: Customer Orders
 description: One row per completed customer order across all channels.
 resource: https://console.cloud.google.com/bigquery?p=acme&d=sales&t=orders
 tags: [sales, orders, revenue]
-timestamp: 2026-05-28T14:30:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-05-28T14:30:00Z
 ---
 
 # Schema
@@ -108,7 +112,7 @@ Los conceptos abstractos (playbooks, guías) omiten `resource` (§4.4) — el ca
 
 Puede existir en **cualquier directorio**. Da *progressive disclosure*: el agente navega la jerarquía leyendo índices en vez de listar archivos.
 
-- **Sin frontmatter** (única excepción: el `index.md` de la **raíz** puede declarar `okf_version: "0.1"`).
+- **Sin frontmatter** (única excepción: el `index.md` de la **raíz** puede declarar `okf_version: "0.2"`).
 - Cuerpo: secciones con headings + bullets `* [Título](url-relativa) - descripción corta`.
 - Las entradas DEBERÍAN incluir la `description` del frontmatter del concepto enlazado.
 - Pueden generarse automáticamente; si faltan, el consumidor puede sintetizarlos al vuelo.
@@ -144,7 +148,7 @@ Opcional, en cualquier nivel de la jerarquía. Registra la evolución del conoci
 
 ### Conformance
 
-Un bundle **conforma OKF v0.1** si:
+Un bundle **conforma OKF v0.2** si:
 1. Todo `.md` no reservado tiene frontmatter YAML parseable.
 2. Todo frontmatter tiene un campo `type` no vacío.
 3. Los nombres reservados siguen sus estructuras definidas.
@@ -155,7 +159,24 @@ Este modelo de consumo permisivo es **intencional** (§9): "OKF debe seguir sien
 
 ### Versionado
 
-`<major>.<minor>`. Minor = agregados retrocompatibles; major = cambios breaking. Un bundle puede declarar su versión objetivo con `okf_version: "0.1"` en el frontmatter del `index.md` raíz (el único índice al que se le permite frontmatter).
+`<major>.<minor>`. Minor = agregados retrocompatibles; major = cambios breaking. Un bundle puede declarar su versión objetivo con `okf_version: "0.2"` en el frontmatter del `index.md` raíz (el único índice al que se le permite frontmatter).
+
+### Novedades de v0.2 (respecto de v0.1)
+
+Bump menor con **dos cambios breaking de nombres de campo** (ambos con fallback: un consumidor v0.2 sigue leyendo la forma vieja) + agregados opt-in:
+
+| Cambio | v0.1 | v0.2 |
+|---|---|---|
+| Provenance temporal | `timestamp` | **`generated: {by, at}`** (suma el actor) |
+| Citas | sección `# Citations` en el cuerpo | **`sources`** estructurado en frontmatter (señales de credibilidad: `author`, `usage_count`, `last_modified`, `usage_window`) |
+
+**Agregados opt-in (retrocompatibles):**
+- **Trust:** `verified` (lista de eventos `{by, at}` de verificación).
+- **Lifecycle:** `status` (draft/stable/deprecated) y `stale_after` (fecha absoluta de caducidad).
+- **Convención de actor** (para `by`): `human:<id>` · `process:<id>` · `<producer>/<version>`.
+- **Tipo `Attested Computation`:** una nota que *es* una computación versionada y verificable (`runtime`, `parameters`, `computation`, `executor`, `attester` + heading `# Computation`).
+
+Este vault implementa v0.2: `generated` reemplaza a `timestamp` en el frontmatter (`by: human:{{OWNER}}` en las notas escritas a mano), `okf_version: "0.2"` en el índice raíz, y `verified`/`stale_after`/`Attested Computation` disponibles como opt-in. Ver [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) §4.
 
 ## Los 3 principios de diseño
 
@@ -168,7 +189,7 @@ Este modelo de consumo permisivo es **intencional** (§9): "OKF debe seguir sien
 Más allá de la spec, el artículo y el README empujan una forma de trabajar:
 
 - **Tríada de composición:** *just markdown* (legible en cualquier editor, renderizable en GitHub) · *just files* (distribuible como git/tarball, montable de cualquier filesystem) · *just YAML frontmatter* (lo mínimo estructurado para consultar/filtrar/indexar).
-- **Enfoque híbrido deliberado:** frontmatter = los pocos campos consultables (`type`, `resource`, `tags`, `timestamp`); cuerpo = la prosa, esquemas y queries que humanos y LLMs *realmente leen*. Cada uno extrae valor distinto del mismo artefacto.
+- **Enfoque híbrido deliberado:** frontmatter = los pocos campos consultables (`type`, `resource`, `tags`, `generated`); cuerpo = la prosa, esquemas y queries que humanos y LLMs *realmente leen*. Cada uno extrae valor distinto del mismo artefacto.
 - **Biblioteca compartida que crece:** en vez de que los modelos re-busquen los mismos documentos en cada consulta, se les da una biblioteca markdown compartida que **los agentes mismos actualizan**. Del gist de Karpathy que OKF formaliza: *"los LLMs no se aburren, no se olvidan de actualizar una referencia cruzada, y pueden tocar 15 archivos en una pasada. El bookkeeping que hace que los humanos abandonen sus wikis personales es exactamente lo que los LLMs hacen bien."*
 - **Curación de conocimiento = ingeniería de software:** los bundles viven en git — PRs, diffs línea a línea, blame y revisión "simplemente funcionan".
 - **Universalidad productor/consumidor:** produce cualquiera (humanos a mano, agentes de cualquier framework — ADK, LangChain, custom —, pipelines de export desde Dataplex/Unity Catalog/Collibra, scripts sobre una DB); consume cualquiera (file server estático, **Obsidian**/Notion/MkDocs, un LLM cargando archivos a contexto, un índice de búsqueda, un visor de grafo). El formato es el contrato.
@@ -207,13 +228,13 @@ La spec misma se posiciona cerca de: los **LLM-wiki repos** (markdown + frontmat
 
 ## Relación con este vault
 
-El vault **ya implementa la sustancia de OKF**: Markdown + frontmatter YAML (`type`/`timestamp`/`title`/`description`/`resource` — ver [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) §4), enlaces como grafo, capa índice (`index.md` generados), historial, agentes que lo mantienen. OKF valida con un estándar externo la arquitectura elegida en [Filosofía del Sistema](<../../00 Sistema/Filosofía del Sistema.md>) — y abre dos usos nuevos: **formato de intercambio** hacia otros sistemas/organizaciones (portabilidad) y **catálogo de datos para proyectos BI** (ángulo Career OS: OKF nació para documentar tablas/métricas/datasets).
+El vault **ya implementa la sustancia de OKF**: Markdown + frontmatter YAML (`type`/`generated`/`title`/`description`/`resource` — ver [SOP Documentación](<../../00 Sistema/SOP Documentación.md>) §4), enlaces como grafo, capa índice (`index.md` generados), historial, agentes que lo mantienen. OKF valida con un estándar externo la arquitectura elegida en [Filosofía del Sistema](<../../00 Sistema/Filosofía del Sistema.md>) — y abre dos usos nuevos: **formato de intercambio** hacia otros sistemas/organizaciones (portabilidad) y **catálogo de datos para proyectos BI** (ángulo Career OS: OKF nació para documentar tablas/métricas/datasets).
 
 **Aclaración importante — no hace falta BigQuery:** el pipeline de Google (BigQuery + seeds → agente → bundle) responde a que *su* fuente de verdad es una base de datos y el markdown es un **artefacto compilado que se regenera** (nunca se edita a mano). Usar OKF no exige replicar eso: lo que exige es saber **qué es fuente y qué es generado** en tu sistema. En el vault: las notas son la fuente (por eso se escriben a mano y usan wikilinks por nombre) y los `index.md` son lo generado (por eso los fabrica `generate-index.py` y usan links por ruta). El pipeline completo estilo Google recién aplica al documentar **datos externos** — un dashboard, un dataset — donde "tu BigQuery" son tus propios datasets y el bundle se regenera cuando ellos cambian.
 
 ## Referencias
 
 - Blog de lanzamiento: https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing
-- Spec v0.1: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+- Spec (v0.2): https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
 - Repo (agentes de referencia + samples): https://github.com/GoogleCloudPlatform/knowledge-catalog
 - LLM Wiki (Karpathy): https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f

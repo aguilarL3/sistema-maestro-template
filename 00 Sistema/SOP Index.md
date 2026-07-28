@@ -5,7 +5,9 @@ tags: [sop, index, navegacion]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 fecha_creacion: 2026-06-17
-timestamp: 2026-06-27T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-27T00:00:00Z
 id: "SOP-008"
 resource:
 ---

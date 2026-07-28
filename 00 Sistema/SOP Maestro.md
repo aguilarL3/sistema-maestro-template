@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-001"
-timestamp: 2026-07-02T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-02T00:00:00Z
 fecha_creacion: 2026-06-17
 resource:
 ---

@@ -4,7 +4,9 @@ title: "Skill | Mantenimiento Sistema — frescura + consistencia"
 tags: [skill, ia, claude-code, mantenimiento, frescura, consistencia, llm-as-judge]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-26
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 fecha_actualizacion: 2026-06-26
 modelo_objetivo: claude-sonnet-4-6
 version_modelo: claude-sonnet-4-6
@@ -32,7 +34,7 @@ La documentación se desactualiza de **dos formas distintas**, y la fecha solo d
 
 | Forma | Cómo se detecta | Ejemplo real |
 |---|---|---|
-| **Frescura** | Por fecha (`timestamp` vs hoy) | Un SOP sin tocar hace 120 días |
+| **Frescura** | Por fecha (`generated.at` vs hoy) | Un SOP sin tocar hace 120 días |
 | **Consistencia** | NO por fecha — por contenido | Una skill "fresca" que apunta a una carpeta que ya no existe |
 
 La v1 solo medía frescura. La **v2 agrega consistencia**, porque un drift de convención (como las skills Cerebro apuntando a `05 Diario/` tras crear `Auditorías/`) pasa invisible a un chequeo de fechas.
@@ -47,7 +49,7 @@ La v1 solo medía frescura. La **v2 agrega consistencia**, porque un drift de co
 
 - **¿Cuándo usarla?** Revisión mensual, o tras un cambio estructural grande (mover carpetas, cambiar convenciones) — ahí el drift de consistencia es más probable.
 - **¿Cuándo NO usarla?** Justo después de actualizar todo.
-- **Dependencias:** Docs con `timestamp`; el [CHANGELOG del Sistema](<../../00 Sistema/CHANGELOG del Sistema.md>) al día (el Nivel 1 lo cruza para detectar archivos movidos).
+- **Dependencias:** Docs con `generated.at`; el [CHANGELOG del Sistema](<../../00 Sistema/CHANGELOG del Sistema.md>) al día (el Nivel 1 lo cruza para detectar archivos movidos).
 - **Flujo:** Revisión mensual → `/mantenimiento-sistema` → informe → resolver en chat → cambios al changelog.
 
 ---
@@ -74,7 +76,7 @@ La v1 solo medía frescura. La **v2 agrega consistencia**, porque un drift de co
 
 ```
 DIMENSIÓN 1 — FRESCURA (fechas)
-  └─ compara timestamp vs hoy → vencido / por vencer / fresco / sin fecha
+  └─ compara generated.at vs hoy → vencido / por vencer / fresco / sin fecha
 
 DIMENSIÓN 2 — CONSISTENCIA (contenido)
   ├─ NIVEL 0 — Determinista (baratísimo, TODO el vault, vía Bash)

@@ -6,7 +6,9 @@ estado: 🧭 Planificación / 🏃 En Ejecución / 🛑 Bloqueado / ✅ Completa
 prioridad: 🔥 Alta / ⏳ Media / 💤 Baja
 responsable: "{{OWNER}}"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:
+  by: human:{{OWNER}}
+  at: <% tp.date.now("YYYY-MM-DD") %>
 cliente_o_marca: "[Empresa A / ClienteEjemplo / Interno]"
 fecha_inicio: <% tp.date.now("YYYY-MM-DD") %>
 fecha_entrega: ""

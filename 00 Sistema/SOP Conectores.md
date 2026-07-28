@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-CONECT-001"
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
 resource:
 ---
@@ -60,7 +62,7 @@ Todo doc en `Conectores/` debe tener estas secciones (ver [Notion - Arquitectura
 
 | Sección | Qué contiene | Por qué |
 |---|---|---|
-| **Frontmatter** | `tags`, `estado`, `timestamp` | La frescura se mide contra `timestamp` |
+| **Frontmatter** | `tags`, `estado`, `generated` | La frescura se mide contra `generated.at` |
 | **Modelo / ERD** | Diagrama de entidades y relaciones | La IA entiende la estructura de un vistazo |
 | **Diccionario** | Cada entidad y campo, tipo y propósito | La IA sabe qué puede leer/escribir |
 | **Mapa de dependencias** | Cómo se relacionan las partes | Evita romper relaciones al operar |
@@ -95,13 +97,13 @@ Un agente que lee el schema en vivo siempre tendrá los datos frescos. El doc ap
 
 ## 6. Cuándo actualizar el doc
 
-Actualizá el doc del conector (y su `timestamp` + changelog) cuando:
+Actualizá el doc del conector (y su `generated.at` + changelog) cuando:
 
 - Cambiás la estructura del sistema externo (nuevo campo, nueva base, relación)
 - Detectás una nueva trampa o deuda técnica
 - El sistema cambia de credenciales, permisos o forma de acceso
 
-El [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) marca los docs cuyo `timestamp` lleva +90 días sin tocarse.
+El [Skill - Mantenimiento Sistema](<../04 Knowledge/Skills/Skill - Mantenimiento Sistema.md>) marca los docs cuyo `generated.at` lleva +90 días sin tocarse.
 
 ---
 

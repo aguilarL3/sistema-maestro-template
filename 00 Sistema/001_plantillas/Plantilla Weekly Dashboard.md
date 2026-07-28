@@ -4,7 +4,9 @@ title: "Weekly Dashboard — Semana [N]"
 tags: [dashboard, weekly, estudio]
 estado: 🏃 En curso / ✅ Completada
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: 2026-07-03T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-03T00:00:00Z
 semana: ""
 resource:
 ---

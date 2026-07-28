@@ -7,7 +7,9 @@ prioridad: 🔥 Alta
 domains: [bi, ia, automatizacion, ingles, negocio]
 responsable: "{{OWNER}}"
 id: "SOP-MASTER-STUDY-001"
-timestamp: 2026-06-24T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-17
 resource:
 ---

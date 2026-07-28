@@ -14,7 +14,7 @@ Carpetas objetivo: "00 Sistema/", "04 Knowledge/Conectores/", "04 Knowledge/Skil
 
 == DIMENSIÓN 1: FRESCURA ==
 1. Determiná la fecha de hoy desde runtime.
-2. Glob los .md de las carpetas objetivo; Grep "^(timestamp|fecha_actualizacion):".
+2. Glob los .md de las carpetas objetivo; Grep la fecha de última edición: `^  at:` (dentro del bloque `generated:`, OKF v0.2) o `^(timestamp|fecha_actualizacion):` (legacy).
 3. Calculá días desde esa fecha hasta hoy. Clasificá: 🔴 Vencido (+90d), 🟡 Por vencer (60-90d), 🟢 Fresco (<60d), ⚪ Sin fecha.
 
 == DIMENSIÓN 2: CONSISTENCIA ==

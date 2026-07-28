@@ -4,7 +4,9 @@ title: "Investigación Previa (Discovery)"
 tags: [discovery, investigacion, prior-art, spike, build-vs-buy, metodologia, carrera]
 origen: "MOC - Master Learning System"
 estado: 🟢 Activo
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "EXP-013"
 resource:

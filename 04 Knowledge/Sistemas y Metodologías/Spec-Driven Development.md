@@ -6,7 +6,9 @@ tags: [spec-driven, vibe-coding, sdd, agentes, desarrollo, metodologia, prd]
 estado: 🟢 Activo
 id: "EXP-023"
 fecha_creacion: 2026-07-21
-timestamp: 2026-07-21T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-21T00:00:00Z
 life_areas: [profesional]
 domains: [ia, automatizacion, carrera]
 sources: [Andrej Karpathy, GitHub Spec Kit, AWS Kiro, Harper Reed, Jose Andonaire]

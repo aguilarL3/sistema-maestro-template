@@ -7,7 +7,9 @@ prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-003"
 fecha_creacion: 2026-07-03
-timestamp: 2026-07-03T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-03T00:00:00Z
 resource:
 ---
 
@@ -53,7 +55,7 @@ Si la respuesta es sí, probablemente sí merece nota.
 ## Notas vivas (evergreen)
 Una **nota evergreen** no es un tipo aparte: es una nota atómica que **crece con el tiempo** en vez de quedar congelada. No tiene plantilla propia — se usa [[Plantilla Nota]] con `estado: 🌱 Semilla` y su sección `## Evolución`.
 - **Cuándo:** cuando una idea merece madurar (reaparece, o cambia tu comprensión del tema).
-- **Cómo:** al revisarla, subí `timestamp`, anotá "qué aprendí / qué cambió" en `## Evolución`, y sumá backlinks nuevos.
+- **Cómo:** al revisarla, subí `generated.at`, anotá "qué aprendí / qué cambió" en `## Evolución`, y sumá backlinks nuevos.
 - **Cada cuánto:** cada vez que aprendas algo del tema, y en la revisión mensual/trimestral ([SOP Revisiones](<SOP Revisiones.md>)).
 
 ## Relación con otras capas

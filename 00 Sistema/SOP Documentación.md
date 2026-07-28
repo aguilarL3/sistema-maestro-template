@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-002"
-timestamp: 2026-07-09T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-09T00:00:00Z
 fecha_creacion: 2026-06-28
 resource:
 ---
@@ -72,12 +74,14 @@ Pasá la **checklist de cierre** (§8) antes de dar el documento por hecho.
 type: SOP                        # clave OKF; uno de la enum (ver 4.3)
 title: "SOP - Documentación"     # OKF; = el H1 del cuerpo (ver §5)
 estado: 🟢 Activo                # estado de vida (ver 4.4)
-timestamp: 2026-06-28T00:00:00Z  # OKF; datetime ISO 8601
+generated:                       # OKF v0.2; quién generó/editó y cuándo (ver contrato de fechas)
+  by: human:{{OWNER}}            # actor (ver 4.7); un agente pone process:<id>
+  at: 2026-06-28T00:00:00Z       # datetime ISO 8601 — última edición de fondo
 id: "SOP-002"                    # prefijo por tipo + número (ver §7)
 ---
 ```
 
-> **Vocabulario OKF:** `type`, `timestamp`, `title` (= H1) y `description`/`resource` (§4.2) son las claves del estándar [Open Knowledge Format](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>). El enforcement duro es sobre `type`/`estado`/`timestamp`/`id`; `title` es **warn-only** (como `description`).
+> **Vocabulario OKF:** `type`, `generated` (v0.2, `{by, at}`), `title` (= H1) y `description`/`resource` (§4.2) son las claves del estándar [Open Knowledge Format](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>). El enforcement duro es sobre `type`/`estado`/`generated`/`id`; `title` es **warn-only** (como `description`). `generated.at` es la fecha de última edición; `generated.by` el actor (§4.7).
 
 ### 4.2 Campos OPCIONALES (según el tipo y el contexto)
 
@@ -100,14 +104,18 @@ sources: []
 
 > **Regla de `tags`:** siempre lista en línea `[a, b, c]`, en **minúsculas y SIN `#`**. El `#` dentro del YAML sin comillas rompe el parseo. (Hoy hay 3 formatos distintos en el vault — este es el único válido de ahora en más.)
 
-> **Contrato de fechas:** una nota lleva **`fecha_creacion`** (día de nacimiento, fijo, `YYYY-MM-DD`) + **`timestamp`** (OKF; datetime ISO 8601 `YYYY-MM-DDT00:00:00Z`, cambia con cada edición de fondo, §9). `ultima_auditoria_ia` es un campo **opcional** exclusivo de MOCs (marca la última auditoría de IA, evento distinto de una edición). Solo `timestamp` es obligatorio/enforced (§4.1); `fecha_creacion` se agrega **al tocar**. Las daily notes conservan `fecha` (= el día que cubren, no "creación").
+> **Contrato de fechas:** una nota lleva **`fecha_creacion`** (día de nacimiento, fijo, `YYYY-MM-DD`) + **`generated.at`** (OKF v0.2; datetime ISO 8601 `YYYY-MM-DDT00:00:00Z`, cambia con cada edición de fondo, §9), acompañada de **`generated.by`** (el actor que la generó/editó, §4.7). `ultima_auditoria_ia` es un campo **opcional** exclusivo de MOCs (marca la última auditoría de IA, evento distinto de una edición). Solo `generated` es obligatorio/enforced (§4.1); `fecha_creacion` se agrega **al tocar**. Las daily notes conservan `fecha` (= el día que cubren, no "creación").
+
+> **§4.7 · Convención de actor (OKF v0.2):** el `by` (en `generated` y `verified`) identifica **quién** con uno de tres formatos: **`human:<id>`** (una persona, ej. `human:{{OWNER}}`), **`process:<id>`** (un agente/automatización, ej. `process:claude-code`, `process:verifier`), o **`<producer>/<version>`** (una herramienta versionada). Una nota escrita a mano por el dueño lleva `by: human:{{OWNER}}`; una escrita por un agente refleja su generador real.
+
+> **Campos opt-in de OKF v0.2:** `verified` (lista de eventos `{by, at}` de verificación) y `stale_after` (`YYYY-MM-DD`, fecha absoluta de caducidad). Ambos opcionales — se agregan al verificar / al definir una caducidad.
 
 ### 4.6 Orden canónico de las claves (secuencia)
 Aunque cada tipo tiene campos propios, las claves del frontmatter van **siempre en esta secuencia** (las que existan; las ausentes se saltan):
 
 ```
 type · title · tags · description · estado · prioridad · responsable · id
-· fecha_creacion · timestamp · ultima_auditoria_ia · resource
+· fecha_creacion · generated · ultima_auditoria_ia · verified · stale_after · resource
 · <campos propios del tipo, en su orden>
 · life_areas · domains · goals · habits · projects · sources
 ```
@@ -117,7 +125,9 @@ type · title · tags · description · estado · prioridad · responsable · id
 ### 4.3 Valores válidos de `type`
 Usá el valor **más específico** disponible:
 
-`Tutorial · How-to · SOP · Runbook · Reference · Explanation · ADR · Changelog · Postmortem · Checklist · Indice · Plantilla · Policy`
+`Tutorial · How-to · SOP · Runbook · Reference · Explanation · ADR · Changelog · Postmortem · Checklist · Indice · Plantilla · Policy · Attested Computation`
+
+> **`Attested Computation` (OKF v0.2):** tipo para una nota que *es* una computación versionada y verificable (una query, un script, un cálculo). Suma campos propios: `runtime`, `parameters`, `computation` (path al archivo ejecutable), `executor` y `attester`, más un heading de cuerpo `# Computation`. Opt-in.
 
 > Un SOP usa `type: SOP` (no `How-to`); un how-to que no es un SOP formal usa `How-to`. Un runbook usa `Runbook`, no `SOP`.
 
@@ -312,7 +322,7 @@ Asignados hasta hoy (2026-07-09):
 ## 8. Checklist de cierre
 Antes de dar un documento por terminado:
 
-- [ ] Frontmatter con los 4 campos obligatorios (`type`, `estado`, `timestamp`, `id`).
+- [ ] Frontmatter con los 4 campos obligatorios (`type`, `estado`, `generated`, `id`).
 - [ ] `tags` en formato `[a, b]`, minúsculas, sin `#`.
 - [ ] `id` registrado en §7.1 con número libre.
 - [ ] Nombre de archivo según §5.
@@ -324,7 +334,7 @@ Antes de dar un documento por terminado:
 ---
 
 ## 9. Ciclo de vida
-- **`timestamp`** se actualiza cada vez que tocás el contenido de fondo (no por cambios menores de formato).
+- **`generated.at`** se actualiza cada vez que tocás el contenido de fondo (no por cambios menores de formato); **`generated.by`** refleja quién lo hizo (§4.7).
 - Un documento sin tocar en su ciclo correspondiente ([SOP Revisiones](<SOP Revisiones.md>)) se marca para revisión.
 - Cuando un documento deja de ser válido: `estado: 📦 Archivado` y se mueve a `99 Archivo`. **Nunca se borra** sin propuesta previa (regla del vault).
 - Los tipos nuevos definidos por este SOP tienen plantilla: [[Plantilla Runbook]], [[Plantilla Postmortem]], [[Plantilla Checklist]].

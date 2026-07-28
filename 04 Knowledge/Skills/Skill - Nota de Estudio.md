@@ -4,7 +4,9 @@ title: "Skill | Nota de Estudio — aprender lo que se construyó"
 tags: [skill, ia, claude-code, aprendizaje, explanation, divulgacion]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-07-02
-timestamp: 2026-07-02T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-02T00:00:00Z
 fecha_actualizacion: 2026-07-02
 modelo_objetivo: claude-opus-4-8
 version_modelo: claude-opus-4-8

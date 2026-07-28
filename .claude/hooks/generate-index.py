@@ -148,7 +148,7 @@ def build_index(dirpath, is_root=False):
     if not sections:
         sections = ["# Contenido\n\n*(carpeta vacía por el momento)*"]
 
-    header = '---\nokf_version: "0.1"\n---\n\n' if is_root else ""
+    header = '---\nokf_version: "0.2"\n---\n\n' if is_root else ""
     return header + "\n\n".join(sections) + "\n"
 
 

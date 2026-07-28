@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "REF-HOOKS-CAT-001"
-timestamp: 2026-07-09T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-09T00:00:00Z
 fecha_creacion: 2026-07-01
 resource:
 ---

@@ -4,7 +4,9 @@ title: "Prompt | [Nombre del Prompt]"
 tags: [prompt, prompt-engineering, ai]
 estado: 🟨 Borrador / 🟦 En pruebas / 🟩 Productivo / 🟥 Deprecado
 fecha_creacion: YYYY-MM-DD
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 origen: "[[MOC - Prompt Engineering]]"
 fecha_actualizacion: YYYY-MM-DD
 modelo_objetivo: claude / gpt / gemini / otro

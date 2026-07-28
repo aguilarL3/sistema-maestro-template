@@ -5,7 +5,9 @@ description: "Índice completo de los 28 SOPs y las 14 plantillas del sistema, a
 tags: [sop, sistema]
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-timestamp: 2026-07-17T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-17T00:00:00Z
 resource:
 ---
 

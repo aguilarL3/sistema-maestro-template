@@ -4,7 +4,9 @@ title: "Catálogo de Skills"
 tags: [skills, catalogo, registro, ia, claude-code]
 origen: "MOC - IA con Claude"
 estado: 🟢 Activo
-timestamp: 2026-07-09T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-09T00:00:00Z
 fecha_creacion: 2026-06-26
 resource:
 ---

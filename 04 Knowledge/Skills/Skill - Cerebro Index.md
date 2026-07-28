@@ -4,7 +4,9 @@ title: "Skill | Cerebro Index — Índice del Cerebro Digital"
 tags: [skill, ia, claude-code, cerebro-digital, index, navegacion, tokens]
 origen: "[[Catálogo de Skills]]"
 fecha_creacion: 2026-06-24
-timestamp: 2026-06-24T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-24T00:00:00Z
 fecha_actualizacion: 2026-06-24
 modelo_objetivo: claude-sonnet-4-6
 version_modelo: claude-sonnet-4-6

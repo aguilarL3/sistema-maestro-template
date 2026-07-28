@@ -4,7 +4,9 @@ estado: 🟢 Activo
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "REF-DOCTYPES-001"
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 type: Reference
 title: "Tipos de Documentación del Sistema"
 fecha_creacion: 2026-06-26

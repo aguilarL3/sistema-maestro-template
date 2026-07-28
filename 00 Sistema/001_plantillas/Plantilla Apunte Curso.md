@@ -4,7 +4,9 @@ title: "[Curso] | Clase [N] — [Título]"
 tags: [learning, clase]
 estado: 🟨 Pendiente / 🟩 Procesado
 fecha_creacion: YYYY-MM-DD
-timestamp: YYYY-MM-DD
+generated:
+  by: human:{{OWNER}}
+  at: YYYY-MM-DD
 origen: "[[MOC - nombre]]"
 curso: Career OS
 clase: "N"

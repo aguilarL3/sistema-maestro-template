@@ -9,7 +9,9 @@ ultima_auditoria_ia: 2026-07-09
 estado: 🏗️ Desarrollo
 id: "MOC-SEGURIDAD-001"
 fecha_creacion: 2026-07-09
-timestamp: 2026-07-09T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-09T00:00:00Z
 resource:
 ---
 

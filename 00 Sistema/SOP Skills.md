@@ -6,7 +6,9 @@ estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-SKILLS-001"
-timestamp: 2026-06-24T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-24T00:00:00Z
 fecha_creacion: 2026-06-25
 resource:
 ---
@@ -241,7 +243,7 @@ Algunas skills (Cerebro CE/RE/BRO, Cerebro Audit, Mantenimiento Sistema) no camb
 2. Resolvemos en el chat, en la misma sesión, mientras el contexto está fresco
 3. Por cada hallazgo resuelto:
    - se aplica el cambio al doc correspondiente
-   - se actualiza el changelog de ese doc + su timestamp
+   - se actualiza el changelog de ese doc + su `generated.at`
    - si es estructural, se anota en CHANGELOG del Sistema
    - en el informe se marca ✅ resuelto / ⬜ pendiente
 4. Si la sesión se corta a medias → el informe es el punto de retoma:

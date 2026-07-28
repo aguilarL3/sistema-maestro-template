@@ -7,7 +7,9 @@ prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
 id: "SOP-004"
 fecha_creacion: 2026-07-03
-timestamp: 2026-07-03T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-03T00:00:00Z
 resource:
 ---
 

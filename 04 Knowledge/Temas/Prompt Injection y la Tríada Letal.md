@@ -6,7 +6,9 @@ estado: 🌱 Semilla
 prioridad: 🔴 Alta
 responsable: "{{OWNER}}"
 id: "EXP-SEGURIDAD-001"
-timestamp: 2026-07-08T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-08T00:00:00Z
 fecha_creacion: 2026-07-08
 resource:
 ---

@@ -6,7 +6,9 @@ estado: 🟢 Activo / 🧭 Planificación / ✅ Completado
 prioridad: 🔥 Alta / ⏳ Media / 💤 Baja
 responsable: "{{OWNER}}"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:
+  by: human:{{OWNER}}
+  at: <% tp.date.now("YYYY-MM-DD") %>
 cliente_o_marca: "[Empresa A / ClienteEjemplo / Interno]"
 resource:
 ---

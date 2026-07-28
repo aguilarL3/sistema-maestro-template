@@ -7,7 +7,9 @@ estado: 🌱 Semilla
 prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "EXP-MULTIAGENTE-020"
-timestamp: 2026-07-21T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-21T00:00:00Z
 fecha_creacion: 2026-07-21
 moc_principal: "[[MOC - Agentes]]"
 life_areas: [profesional]

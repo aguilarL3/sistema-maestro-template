@@ -4,7 +4,9 @@ title: "Ciclo de Vida de Capacidades IA"
 tags: [metodologia, ia, skills, prompts, agentes, evals, carrera]
 origen: "MOC - Master Learning System"
 estado: 🟢 Activo
-timestamp: 2026-06-26T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-06-26T00:00:00Z
 fecha_creacion: 2026-06-26
 id: "REF-005"
 resource:

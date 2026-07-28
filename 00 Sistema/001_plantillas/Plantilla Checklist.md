@@ -7,7 +7,9 @@ prioridad: ⏳ Media
 responsable: "{{OWNER}}"
 id: "CHK-XXX"
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:
+  by: human:{{OWNER}}
+  at: <% tp.date.now("YYYY-MM-DD") %>
 resource:
 ---
 

@@ -4,7 +4,7 @@
 # Qué hace (todo local, reversible con git):
 #   1. Renombra los README.md de carpeta-índice → index.md generado (preservando tu prosa en un backup).
 #   2. Migra las claves de frontmatter de TUS notas: tipo_doc→type, ultima_revision→timestamp,
-#      + alta de title (desde el H1) + resource (scaffold vacío).
+#      + alta de title (desde el H1) + resource (scaffold vacío), y luego timestamp→generated{by,at} (OKF v0.2).
 #   3. Convierte los wikilinks resueltos a links markdown (las promesas [[...]] quedan intactas).
 #   4. Regenera los index.md desde el frontmatter.
 #
@@ -17,7 +17,7 @@ cd "$(dirname "$0")"
 DRY="${1:-}"
 
 HOOKS=".claude/hooks"
-for s in migrate-keys.py harden-links.py generate-index.py; do
+for s in migrate-keys.py migrate-generated.py harden-links.py generate-index.py; do
   [ -f "$HOOKS/$s" ] || { echo "✗ Falta $HOOKS/$s — actualizá el framework primero (./update.sh)."; exit 1; }
 done
 
@@ -43,6 +43,8 @@ if [ "$DRY" = "--dry-run" ]; then KEYS_FLAG="--dry"; LINK_FLAG=""; else KEYS_FLA
 
 echo "== 2/4 · claves de frontmatter (type/timestamp/title/resource) =="
 python "$HOOKS/migrate-keys.py" "$KEYS_FLAG" | tail -1
+echo "== 2b/4 · OKF v0.2: timestamp → generated{by,at} =="
+python "$HOOKS/migrate-generated.py" "$KEYS_FLAG" | tail -1
 
 echo "== 3/4 · wikilinks resueltos → links markdown =="
 python "$HOOKS/harden-links.py" --wiki $LINK_FLAG | tail -1

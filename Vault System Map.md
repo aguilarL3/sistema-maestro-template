@@ -3,7 +3,9 @@ type: Indice
 title: "Vault System Map"
 estado: 🟢 Activo
 fecha_creacion: 2026-06-17
-timestamp: 2026-07-14T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-14T00:00:00Z
 resource:
 ---
 

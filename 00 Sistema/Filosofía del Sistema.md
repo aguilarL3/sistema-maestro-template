@@ -6,7 +6,9 @@ tags: [filosofia, sistema, onboarding]
 estado: 🟢 Activo
 prioridad: 🔥 Alta
 responsable: "{{OWNER}}"
-timestamp: 2026-07-17T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-17T00:00:00Z
 fecha_creacion: 2026-06-17
 id: "EXP-002"
 resource:
@@ -115,7 +117,7 @@ Esta idea conecta directamente con el Memex de Vannevar Bush (1945): un almacén
 - dependencia de una sola herramienta o interfaz
 - sobreingeniería que genera fricción de mantenimiento
 
-**Evolución — el pilar se volvió estándar (2026):** en junio de 2026 Google Cloud formalizó este patrón como estándar abierto: el [Open Knowledge Format (OKF)](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) — conocimiento como bundle de Markdown + frontmatter + grafo de enlaces, mantenido por agentes bajo disciplina editorial. Este vault lo implementa **por completo** (claves `type`/`timestamp`/`title`/`description`/`resource`, índices `index.md` generados, links markdown para conocimiento existente): la arquitectura elegida por este pilar quedó validada por un estándar de industria, y el conocimiento del sistema es **interoperable** — puede viajar a otros sistemas y organizaciones hablando un formato común. Detalle operativo en [SOP Documentación](<SOP Documentación.md>) §4 y §6.1.
+**Evolución — el pilar se volvió estándar (2026):** en junio de 2026 Google Cloud formalizó este patrón como estándar abierto: el [Open Knowledge Format (OKF)](<../04 Knowledge/Sistemas y Metodologías/Open Knowledge Format (OKF).md>) — conocimiento como bundle de Markdown + frontmatter + grafo de enlaces, mantenido por agentes bajo disciplina editorial. Este vault lo implementa **por completo** (claves `type`/`generated`/`title`/`description`/`resource`, índices `index.md` generados, links markdown para conocimiento existente): la arquitectura elegida por este pilar quedó validada por un estándar de industria, y el conocimiento del sistema es **interoperable** — puede viajar a otros sistemas y organizaciones hablando un formato común. Detalle operativo en [SOP Documentación](<SOP Documentación.md>) §4 y §6.1.
 
 ---
 

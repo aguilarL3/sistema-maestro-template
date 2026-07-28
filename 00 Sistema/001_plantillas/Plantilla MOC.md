@@ -4,7 +4,9 @@ title: "MOC - [Nombre del Tópico]"
 tags: [moc, knowledge]
 estado: 🧭 Incubación / 🏗️ Desarrollo / ✅ Consolidado
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:
+  by: human:{{OWNER}}
+  at: <% tp.date.now("YYYY-MM-DD") %>
 ultima_auditoria_ia: <% tp.date.now("YYYY-MM-DD") %>
 eje_central: "[Tópico general del MOC]"
 life_areas: []

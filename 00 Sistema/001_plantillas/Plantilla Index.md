@@ -4,7 +4,9 @@ title: "Index - [Tema]"
 tags: [index, plantilla]
 estado: 🧭 Incubación / 🏗️ Desarrollo / ✅ Consolidado
 fecha_creacion: <% tp.date.now("YYYY-MM-DD") %>
-timestamp: <% tp.date.now("YYYY-MM-DD") %>
+generated:
+  by: human:{{OWNER}}
+  at: <% tp.date.now("YYYY-MM-DD") %>
 resource:
 ---
 

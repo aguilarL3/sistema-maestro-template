@@ -5,7 +5,9 @@ tags: [moc, carrera, career-os]
 estado: 🟡 Borrador
 id: "MOC-CARRERA-001"
 fecha_creacion: 2026-07-14
-timestamp: 2026-07-14T00:00:00Z
+generated:
+  by: human:{{OWNER}}
+  at: 2026-07-14T00:00:00Z
 eje_central: "Carrera y empleabilidad"
 life_areas: [profesional]
 domains: [carrera]

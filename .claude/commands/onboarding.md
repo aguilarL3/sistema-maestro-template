@@ -19,11 +19,11 @@ Solo tiene sentido si existe `FIRST_RUN.md` en la raíz (vault sin personalizar)
    - `01 Index/Vision.md`: ¿hacia dónde va tu vida en 3-5 años? ¿qué es innegociable (valores)?
    - `01 Index/Objetivos.md`: ¿qué 1-3 objetivos perseguís AHORA?
    - `01 Index/Mapa Personal.md`: ¿cómo dividís tu vida? (default: profesional · salud · finanzas · relaciones · personal)
-   Escribí cada doc con lo que responda (estado 🟢 Activo, timestamp = hoy). Si el usuario quiere saltear alguno, dejá el stub y anotalo como pendiente en el propio doc.
+   Escribí cada doc con lo que responda (estado 🟢 Activo, `generated.at` = hoy, `generated.by: human:{{OWNER}}`). Si el usuario quiere saltear alguno, dejá el stub y anotalo como pendiente en el propio doc.
 5. **Contexto activo (opcional, 1 pregunta).** ¿Tenés hoy algún proyecto con inicio y fin? Si sí, creá el archivo en `03 Proyectos/` desde `00 Sistema/001_plantillas/Plantilla Proyecto.md` con 3 líneas de contexto.
 6. **Cierre.** Borrá `FIRST_RUN.md`. Mostrá un resumen de lo configurado + los 3 primeros pasos sugeridos (leé [[00 Inicio Rapido]]; abrí tu primer diario con Plantilla Diario; el domingo, 15 min de CE-RE-BRO). Ofrecé commitear: `git add -A && git commit -m "chore: onboarding completado"`.
 
 [REGLAS]
 - No inventes respuestas del usuario; lo que no conteste queda como stub.
 - No toques nada fuera de: el archivo de identidad de la raíz, 01 Index/, 03 Proyectos/ (si aplica), FIRST_RUN.md, y lo que cree `team-mode.sh` si eligieron modo equipo.
-- Respetá el frontmatter canónico (type/estado/timestamp) en los docs que escribas.
+- Respetá el frontmatter canónico (type/estado/generated) en los docs que escribas.
