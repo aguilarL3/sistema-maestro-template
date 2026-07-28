@@ -39,11 +39,18 @@ La memoria compartida es el vault mismo: markdown + git. Sin bases de datos, sin
 
 ## Instalación
 
+Tu vault es **personal y privado**. **No lo clones directo de este template**: `origin` quedaría apuntando acá y un `git push` filtraría tu nombre y email al repo público. Creá primero **tu propio** repo:
+
+1. En GitHub, en este template: **"Use this template" → "Create a new repository"**. Marcalo **Private** y nombralo como quieras (ej. `mi-sistema`).
+2. Cloná **tu** repo (no el template) y corré el setup:
+
 ```bash
-git clone https://github.com/aguilarL3/sistema-maestro-template.git mi-sistema
+git clone https://github.com/<vos>/mi-sistema.git
 cd mi-sistema
-./setup.sh        # git hooks, estado local, remote upstream
+./setup.sh        # git hooks, estado local, y remote 'upstream' → el template (para updates)
 ```
+
+> **¿Por qué no un fork?** Un fork de un repo público sigue siendo público y no se puede volver privado — y un vault personal debe ser privado. **"Use this template"** crea un repo independiente que sí podés marcar privado. Los updates funcionan igual: `update.sh` copia los archivos de framework por `diff`/`checkout` (no mergea), así que no necesita historia compartida con el template. Forkeá solo si tu objetivo es **contribuir de vuelta** al template con PRs.
 
 1. Abrí la carpeta como vault en Obsidian → **"Trust author and enable plugins"**.
 2. Leé `00 Inicio Rapido.md` (el tutorial de entrada).
