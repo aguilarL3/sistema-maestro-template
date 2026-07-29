@@ -106,9 +106,13 @@ Cuando hay más de una esfera (tu vault personal + vaults/repos de empresa), dó
 
 ## 4. Cierre de hito / proyecto
 
-- Evidencia congelada (capturas, métricas, versión demo) → **Career OS** (vault personal).
-- Patrón aprendido → **`04 Knowledge/Temas/`**.
-- Nota de proyecto del vault: estado actualizado + hito registrado.
+**Materia prima:** la bitácora del repo (`docs/BITACORA.md`) — el "qué construí y cómo". Este paso se corre con **Claude desde el vault personal** (Career OS y `Temas/` viven acá; el push es consciente, nunca la empresa entrando a tu vault). Producís dos artefactos:
+
+1. **Historia STAR** → `{{OWNER}} Career OS/04_Career_Stories/{Logro} — {Empresa}.md`. La **S-T-A** sale de la bitácora; la **R (Resultado) es dato de negocio** (métrica, uso, feedback) — **no** está en la bitácora del código, la aportás vos o vive en el vault de la empresa. Enlaza la experiencia y el activo vivo (repo); no copia código.
+2. **Patrón** → **`04 Knowledge/Temas/`** — el aprendizaje **desacoplado de la empresa** (sirve al próximo proyecto de cualquier esfera). Casi siempre **Explanation**; **How-to** solo si es una receta repetible tal cual. Es síntesis, no transcripción de la bitácora.
+
+- Evidencia congelada (captura, métrica, versión demo con fecha) → **Career OS**, opcional.
+- Nota de proyecto del vault dueño: estado actualizado + hito registrado.
 - El código sigue viviendo en su repo (archivado o activo).
 
 ## 5. Qué se porta del vault a un repo de código
