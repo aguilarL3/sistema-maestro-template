@@ -16,6 +16,14 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.9.1] — 2026-08-06
+**`update.sh` deja de romperse cuando agregás un archivo propio a una carpeta de framework.**
+
+- **Corregido: un archivo tuyo dentro de una ruta de `FRAMEWORK_PATHS` rompía el update.** Un SOP propio en `00 Sistema/`, una skill propia en `04 Knowledge/Skills/` — cualquier archivo que exista en tu vault y no en el upstream — aparece en `git diff HEAD upstream/main` (como borrado, en esa dirección) y el `git checkout upstream/main -- <ruta>` siguiente falla con `pathspec ... did not match any file(s) known to 'upstream/main'`. Ahora el diff se **filtra contra `git cat-file -e upstream/main:<ruta>`**: lo que no existe upstream no es framework, es tu contenido, y se informa aparte sin tocarlo. La whitelist listaba `00 Sistema` entera, así que a cualquier instancia le alcanzaba con escribir **un** SOP propio para pisar esto.
+- **Dos síntomas que desaparecen:** (1) el archivo propio quedaba listado en **todos** los updates, así que `"Nada que actualizar."` dejaba de ser alcanzable aunque el framework estuviera al día; (2) si caía **último** en la lista, el `while` devolvía 1 y con `set -euo pipefail` el script **abortaba antes de `personalize.sh` y `team-mode.sh`** — update a medio aplicar y placeholders `{{OWNER}}` sin resolver.
+- **El loop de checkout dejó de correr en una subshell.** Era `echo "$CHANGED" | while …`; pasa a herestring (`done <<< "$CHANGED"`), que además permite juntar los fallos y reportarlos al final en vez de perderlos entre los `✓`. Un checkout que falle ya no puede abortar el script: se acumula en `FALLIDOS` y se lista.
+- **El comentario de `FRAMEWORK_PATHS` sobre `.github/CODEOWNERS` se actualizó:** describía esta misma trampa, pero esquivada ruta por ruta. Ahora está resuelta de raíz; la lista explícita se mantiene porque listar solo lo que es framework sigue siendo lo correcto.
+
 ## [1.9.0] — 2026-07-28
 **OKF v0.1 → v0.2.** El framework adopta la versión 0.2 del Open Knowledge Format.
 

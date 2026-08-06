@@ -26,10 +26,11 @@ FRAMEWORK_PATHS=(
   "README.md" "VERSION" "vault-manifest.json" "setup.sh" "update.sh" "migrate-okf.sh" "personalize.sh" "team-mode.sh" "owner.env.example" "LICENSE"
   ".github/CODEOWNERS.example" ".github/workflows/verify.yml" ".github/workflows/template-update.yml"
 )
-# Ojo: se lista el .example, NO ".github" entero. Un `.github/CODEOWNERS` propio
-# (que existe en tu repo y no en el upstream) aparecería en el diff como borrado
-# y rompería el checkout. Los archivos de .github que sean framework se agregan
-# acá uno por uno.
+# Ojo: se lista el .example, NO ".github" entero. Los archivos de .github que
+# sean framework se agregan acá uno por uno. (El filtro de más abajo ya cubre el
+# caso general —un archivo propio dentro de una ruta de framework— así que esto
+# dejó de ser la única defensa; se mantiene porque listar solo lo que es
+# framework sigue siendo lo correcto.)
 # Nota: los index.md de carpeta son artefactos GENERADOS (generate-index.py en pre-commit),
 # no se sincronizan — cada instancia regenera el suyo desde su propio frontmatter.
 
@@ -47,6 +48,36 @@ fi
 
 # Archivos de framework que difieren del upstream
 CHANGED=$(git -c core.quotepath=false diff --name-only HEAD "$REMOTE/$BRANCH" -- "${FRAMEWORK_PATHS[@]}" || true)
+
+# Un archivo TUYO dentro de una ruta de framework —un SOP propio en "00 Sistema/",
+# una skill propia en "04 Knowledge/Skills/"— existe en HEAD y no en upstream. El
+# diff lo lista igual (como borrado, en esa dirección) y el checkout de más abajo
+# falla: `pathspec ... did not match any file(s) known to 'upstream/main'`.
+# Dos consecuencias, la segunda peor que la primera:
+#   · el archivo aparece SIEMPRE en la lista, así que "Nada que actualizar" deja
+#     de ser alcanzable aunque el framework esté al día;
+#   · si cae último, el `while` devuelve 1 y con `set -euo pipefail` el script
+#     aborta ANTES de personalize.sh y team-mode.sh — update a medio aplicar.
+# Se filtran los que no existen upstream: no son framework, son tu contenido.
+# (Es la misma trampa que el comentario de FRAMEWORK_PATHS describe para
+#  .github/CODEOWNERS, pero resuelta de raíz en vez de esquivada ruta por ruta.)
+if [ -n "$CHANGED" ]; then
+  DE_FRAMEWORK=""; MIOS=""
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if git cat-file -e "$REMOTE/$BRANCH:$f" 2>/dev/null; then
+      DE_FRAMEWORK="${DE_FRAMEWORK}${f}"$'\n'
+    else
+      MIOS="${MIOS}${f}"$'\n'
+    fi
+  done <<< "$CHANGED"
+  CHANGED="${DE_FRAMEWORK%$'\n'}"
+  if [ -n "$MIOS" ]; then
+    echo "Archivos tuyos dentro de rutas de framework (no se tocan):"
+    printf '%s' "$MIOS" | sed 's/^/  · /'
+  fi
+fi
+
 if [ -z "$CHANGED" ]; then echo "Nada que actualizar."; exit 0; fi
 echo "Archivos de framework con cambios upstream:"; echo "$CHANGED" | sed 's/^/  · /'
 
@@ -56,9 +87,23 @@ if [ "$MODE" != "--force" ]; then
   case "$R" in [sS]) ;; *) echo "Cancelado."; exit 0;; esac
 fi
 
-echo "$CHANGED" | while IFS= read -r f; do
-  git -c core.quotepath=false checkout "$REMOTE/$BRANCH" -- "$f" && echo "  ✓ $f"
-done
+# Herestring y no pipe: con pipe el `while` corre en una subshell y FALLIDOS se
+# pierde al terminar. Además, un checkout que falle en la última vuelta hace
+# salir la subshell con 1 y, con `set -e`, aborta el script justo antes de
+# personalize.sh — el modo de falla que este arreglo viene a cerrar.
+FALLIDOS=""
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  if git -c core.quotepath=false checkout "$REMOTE/$BRANCH" -- "$f"; then
+    echo "  ✓ $f"
+  else
+    FALLIDOS="${FALLIDOS}${f}"$'\n'
+  fi
+done <<< "$CHANGED"
+if [ -n "$FALLIDOS" ]; then
+  echo "⚠ No se pudieron actualizar (revisalos a mano):"
+  printf '%s' "$FALLIDOS" | sed 's/^/  · /'
+fi
 echo ""
 if [ -f owner.env ]; then bash ./personalize.sh; fi
 # Re-aplica la capa multi-persona (no-op en modo personal; nunca pisa lo existente).
