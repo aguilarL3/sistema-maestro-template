@@ -16,6 +16,14 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.9.2] — 2026-08-06
+**El filtro de la 1.9.1 fallaba en Windows y se comía archivos de framework.**
+
+- **Corregido: `git cat-file -e "$REMOTE/$BRANCH:$f"` es inseguro en Git Bash.** MSYS2 ve un argumento con dos puntos cuyas partes parecen rutas POSIX, lo toma por una **lista de rutas** y la traduce a formato Windows: `upstream/main:.claude/x.md` → `upstream\main;.claude\x.md`. `cat-file` devuelve `Not a valid object name` y el filtro de la 1.9.1 concluía "este archivo no está upstream, es tuyo".
+- **El fallo era silencioso y asimétrico**, que es lo que lo hacía difícil de ver: MSYS **no** convierte argumentos con espacios, así que `00 Sistema/SOP Maestro.md` se clasificaba bien y `.claude/commands/cerebro-audit.md` no. En una instancia real quedaron fuera del update `.claude/agents/verifier.md` y los diez `.claude/commands/*.md` — archivos de framework que el updater declaraba "tuyos" y **dejaba de actualizar para siempre**, sin un solo mensaje de error.
+- **La pertenencia pasa a resolverse con `git ls-tree -r --name-only` + `grep -Fxq`.** `ls-tree` recibe revisión y ruta como argumentos separados: sin dos puntos no hay nada que MSYS pueda convertir. De paso es **una** llamada a git en vez de una por archivo.
+- **Nota para quien toque este script:** cualquier `<rev>:<ruta>` en una línea de comandos es sospechoso en Windows. Si hace falta, se desactiva con `MSYS_NO_PATHCONV=1`, pero es preferible la forma que no usa dos puntos.
+
 ## [1.9.1] — 2026-08-06
 **`update.sh` deja de romperse cuando agregás un archivo propio a una carpeta de framework.**
 

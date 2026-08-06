@@ -61,11 +61,24 @@ CHANGED=$(git -c core.quotepath=false diff --name-only HEAD "$REMOTE/$BRANCH" --
 # Se filtran los que no existen upstream: no son framework, son tu contenido.
 # (Es la misma trampa que el comentario de FRAMEWORK_PATHS describe para
 #  .github/CODEOWNERS, pero resuelta de raíz en vez de esquivada ruta por ruta.)
+#
+# ⚠️ La pertenencia se resuelve con `ls-tree` + `grep -Fxq`, NO con
+# `git cat-file -e "$REMOTE/$BRANCH:$f"`. En Git Bash (MSYS2, o sea Windows) ese
+# argumento tiene dos puntos y partes que parecen rutas POSIX, así que la capa de
+# conversión de MSYS lo toma por una LISTA DE RUTAS y la traduce a formato
+# Windows: `upstream/main:.claude/x.md` → `upstream\main;.claude\x.md`, y
+# cat-file responde "Not a valid object name". El fallo es silencioso y
+# ASIMÉTRICO — solo golpea a las rutas SIN espacios (con espacios MSYS no las
+# trata como lista), así que `00 Sistema/SOP Maestro.md` funcionaba y
+# `.claude/commands/cerebro-audit.md` se marcaba como "tuyo" y NUNCA se
+# actualizaba. `ls-tree` recibe revisión y ruta como argumentos separados: sin
+# dos puntos no hay nada que convertir. Además es UNA llamada a git en vez de N.
+UPSTREAM_LS=$(git -c core.quotepath=false ls-tree -r --name-only "$REMOTE/$BRANCH")
 if [ -n "$CHANGED" ]; then
   DE_FRAMEWORK=""; MIOS=""
   while IFS= read -r f; do
     [ -n "$f" ] || continue
-    if git cat-file -e "$REMOTE/$BRANCH:$f" 2>/dev/null; then
+    if printf '%s\n' "$UPSTREAM_LS" | grep -Fxq -e "$f"; then
       DE_FRAMEWORK="${DE_FRAMEWORK}${f}"$'\n'
     else
       MIOS="${MIOS}${f}"$'\n'
