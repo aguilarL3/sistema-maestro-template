@@ -58,7 +58,7 @@ if otros:
     print("[PR] %d esperan TU review:" % len(otros))
     for p in otros:
         print("  #%s  %s  (de %s)" % (p["number"], p["title"][:70], autor(p)))
-    print("      Ver: gh pr view <n> --web   ·   Diff: gh pr diff <n>")
+    print("      Ver: gh pr view <n> --web    |    Diff: gh pr diff <n>")
 if mios:
     print("[PR] %d tuyos, esperando review de la otra persona:" % len(mios))
     for p in mios:
