@@ -16,6 +16,17 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.11.2] — 2026-08-07
+**La mención del aviso salía vacía, y el motivo era invisible.**
+
+- 🔴 **Corregido: el aviso de PR comentaba sin mencionar a nadie.** La 1.11.1 resolvía "a quién avisar" con una sola fuente —la lista de colaboradores— y esa llamada falló en la primera corrida real. El comentario salió igual (fail-open, como se diseñó) pero **sin la mención, que era el punto de la feature**.
+- 🔴 **Y el defecto de fondo era peor que el bug: `fail-open` estaba implementado como `fail-silent`.** Los errores iban a `/dev/null`, así que cuando la mención salió vacía **fue imposible diagnosticar por qué**. La causa de esa primera falla quedó sin explicar justamente porque no había nada en el log. **Regla que sale de esto: un aviso que puede fallar en silencio tiene que decir por qué falló.** Ahora cada fuente que no responde deja un `::notice::` con el error.
+- **La mención pasa a resolverse con tres fuentes en cascada**, de la más barata a la que puede fallar por permisos:
+  1. **Los revisores ya pedidos**, que vienen en el payload del evento — sin costo de API y sin permisos extra.
+  2. **`CODEOWNERS`**, leído con `contents: read`. En plan Free GitHub lo ignora, pero el archivo sigue siendo **el mapa declarado de quién revisa qué**: acá por fin sirve de algo.
+  3. **Los colaboradores con permiso de escritura** — la fuente ideal, porque se mantiene sola si entra o sale gente del equipo.
+- Se unen, se deduplican, y se saca al autor y a los bots. **Verificado en dos repos reales:** con `CODEOWNERS` presente resolvió por las tres fuentes; en un repo sin `CODEOWNERS`, por las otras dos. En los dos casos la mención salió correcta.
+
 ## [1.11.1] — 2026-08-07
 **El PR ahora te menciona solo, y te dice qué mirar primero.**
 
