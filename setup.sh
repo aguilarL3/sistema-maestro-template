@@ -27,7 +27,22 @@ if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
   fi
 fi
 
-# Capa multi-persona: solo hace algo si owner.env declara VAULT_MODE=equipo.
+# Instancias anteriores a vault.conf: el modo vivía en owner.env, que está
+# GITIGNOREADO. En el clon de la segunda persona ese archivo no existe, así que
+# el modo equipo entero (gate de rama, aviso de PRs, auto-commit) nacía inerte
+# justo para quien tenía que protegerlo. Se avisa fuerte y una sola vez.
+if [ ! -f vault.conf ] && grep -qs '^[[:space:]]*VAULT_MODE[[:space:]]*=[[:space:]]*equipo' owner.env 2>/dev/null; then
+  echo ""
+  echo "🔴 Este vault declara VAULT_MODE=equipo en owner.env, que está gitignoreado."
+  echo "   O sea: NO llega al clon de las demás personas, y ahí el modo equipo"
+  echo "   queda apagado sin aviso (sin gate de rama, sin aviso de PRs)."
+  echo "   Arreglo, una vez, y lo hace quien mantiene el vault:"
+  echo "     1) crear vault.conf con VAULT_MODE, MAIN_BRANCH y TEAM_MEMBERS"
+  echo "     2) git add vault.conf && commitear  ← versionado, esa es la clave"
+  echo ""
+fi
+
+# Capa multi-persona: solo hace algo si vault.conf declara VAULT_MODE=equipo.
 if [ -f team-mode.sh ]; then bash ./team-mode.sh; fi
 
 echo ""

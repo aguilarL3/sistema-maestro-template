@@ -16,6 +16,18 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.12.0] — 2026-08-07
+**El modo equipo estaba apagado justo en el clon de la segunda persona. Y ahora hay gate de rama.**
+
+- 🔴 **`VAULT_MODE` vivía en `owner.env`, que está gitignoreado — o sea que no llegaba a los demás clones.** Medido, no deducido: clonando un vault de organización real y corriendo `setup.sh`, `team-mode.sh` sale sin hacer nada y `pr-notice.sh` no avisa de ningún PR, porque el archivo que declara el modo no existe en esa máquina. **La capa multi-persona entera nacía inerte para la única persona a la que tenía que proteger**, y sin ningún error visible.
+- **Nuevo `vault.conf`, VERSIONADO**, con `VAULT_MODE`, `MAIN_BRANCH` y `TEAM_MEMBERS`. `owner.env` queda solo para identidad (`OWNER`, `OWNER_EMAIL`, `OWNER_GITHUB`). Es la misma regla que `repo.conf` en el template de repos de código, cuyo motivo ya estaba escrito en `SOP Proyectos de Código` §6.1: *"versionado, no por-clon: si cada uno tuviera el suyo, cualquiera podría ponerse en `solo` y desactivarse el gate"*.
+  - Se **parsea, nunca se sourcea**: es un archivo versionado, y un `source` convertiría un PR a este archivo en ejecución de código en la máquina de cada persona, en cada commit.
+  - **Compatibilidad:** los lectores caen a `owner.env` si no hay `vault.conf`, así que ninguna instancia se rompe. `setup.sh` detecta ese caso y avisa qué hacer.
+  - `vault.conf` **no** entra en `FRAMEWORK_PATHS`: es gobernanza de la instancia, y si `update.sh` lo sincronizara pisaría el `equipo` de un vault de organización con el `personal` del template.
+- **Nuevo gate de rama en `.githooks/pre-commit`.** En `VAULT_MODE=equipo` **rechaza** el commit sobre la rama principal, lo haga un agente o una persona. Va primero en el hook (es lo más barato: no tiene sentido escanear secretos de un commit que va a ser rechazado). Kill-switch `.vault-meta/branch-gate.disabled`. **Cierra la asimetría con el template de repos de código**, que tenía gate desde la v0.2.0 mientras el vault no tenía nada — una diferencia real entre los dos repos que sorprendía a quien recién entraba.
+- **Corregidas dos cosas que `team-mode.sh` decía y ya no eran ciertas:** mandaba a crear la rama con `<inicial>/<tema>` (el prefijo viejo, ambiguo con dos nombres que empiezan igual) y listaba las reglas de rama de GitHub como pendiente accionable, cuando en plan Free con repo privado **no se pueden activar**. Ahora también recuerda el `--reviewer`, que es lo único que enciende el aviso de review.
+- **Aprendizaje, y es el transferible:** *una perilla de gobernanza que vive en un archivo gitignoreado no es una perilla, es una preferencia local.* Al agregar un flag, la primera pregunta es **"¿tiene que llegar a la máquina de otro?"**.
+
 ## [1.11.3] — 2026-08-07
 **El aviso marcaba el CHANGELOG como "archivo de ley". Falso positivo.**
 

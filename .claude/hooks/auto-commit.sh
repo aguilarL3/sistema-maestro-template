@@ -46,7 +46,11 @@ mkdir -p .vault-meta 2>/dev/null || true
 # Cuando VAULT_MODE=equipo, no auto-commitear en main/master — el trabajo va en una
 # rama de persona y se integra por PR. En una rama de trabajo el auto-commit sigue igual.
 # (La marca session-touched de arriba ya avisó al Agent Diary que hubo cambios.)
-TEAM_MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' owner.env 2>/dev/null | tr -d "\"' " | head -1)"
+# El modo vive en vault.conf, que está VERSIONADO y por lo tanto llega a todos
+# los clones. owner.env queda como fallback de compatibilidad: está gitignoreado,
+# así que ahí el modo nunca llegaba al clon de las demás personas.
+TEAM_MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' vault.conf 2>/dev/null | tr -d "\"' " | head -1)"
+[ -n "$TEAM_MODE" ] || TEAM_MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' owner.env 2>/dev/null | tr -d "\"' " | head -1)"
 if [ "${TEAM_MODE:-personal}" = "equipo" ]; then
   BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || printf '')"
   case "$BRANCH" in main|master) exit 0 ;; esac

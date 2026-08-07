@@ -33,6 +33,13 @@ FRAMEWORK_PATHS=(
 # framework sigue siendo lo correcto.)
 # Nota: los index.md de carpeta son artefactos GENERADOS (generate-index.py en pre-commit),
 # no se sincronizan — cada instancia regenera el suyo desde su propio frontmatter.
+#
+# ⚠️ `vault.conf` NO va en la lista, y no es un olvido. Está versionado (tiene que
+# llegar al clon de cada persona) pero su contenido es una decisión de GOBERNANZA
+# de la instancia: VAULT_MODE, MAIN_BRANCH, TEAM_MEMBERS. Si entrara acá, cada
+# `update.sh` pisaría el `equipo` de un vault de organización con el `personal`
+# del template — apagando el gate de rama sin que nadie lo haya pedido.
+# Mismo criterio que `.github/CODEOWNERS`: se sincroniza el ejemplo, no el real.
 
 MODE="${1:-interactive}"
 git remote get-url "$REMOTE" >/dev/null 2>&1 || { echo "Falta remote '$REMOTE'. Corré ./setup.sh"; exit 1; }

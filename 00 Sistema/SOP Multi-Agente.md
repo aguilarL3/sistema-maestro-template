@@ -185,8 +185,12 @@ Son problemas distintos y se resuelven en capas distintas:
 
 | Eje | Qué aísla | Mecanismo |
 |---|---|---|
-| **Varios agentes**, una persona | que dos agentes no toquen el mismo archivo en disco | worktree (§1) |
+| **Varios agentes**, una persona | que dos agentes no toquen el mismo archivo en disco | worktree (§1) + locks advisory ([SOP Hooks](<SOP Hooks y Automatización.md>) §7) |
 | **Varias personas**, un vault | que dos personas no publiquen a `main` a la vez | clon + rama + PR (SOP Git §11) |
+
+> ⚠️ **Los locks advisory no cruzan máquinas.** `wiki-lock.sh` guarda los locks en `.vault-meta/locks/`, que está **gitignoreado** — correcto por diseño (un lock es estado efímero, no historial), pero con la consecuencia de que **son invisibles para las demás personas**: sus agentes no ven tu lock y lo van a pisar. Resuelven el eje de arriba, no el de abajo.
+>
+> Entre personas el sustituto es la **regla del escritor único sobre los hotspots** ([SOP Git](<SOP Git y Flujo de Trabajo.md>) §11.3): sobre `01 Index/`, `02 MOCs/`, `index.md`, `Dashboard-*.md` no se paraleliza, se serializa — y eso se avisa hablando, porque no hay herramienta que lo imponga.
 
 Se anidan, no compiten:
 
@@ -227,12 +231,31 @@ El verifier tier-2 es un subagente que se despacha antes de commitear, en el clo
 ### 5.5 Activación
 
 ```bash
-# owner.env
+# vault.conf  ← VERSIONADO. Se commitea.
 VAULT_MODE=equipo
+MAIN_BRANCH=main
 TEAM_MEMBERS="Persona A,Persona B,Persona C"
 
 ./team-mode.sh      # o ./setup.sh — lo corre solo
+git add vault.conf && git commit -m "chore(equipo): activar modo equipo"
 ```
+
+> 🔴 **El flag va en `vault.conf`, no en `owner.env` — y el motivo es la razón de ser del archivo.** `owner.env` es la **identidad** de la instancia y está **gitignoreado**: nunca llega al clon de las demás personas. Mientras el modo vivió ahí, la segunda persona clonaba el vault y su gate de rama, su aviso de PRs y su auto-commit quedaban en `personal` **sin que nadie se enterara** — la capa de equipo entera nacía apagada justo para quien tenía que protegerla.
+>
+> Es la misma regla que `repo.conf` en el template de repos de código, con el motivo ya escrito en [SOP Proyectos de Código](<SOP Proyectos de Código.md>) §6.1: *"versionado, no por-clon: si cada uno tuviera el suyo, cualquiera podría ponerse en `solo` y desactivarse el gate"*.
+>
+> Instancias viejas siguen funcionando por compatibilidad (los lectores caen a `owner.env` si no hay `vault.conf`), pero **solo para el dueño**. `setup.sh` detecta ese caso y avisa.
+
+Lo que queda activo en modo equipo:
+
+| Pieza | Qué hace |
+|---|---|
+| Gate de rama en `.githooks/pre-commit` | **Rechaza** el commit sobre `MAIN_BRANCH`, lo haga un agente o una persona. Kill-switch: `.vault-meta/branch-gate.disabled` |
+| `auto-commit.sh` | No auto-commitea en la rama principal |
+| `pr-notice.sh` (`SessionStart`) | Lista los PR abiertos que esperan tu review |
+| `team-mode.sh` | Crea `05 Diario/<Persona>/` e instala `CODEOWNERS` desde el ejemplo |
+
+> El gate depende de `core.hooksPath=.githooks`, que se activa con `setup.sh` **en cada clon**. Sin eso no hay gate: es local, y `--no-verify` lo saltea.
 
 Crea `05 Diario/<Persona>/` por cada nombre e instala `.github/CODEOWNERS` desde el ejemplo. **No reparte las zonas por vos**: quién es dueño de qué es una decisión de gobernanza, no algo que una plantilla pueda adivinar. El script imprime lo que queda pendiente en GitHub (branch protection).
 

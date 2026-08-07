@@ -19,8 +19,11 @@ ROOT="${CLAUDE_PROJECT_DIR:-.}"
 cd "$ROOT" 2>/dev/null || exit 0
 [ -f .vault-meta/pr-notice.disabled ] && exit 0
 
-# Solo en modo equipo. owner.env es la identidad de la instancia (gitignorada).
-MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' owner.env 2>/dev/null | tr -d "\"' " | head -1)"
+# Solo en modo equipo. El modo vive en vault.conf, VERSIONADO: llega a todos los
+# clones. owner.env (identidad, gitignorada) queda como fallback de compatibilidad
+# — leyendo solo de ahí, este aviso nunca se encendía para la segunda persona.
+MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' vault.conf 2>/dev/null | tr -d "\"' " | head -1)"
+[ -n "$MODE" ] || MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' owner.env 2>/dev/null | tr -d "\"' " | head -1)"
 [ "${MODE:-personal}" = "equipo" ] || exit 0
 
 command -v gh >/dev/null 2>&1 || exit 0

@@ -4,7 +4,61 @@
 # (.claude/hooks/ en settings.json), este corre en CADA `git commit`, lo haga
 # un agente o un humano. Ver [[Verifier pre-commit (self-review)]].
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
+cd "$ROOT" 2>/dev/null || exit 0
 PY="$(command -v python3 || command -v python || true)"
+
+# 0) Gate de rama (solo modo equipo). Va PRIMERO porque es lo más barato: no
+#    tiene sentido escanear secretos ni regenerar índices de un commit que va a
+#    ser rechazado. En modo `personal` este bloque no hace absolutamente nada.
+#
+#    vault.conf se PARSEA, no se sourcea: es un archivo versionado que con
+#    `source` ejecutaría shell en la máquina de cada persona en cada commit.
+#
+#    ⚠️ El mensaje no promete controles de servidor. Con plan Free y repo privado
+#    GitHub no puede exigir PR ni review, y `verify` es señal y no bloqueo: este
+#    gate local suele ser el ÚNICO control automático real.
+vault_conf() {   # $1=clave  $2=default
+  local v
+  v="$(sed -n "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*//p" vault.conf 2>/dev/null | head -1)"
+  v="${v%"${v##*[![:space:]]}"}"          # trim de espacios finales
+  v="${v#\"}"; v="${v%\"}"; v="${v#\'}"; v="${v%\'}"
+  [ -n "$v" ] && printf '%s' "$v" || printf '%s' "$2"
+}
+VAULT_MODE="$(vault_conf VAULT_MODE "")"
+if [ -z "$VAULT_MODE" ]; then
+  # Compat con instancias anteriores a vault.conf, que tenían el modo en
+  # owner.env. Ojo: owner.env está GITIGNOREADO, así que ahí el modo nunca
+  # llegaba al clon de las demás personas y el gate nacía inerte justo para
+  # quien tenía que frenarlo. Migrar a vault.conf (versionado).
+  VAULT_MODE="$(sed -n 's/^[[:space:]]*VAULT_MODE=//p' owner.env 2>/dev/null | tr -d "\"' " | head -1)"
+fi
+MAIN_BRANCH="$(vault_conf MAIN_BRANCH main)"
+
+if [ "${VAULT_MODE:-personal}" = "equipo" ] && [ ! -f .vault-meta/branch-gate.disabled ]; then
+  BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")"
+  if [ "$BRANCH" = "$MAIN_BRANCH" ]; then
+    echo "🔴 pre-commit: este vault está en VAULT_MODE=equipo y estás sobre «$MAIN_BRANCH»." >&2
+    echo "" >&2
+    echo "   $MAIN_BRANCH es el vault que TODOS abren en Obsidian: entra solo por PR," >&2
+    echo "   que es donde otra persona lo revisa." >&2
+    echo "" >&2
+    echo "   Movete a tu rama y volvé a commitear:" >&2
+    echo "" >&2
+    echo "     git switch -c <tu-prefijo>/<tema>      # ej. le/moc-clientes" >&2
+    echo "" >&2
+    echo "   El prefijo es de DOS letras, no la inicial: con dos personas que" >&2
+    echo "   comparten inicial, la inicial sola es ambigua." >&2
+    if [ -f "00 Sistema/Cómo trabajamos en este vault.md" ]; then
+      echo "   Cuál te toca: '00 Sistema/Cómo trabajamos en este vault.md' §2" >&2
+    fi
+    echo "" >&2
+    echo "   Si ya commiteaste sobre $MAIN_BRANCH y querés rescatar el trabajo:" >&2
+    echo "     git switch -c <tu-prefijo>/<tema> && git switch $MAIN_BRANCH && git reset --hard origin/$MAIN_BRANCH" >&2
+    echo "" >&2
+    echo "   (Excepción puntual: git commit --no-verify. Kill-switch: .vault-meta/branch-gate.disabled)" >&2
+    exit 1
+  fi
+fi
 
 # 1) Gate de seguridad: bloquea secretos antes de que entren al historial.
 bash "$ROOT/.claude/hooks/secret-scan.sh" || exit 1

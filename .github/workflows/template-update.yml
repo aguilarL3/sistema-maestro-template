@@ -13,8 +13,11 @@
 #   OWNER          (requerido)  igual que en tu owner.env
 #   OWNER_EMAIL    (opcional)
 #   OWNER_GITHUB   (opcional)
-#   VAULT_MODE     (opcional)   personal | equipo
-#   TEAM_MEMBERS   (opcional)   solo en modo equipo
+#   VAULT_MODE     (legacy)     personal | equipo   ← ahora vive en vault.conf
+#   TEAM_MEMBERS   (legacy)     solo en modo equipo ← ahora vive en vault.conf
+#     Las dos se mantienen por compatibilidad: si el repo ya tiene vault.conf
+#     (versionado), ese gana y estas Variables son inocuas. En vaults nuevos no
+#     hace falta configurarlas.
 #   UPSTREAM_URL   (opcional)   si tu template no es el de por defecto
 # Settings → Actions → General → Workflow permissions:
 #   "Read and write" + "Allow GitHub Actions to create and approve pull requests"

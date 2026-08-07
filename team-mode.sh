@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Activa la capa multi-persona del vault cuando owner.env declara VAULT_MODE=equipo.
+# Activa la capa multi-persona del vault cuando vault.conf declara VAULT_MODE=equipo.
 # Idempotente y no destructivo: nunca pisa un archivo existente.
 # En modo personal no hace absolutamente nada.
 #
@@ -8,11 +8,28 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-[ -f owner.env ] || exit 0
-# shellcheck disable=SC1091
-source ./owner.env
-MODE="${VAULT_MODE:-personal}"
-[ "$MODE" = "equipo" ] || exit 0
+# vault.conf se PARSEA, no se sourcea: está versionado, y un `source` ejecutaría
+# shell de un archivo que puede llegar por PR. owner.env sí se sourcea porque es
+# local y gitignorado — pero por eso mismo NO llega al clon de las demás personas,
+# y por eso la gobernanza se mudó a vault.conf.
+vault_conf() {   # $1=clave  $2=default
+  local v
+  v="$(sed -n "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*//p" vault.conf 2>/dev/null | head -1)"
+  v="${v%"${v##*[![:space:]]}"}"
+  v="${v#\"}"; v="${v%\"}"; v="${v#\'}"; v="${v%\'}"
+  [ -n "$v" ] && printf '%s' "$v" || printf '%s' "$2"
+}
+
+MODE="$(vault_conf VAULT_MODE "")"
+TEAM_MEMBERS="$(vault_conf TEAM_MEMBERS "")"
+# Compat: instancias anteriores a vault.conf tenían las dos claves en owner.env.
+if [ -z "$MODE" ] && [ -f owner.env ]; then
+  # shellcheck disable=SC1091
+  source ./owner.env
+  MODE="${VAULT_MODE:-}"
+  TEAM_MEMBERS="${TEAM_MEMBERS:-}"
+fi
+[ "${MODE:-personal}" = "equipo" ] || exit 0
 
 echo "== Modo equipo =="
 
@@ -34,7 +51,7 @@ if [ -n "${TEAM_MEMBERS:-}" ]; then
     fi
   done
 else
-  echo "  ⚠ TEAM_MEMBERS está vacío en owner.env — no se crearon carpetas de diario."
+  echo "  ⚠ TEAM_MEMBERS está vacío en vault.conf — no se crearon carpetas de diario."
 fi
 
 # ── 2. CODEOWNERS ────────────────────────────────────────────────────────────
@@ -54,27 +71,33 @@ else
   echo "  ⚠ No se encontró .github/CODEOWNERS.example"
 fi
 
-# ── 3. Auto-commit ya protege `main` ─────────────────────────────────────────
-echo "  ✓ auto-commit consciente del modo: en 'equipo' NO commitea en main/master"
-echo "    (el trabajo va en tu rama de persona → PR). En una rama, funciona igual."
+# ── 3. Qué queda protegido ───────────────────────────────────────────────────
+echo "  ✓ gate de rama en .githooks/pre-commit: RECHAZA commits sobre la rama"
+echo "    principal, lo haga un agente o una persona (kill-switch:"
+echo "    .vault-meta/branch-gate.disabled). Requiere core.hooksPath=.githooks."
+echo "  ✓ auto-commit consciente del modo: en 'equipo' no commitea en main/master."
 
 # ── 4. Lo que el script NO puede hacer por vos ───────────────────────────────
 cat <<'EOF'
 
-Trabajá SIEMPRE en tu rama (nunca directo en main): `git checkout -b <inicial>/<tema>`.
-En main el auto-commit se abstiene a propósito; tu cambio queda sin commitear hasta
-que estés en una rama.
+Trabajá SIEMPRE en tu rama (nunca directo en la principal):
+  git switch -c <tu-prefijo>/<tema>      # ej. le/moc-clientes
+El prefijo es de DOS letras, no la inicial: con dos personas que comparten
+inicial, la inicial sola es ambigua. Fijalo por escrito antes del primer PR.
 
 Para abrir PRs con `gh`: si no lo hizo el setup (gh no estaba instalado entonces),
 fijá una sola vez el repo default a tu vault, o `gh pr create` falla contra el
 template (origin vs upstream):  gh repo set-default <org>/<repo>
 
-Pendiente en GitHub (Settings → Rules → proteger `main`) — es server-side, ningún
-script lo puede garantizar por vos:
-  · Require a pull request before merging
-  · Require review from Code Owners      ← sin esto CODEOWNERS solo sugiere
-  · Require status checks to pass
-  · Block force pushes
+Y pedí el review explícitamente —`gh pr create --reviewer <persona>`— porque
+CODEOWNERS NO auto-asigna revisor en repos privados con plan Free. Sin ese flag,
+la otra persona no se entera de que abriste el PR.
+
+Reglas de rama en GitHub (Settings → Rules): si el repo es PÚBLICO o el plan es
+de pago, activá 'Require a pull request', 'Require review from Code Owners',
+'Require status checks' y 'Block force pushes'. En plan Free con repo PRIVADO no
+están disponibles (403) — ahí el gate de arriba y el acuerdo escrito del equipo
+son todo el control que hay.
 
 Y un recordatorio del SOP: en modo equipo el AUTOR del commit es la persona
 que lanzó al agente; el agente va como trailer (SOP Multi-Agente §3.1).
