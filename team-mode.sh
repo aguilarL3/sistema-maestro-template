@@ -71,13 +71,30 @@ else
   echo "  ⚠ No se encontró .github/CODEOWNERS.example"
 fi
 
-# ── 3. Qué queda protegido ───────────────────────────────────────────────────
+# ── 3. Acuerdo de trabajo del equipo ─────────────────────────────────────────
+# En plan Free de GitHub no hay reglas de rama, así que este documento no es un
+# complemento del control: ES el control. Se instala desde el ejemplo y se avisa
+# qué falta completar. Jamás se pisa uno existente.
+ACUERDO="00 Sistema/Cómo trabajamos en este vault.md"
+if [ -f "$ACUERDO" ]; then
+  echo "  · $ACUERDO ya existe (no se toca)"
+elif [ -f "$ACUERDO.example" ] || [ -f "00 Sistema/Cómo trabajamos en este vault.example.md" ]; then
+  cp "00 Sistema/Cómo trabajamos en este vault.example.md" "$ACUERDO"
+  echo "  ✓ $ACUERDO creado desde el ejemplo"
+  echo "    ⚠ FALTA completarlo: la organización, los prefijos de rama de cada"
+  echo "      persona y el reparto de zonas. Y borrar el bloque PLANTILLA de arriba."
+  echo "    Es lo primero que lee quien se suma — y en plan Free, el único control."
+else
+  echo "  ⚠ No se encontró 00 Sistema/Cómo trabajamos en este vault.example.md"
+fi
+
+# ── 4. Qué queda protegido ───────────────────────────────────────────────────
 echo "  ✓ gate de rama en .githooks/pre-commit: RECHAZA commits sobre la rama"
 echo "    principal, lo haga un agente o una persona (kill-switch:"
 echo "    .vault-meta/branch-gate.disabled). Requiere core.hooksPath=.githooks."
 echo "  ✓ auto-commit consciente del modo: en 'equipo' no commitea en main/master."
 
-# ── 4. Lo que el script NO puede hacer por vos ───────────────────────────────
+# ── 5. Lo que el script NO puede hacer por vos ───────────────────────────────
 cat <<'EOF'
 
 Trabajá SIEMPRE en tu rama (nunca directo en la principal):

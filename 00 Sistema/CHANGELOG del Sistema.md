@@ -16,6 +16,15 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.13.0] — 2026-08-07
+**El acuerdo de trabajo del equipo no viajaba en la plantilla. Ahora sí.**
+
+- 🔴 **`sistema-maestro-template` no traía ningún `Cómo trabajamos en este vault`**, mientras el template de repos de código sí tenía su `COMO-TRABAJAMOS.example.md` desde el 2026-08-06. **La organización que instalaba el vault no recibía el acuerdo** — y en plan Free ese documento no es un complemento del control: **es** el control, porque GitHub no puede bloquear nada. La instancia de TeoPet lo tenía escrito a mano; nunca había vuelto al template.
+- **Nuevo `00 Sistema/Cómo trabajamos en este vault.example.md`**, genérico y en lenguaje llano, con todo lo aprendido en el primer onboarding real: la regla del `--reviewer` (lo único que enciende la vista *"te pidieron review"* en plan Free), el prefijo de rama de dos letras, el gate de rama y de quién depende, cómo leer el check `verify`, las cuatro reglas de trabajar con un agente y qué hacer cuando algo sale mal.
+- **`team-mode.sh` lo instala** la primera vez que se activa el modo equipo, igual que hace con `CODEOWNERS`: copia el ejemplo, avisa qué falta completar y **nunca pisa uno existente**.
+- `vault-manifest.json`: el acuerdo y `vault.conf` entran como **scaffold** (se instalan una vez, no se pisan), y se corrigió la descripción del archivo de identidad, que decía "identidad y modo" cuando el modo se mudó a `vault.conf` en la 1.12.0.
+- ⚠️ **Corregido en el mismo tirón, y es un error que vale contar:** al construir el gate en la 1.12.0 quedó sin actualizar el §3 del acuerdo de TeoPet, que seguía diciendo *"acá nadie te va a frenar"*. O sea que **el commit que arreglaba documentación falsa introdujo documentación falsa** — la misma clase de defecto, en el mismo trabajo. Cuando un cambio de código vuelve obsoleto un texto, el texto entra en el mismo commit o no entra.
+
 ## [1.12.0] — 2026-08-07
 **El modo equipo estaba apagado justo en el clon de la segunda persona. Y ahora hay gate de rama.**
 

@@ -12,6 +12,7 @@
 * [Blueprint de Sistemas](<Blueprint de Sistemas.md>)
 * [Centinelas de Edición (@user / @generated)](<Centinelas de Edición.md>)
 * [Conflicto Semántico — Enlaces y Contradicciones](<Conflicto Semántico - Enlaces y Contradicciones.md>)
+* [Cómo trabajamos en este vault](<Cómo trabajamos en este vault.example.md>) - Acuerdo de trabajo compartido: el ritual de cada sesión, las zonas de cada persona y las reglas al trabajar con agentes. En plan Free de GitHub, este documento es el control.
 * [SOP Career OS](<SOP Career OS.md>)
 * [SOP Conectores](<SOP Conectores.md>)
 * [SOP Cursos y Apuntes](<SOP Cursos y Apuntes.md>)

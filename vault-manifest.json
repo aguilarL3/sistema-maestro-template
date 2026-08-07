@@ -1,6 +1,6 @@
 {
   "template": "sistema-maestro-template",
-  "version": "1.11.3",
+  "version": "1.13.0",
   "released": "2026-08-07",
   "description": "Sistema operativo personal en Obsidian, multi-agente y agnóstico de harness (AGENTS.md + git). 8 capas, 28 SOPs, 14 plantillas, 11 skills, hooks + verifier pre-commit. Frontmatter OKF v0.2 (type/generated/title/description/resource) e índices index.md generados. SEGURO POR DEFECTO: deny en settings.json, security-guard (PreToolUse), secret-scan (pre-commit), security-audit + Baseline de Seguridad portable. Gate de git agnóstico de harness: centinelas @user y bloqueo de reescritura de historia corren para cualquier agente, no solo Claude Code.",
   "infrastructure": [
@@ -60,8 +60,10 @@
     "04 Knowledge/Prompts/**": "Ejemplos de prompts — adaptables",
     "04 Knowledge/Conectores/**": "Ejemplo ficticio de doc de conector — reemplazar por tus sistemas reales",
     "FIRST_RUN.md": "Marker de primera corrida — el onboarding lo borra; update NUNCA lo restaura",
-    "owner.env": "Identidad y modo de la instancia — la escribe el onboarding; jamás se pisa",
-    ".github/CODEOWNERS": "Solo en modo equipo — lo crea team-mode.sh desde el .example y lo edita el equipo; jamás se pisa"
+    "owner.env": "Identidad de la instancia (OWNER/OWNER_EMAIL/OWNER_GITHUB) — la escribe el onboarding; gitignorada; jamás se pisa",
+    "vault.conf": "Gobernanza de la instancia (VAULT_MODE/MAIN_BRANCH/TEAM_MEMBERS) — VERSIONADA a propósito: tiene que llegar al clon de cada persona. Fuera de infrastructure: update.sh pisaría el `equipo` con el `personal` del template",
+    ".github/CODEOWNERS": "Solo en modo equipo — lo crea team-mode.sh desde el .example y lo edita el equipo; jamás se pisa",
+    "00 Sistema/Cómo trabajamos en este vault.md": "Solo en modo equipo — lo crea team-mode.sh desde el .example y lo completa el equipo; jamás se pisa. En plan Free ES el control, no un complemento"
   },
   "notes": "update.sh solo toca 'infrastructure'. 'scaffold' se instala una vez y no se pisa. Todo lo demás es contenido del usuario y NUNCA se toca."
 }
