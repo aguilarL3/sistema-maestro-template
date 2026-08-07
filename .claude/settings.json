@@ -37,6 +37,17 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/pr-notice.sh\"",
+            "timeout": 15
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [

@@ -28,6 +28,19 @@ Registro de cambios del **framework** (template). `update.sh` actualiza este arc
 - 🔴 **Corregido: 6 frases del framework se autodestruían en cada `personalize.sh`.** El script sustituye con `sed` literal sobre **todos** los `.md` y `.txt`, así que cualquier documento que *hablara* del token lo perdía: *"placeholders `{{ OWNER }}` sin resolver"* quedaba como *"placeholders `Ana Pérez` sin resolver"*. Estaba pasando en `.claude/commands/onboarding.md`, en 4 entradas de este CHANGELOG y en `Catálogo de Hooks y Locks` — y como `update.sh` re-corre `personalize.sh`, el daño se repetía en cada actualización. Los 6 pasaron a la forma escapada.
 - **Nuevo: [SOP Documentación](<SOP Documentación.md>) §6.2 "Escribir *sobre* los placeholders del template".** La convención que evita que vuelva a pasar: en prosa, el token va **con un espacio interno**; en frontmatter y plantillas, sin él. El espacio es **funcional** — un agente que lo "corrija" por prolijidad rompe la frase en la próxima corrida, y el síntoma aparece después, en otro archivo, sin relación aparente con el arreglo. Incluye el alcance real del script (`.md` y `.txt`, **no** `.py` ni `.sh`) y qué placeholders no corren riesgo (`{{date}}` de Templater, `${{ }}` de Actions).
 
+## [1.11.0] — 2026-08-07
+**En modo equipo, nada te avisaba que había un PR esperando tu review.**
+
+- 🔴 **Hallazgo que motiva la versión: `CODEOWNERS` NO auto-asigna revisor en repos privados con plan Free.** Verificado contra la API: PRs abiertos con el archivo ya correcto y con la otra persona listada como code owner en todas las rutas quedaron con **`requested_reviewers` vacío**. Consecuencia: la vista *"te pidieron review"* de GitHub y de `gh pr status` **queda muerta**, y un PR puede esperar días sin que nadie se entere. La documentación del template que sugería lo contrario estaba equivocada.
+- **Nuevo hook `.claude/hooks/pr-notice.sh` (`SessionStart`).** Al abrir la sesión te dice qué PRs abiertos **esperan tu review** y cuáles son tuyos esperando el review del otro. **No se apoya en review requests** —justamente porque no funcionan— sino en listar los PR abiertos y separar por autor, que es la única señal confiable en ese escenario.
+  - **Inerte fuera de modo equipo:** sale antes de hacer nada si `VAULT_MODE` no es `equipo`. Un vault de un solo dueño no paga nada.
+  - **Fail-open completo:** sin `gh`, sin autenticación, sin python, sin red o con timeout → silencio y `exit 0`. Un hook de sesión no puede impedir abrir una sesión.
+  - Cachea tu usuario de GitHub en `.vault-meta/gh-login` (una llamada de red cuyo resultado no cambia). Kill-switch: `.vault-meta/pr-notice.disabled`.
+- **Nueva skill `/revisar-pr`** (`.claude/commands/revisar-pr.md` + [nota](<../04 Knowledge/Skills/Skill - Revisar PR.md>)). Traduce un PR al lenguaje del vault y clasifica lo que cambió **por peso real**: ley y comportamiento primero, contradicciones después, conocimiento nuevo, y el ruido de `index.md` regenerados **nombrado y no detallado**. Devuelve veredicto 🟢/🟡/🔴/⚠️ y preguntas listas para pegar en el PR.
+  - **El hallazgo que solo esta capa puede ver:** que el PR afirme algo que el vault **ya afirmaba distinto** en otra nota. Ningún verificador determinista lo detecta, y quien escribió el PR es el menos probable de notarlo.
+  - **No aprueba, no mergea, no comenta** — ni con veredicto 🟢. [SOP Multi-Agente](<SOP Multi-Agente.md>) §5.4: si el agente aprueba, el único control que quedaba desaparece.
+- **Nota de método:** el aviso por sesión no reemplaza al de GitHub. Seguir el repo (*Watch → All Activity*) es lo que te avisa cuando **no** estás en una sesión; este hook es lo que te avisa cuando sí. Y que la otra persona abra el PR con `--reviewer <tu-usuario>` es lo que enciende la vista de GitHub que el `CODEOWNERS` no puede encender.
+
 ## [1.10.1] — 2026-08-06
 **`setup.sh` dejaba de mandar a la segunda persona a re-personalizar el vault con su nombre.**
 

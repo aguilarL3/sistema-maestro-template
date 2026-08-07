@@ -33,6 +33,7 @@ Registro único de todas las skills ejecutables del vault. **Fuente de verdad** 
 | `/revision-mensual` | [Skill - Revisión Mensual](<Skill - Revisión Mensual.md>) | v1.1 | 🟦 En pruebas | Orquestador | Orquesta Cerebro Audit + Mantenimiento en paralelo → 1 informe |
 | `/nota-estudio` | [Skill - Nota de Estudio](<Skill - Nota de Estudio.md>) | v1.0 | 🟦 En pruebas | Generador | Nota Explanation a demanda: concepto + lenguaje + walkthrough del código + alternativas |
 | `/revisar-seguridad` | [Skill - Revisión de Seguridad](<Skill - Revisión de Seguridad.md>) | v1.0 | 🟦 En pruebas | Auditor | Decidir antes de instalar/abrir (plugin/hook/npm/repo/contenido): recorre checklist SOP §3 → veredicto 🟢/🟡/🔴/⚠️ (capa 5, nunca ejecuta el target) |
+| `/revisar-pr` | [Skill - Revisar PR](<Skill - Revisar PR.md>) | v1.0 | 🟦 En pruebas | Revisor | **Solo modo equipo.** Traduce un PR ajeno al lenguaje del vault, clasifica por peso real (ley → contradicciones → conocimiento → ruido) → veredicto. No aprueba ni mergea |
 
 ## Estados (ciclo de vida)
 
