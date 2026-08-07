@@ -16,6 +16,16 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.10.0] — 2026-08-06
+**Los dos SOPs que el onboarding de una segunda persona necesita dejan de estar incompletos.**
+
+- **Nuevo: [SOP Git](<SOP Git y Flujo de Trabajo.md>) §12 "Cuentas, organizaciones e identidad en GitHub"** (12.1 a 12.6). §11 ya resolvía *cómo* trabajan varias personas sobre un repo; faltaba la capa de abajo — **de quién es la cuenta, de quién es el repo y quién firma cada commit**, que es lo que hay que decidir *antes* de invitar a la primera persona. Cubre: una cuenta personal + una Organization por negocio (y por qué "la cuenta de la empresa" no existe), cuántos owners, clonar en vez de forkear, **correo verificado antes del primer commit**, identidad por proyecto con `includeIf`, y cómo se demuestra el aporte cuando el repo es privado. Se escribió al descubrir que un runbook de onboarding citaba esta sección seis veces y **ninguna instancia la tenía**: vivía solo en el vault de origen.
+- **Nuevo: [SOP Proyectos de Código](<SOP Proyectos de Código.md>) §6.1 "Modo equipo y paralelismo"** — la tabla de qué pieza del seed resuelve qué (`repo.conf`, gate de rama, `verify.yml`, `CODEOWNERS.example`, `merge=union` en la bitácora) y cuál es su estado por defecto. Mismo motivo: citada por el runbook, ausente de las instancias.
+- 🔴 **Corregido un reclamo falso que estaba en los tres documentos: el plan Free de GitHub NO protege ramas en repos privados.** Medido contra la API: *branch protection* **y** *rulesets* devuelven **403 · "Upgrade to GitHub Pro or make this repository public"**. Era falso decir "Plan Free alcanza" sin más, y era falso listar "Proteger `main`" como un paso ejecutable. Se corrigió en §12.1 (con la tabla de qué sobrevive y qué no), en §11.5 (el status check del PR pasa a ser **señal, no bloqueo**) y en §6.1 del SOP de código.
+- **La consecuencia se documenta donde se toma la decisión, no como nota al pie:** sin capa de servidor, **`setup.sh` en el clon de cada persona es el único control que existe** — deja de ser higiene de instalación y pasa a ser el paso crítico del onboarding, con verificación explícita (`git config core.hooksPath` → `.githooks`). Y como el resto pasa a ser convención, hace falta un **acuerdo escrito en lenguaje llano** que la gente lea de verdad: ese documento *es* el control.
+- **Aviso nuevo en §6.1:** en modo equipo `setup.sh` imprime las reglas de *Settings → Rules* como recordatorio. En plan Free con repos privados ese recordatorio **pide algo imposible** — se lee como "lo que tendrías si pagaras", no como pendiente accionable.
+- **Aprendizaje de método incorporado a §6.1:** un comando declarado no es una verificación. Antes de cablear una suite a un gate, **correla entera una vez**. Y verificar con `cmd | tail` miente: `$?` devuelve el estado de `tail`, no el de la suite.
+
 ## [1.9.2] — 2026-08-06
 **El filtro de la 1.9.1 fallaba en Windows y se comía archivos de framework.**
 

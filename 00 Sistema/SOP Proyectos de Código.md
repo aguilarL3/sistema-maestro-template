@@ -134,6 +134,37 @@ Cuando hay más de una esfera (tu vault personal + vaults/repos de empresa), dó
 
 El kickoff §2 con el seed: pasos 2-4 ya vienen resueltos (copiar la carpeta y completar placeholders).
 
+### 6.1 Modo equipo y paralelismo
+
+El seed nació con el mismo supuesto que el template del vault antes de la decisión de plantilla única: **un dueño, una máquina, un agente por vez** — cero menciones a ramas, PR, CODEOWNERS o worktrees, y sin `.github/`. Portada esa gobernanza, con la misma regla: **capa inerte por defecto**, un repo de un solo dueño no paga nada.
+
+| Pieza | Qué resuelve | Estado por defecto |
+|---|---|---|
+| `repo.conf` con `REPO_MODE=solo\|equipo` | El equivalente de `VAULT_MODE`. **Versionado, no por-clon**: si cada uno tuviera el suyo, cualquiera podría ponerse en `solo` y desactivarse el gate | `solo` |
+| Gate de rama en `.githooks/pre-commit` | En equipo nadie commitea directo a la principal: todo entra por PR | inactivo en `solo` |
+| `.github/workflows/verify.yml` | El gate del lado del servidor (secret-scan `--range`) | activo, solo dispara en PR |
+| `.github/CODEOWNERS.example` | El dueño revisa `AGENTS.md`, `.claude/`, hooks y CI | inactivo — se copia a `CODEOWNERS` |
+| `merge=union` en `docs/BITACORA.md` | El Stop hook **obliga** a escribir al final del archivo: dos worktrees chocaban siempre en la última línea | activo (sirve igual en `solo` con varios agentes) |
+| Entrada de bitácora con **agente y rama** | Con `union`, el orden del archivo ya no identifica a nadie | activo |
+| `AGENTS.md` §*Git: ramas, worktrees y trabajo en paralelo* | La ley que leen los agentes | activo |
+
+**Por qué el gate de servidor no es opcional:** `core.hooksPath` es **config local**, no viaja con el repo, y `--no-verify` lo saltea. Con una persona eso es disciplina; con varias es estadística.
+
+**Lo que el repo NO puede garantizar por sí solo:** las reglas de rama de GitHub (require PR · review from Code Owners · status check `verify` · block force pushes) se activan a mano en *Settings → Rules*. Sin ellas, todo lo anterior es convención, no control.
+
+> [!warning] 🔴 Y en plan Free + repo privado **no se pueden activar en absoluto**
+> Medido el 2026-08-06: la API responde **403 · "Upgrade to GitHub Pro or make this repository public"** tanto para *branch protection* como para *rulesets*. La tabla completa de qué sobrevive y qué no está en [SOP Git](<SOP Git y Flujo de Trabajo.md>) §12.1.
+>
+> **Consecuencia para un repo de código, y acá pesa más que en un vault:** el gate de rama del `pre-commit` (`REPO_MODE=equipo`) pasa a ser **el único control automático que existe** — es lo único que frena un commit directo a la principal. Y depende enteramente de que cada persona haya corrido `setup.sh` en su clon. Verificalo: `git config core.hooksPath` debe responder `.githooks`.
+>
+> En ese escenario, **el `verify.yml` del PR es una señal, no un bloqueo**: un PR en rojo se mergea igual. Sirve para ver, no para impedir.
+>
+> ⚠️ En modo equipo `setup.sh` **imprime** esas reglas como recordatorio. Si la org está en plan Free con repos privados, ese recordatorio pide algo imposible: leelo como "lo que tendrías si pagaras", no como pendiente accionable.
+
+> ⚠️ **El check `verify` queda verde sin correr una sola prueba** hasta cablear el stack (kickoff §2 paso 7, en `pre-commit` **y** en `verify.yml`). Es deliberado —un repo recién nacido no tiene suite— y el paso lo avisa en el resumen del PR, pero activar "require status checks" antes de cablear tests da un verde que no significa nada.
+>
+> **Y "el comando está declarado" no es "el comando funciona".** Antes de cablear una suite a un gate, **correla entera una vez**: es donde aparecen el orden, el estado compartido y las dependencias de entorno que no se ven corriendo un archivo por vez. Corolario, pagado en carne propia: verificar con `cmd | tail` **miente** — `$?` devuelve el estado de `tail`, no el de la suite, y un "todos los archivos pasan" puede convivir con media suite colgada.
+
 ## 7. Errores comunes
 
 | Error | Por qué falla | Corrección |

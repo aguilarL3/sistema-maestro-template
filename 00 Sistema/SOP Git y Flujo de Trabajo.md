@@ -473,6 +473,9 @@ bash    .claude/hooks/verify-commit.sh    --range <base> <head>
 
 Con `main` protegido y "Require status checks to pass", un clon mal configurado deja de poder mergear.
 
+> [!warning] Eso **requiere plan de pago** si el repo es privado
+> "Require status checks to pass" es una regla de protección de rama, y en el plan **Free** de GitHub las reglas de rama **no existen en repos privados** (§12.1). Sin ellas el workflow sigue corriendo y sigue pintando el check, pero **es una señal, no un bloqueo**: un PR en rojo se puede mergear igual. En Free, el único control real es que cada persona haya corrido `setup.sh` en su clon.
+
 ### 11.6 Alternativa: edición simultánea real (CRDT)
 
 Existen plugins de Obsidian para co-edición en tiempo real (Relay, Peerdraft, Team Relay — todos sobre CRDT/Yjs), con un modelo de *compartir carpetas, no vaults*: lo compartido se sincroniza y lo personal queda privado. Resuelven lo único que git no resuelve — dos personas en el mismo párrafo a la vez.
@@ -480,6 +483,163 @@ Existen plugins de Obsidian para co-edición en tiempo real (Relay, Peerdraft, T
 **Cuándo considerarlos:** equipo no técnico que no va a abrir una terminal nunca.
 
 **Por qué no reemplazan a git acá:** sin commit no hay pre-commit hook, ni verifier, ni secret-scan, ni historial revisable. Este sistema está construido sobre el gate del commit. Si se adoptan, que sea **encima** de git, no en lugar de git.
+
+---
+
+## 12. Cuentas, organizaciones e identidad en GitHub
+
+> §11 resuelve *cómo* trabajan varias personas sobre un repo. Esta sección resuelve la capa de abajo: **de quién es la cuenta, de quién es el repo y quién firma cada commit** — lo que hay que decidir antes de invitar a la primera persona.
+
+### 12.1 Una cuenta personal, una Organization por negocio
+
+**Regla:** una sola cuenta de GitHub + una **Organization** por negocio. Nunca una cuenta de GitHub "del negocio".
+
+El malentendido que esto evita: **una organización no tiene login.** No existe "entrar como la empresa". Una org es un contenedor de repos y permisos, y siempre la administran cuentas de usuario con rol de owner. Crear "la cuenta de la empresa" significa en realidad crear una segunda cuenta personal, y eso trae tres costos sin beneficio:
+
+- Hay que desloguearse y loguearse para administrar, con su propio 2FA.
+- **Las contribuciones se parten en dos** y ningún perfil cuenta la historia completa — lo contrario de lo que busca el Career OS.
+- GitHub desaconseja múltiples cuentas personales en su ToS; las orgs existen para no necesitarlas.
+
+> **Quién creó la org no determina de quién es.** Owner es un *rol transferible*, no una marca de nacimiento. La org tiene identidad propia (nombre, logo, correo de contacto, dominio) independiente de tu cuenta. Si mañana entra un socio, lo hacés owner; si vendés el negocio, transferís la org: el repo no se mueve, las URLs no cambian, nadie reclona.
+
+**Orden correcto de creación** (importa: transferir después arrastra issues, PRs y URLs redirigidas):
+
+| # | Paso |
+|---|---|
+| 1 | Crear la Organization desde la cuenta personal (Settings → Organizations → New). El plan Free alcanza para **repos privados y colaboradores ilimitados** — pero **no** para proteger ramas: ver el aviso de abajo |
+| 2 | Crear el repo **dentro** de la org (desplegable *owner* del formulario), no en el perfil personal |
+| 3 | Invitar socios como **Member**; owners solo 2 (ver 12.2) |
+| 4 | Cada persona **clona** (no forkea, ver 12.3) |
+| 5 | Trabajar con rama + PR → §11. **Proteger `main` en el servidor exige plan de pago si el repo es privado** — ver el aviso |
+| 6 | Correo de contacto de la org: una casilla del negocio, no el correo personal |
+
+> [!warning] 🔴 El plan Free **no protege ramas en repos privados**
+> Medido contra la API el **2026-08-06**, en una organización en plan Free con repos privados: tanto *branch protection* como *rulesets* devuelven **403 · "Upgrade to GitHub Pro or make this repository public"**. No es un permiso mal puesto ni un ajuste escondido: la función no está en el plan.
+>
+> | Pieza del diseño de §11 | ¿Funciona en Free + privado? |
+> |---|---|
+> | Rama por persona + PR + squash merge | ✅ sí — es convención, se hace igual |
+> | `verify.yml` corriendo en el PR | ✅ sí — Actions corre en repos privados, con cuota mensual de minutos |
+> | **Require a pull request before merging** | ❌ no |
+> | **Require review from Code Owners** (auto-asignación por CODEOWNERS) | ❌ no |
+> | **Require status checks** / **Block force pushes** | ❌ no |
+> | Gate local (`pre-commit`, modo equipo) | ✅ sí — pero es local, y `--no-verify` lo saltea |
+>
+> **La consecuencia práctica: el control se muda a la máquina de cada persona.** Sin capa de servidor, **`setup.sh` en el clon de cada quien es el único control que existe** — si alguien no lo corre, no tiene hooks y no lo frena nada. Eso convierte a `setup.sh` de higiene en el paso crítico del onboarding: **verificalo explícitamente** (`git config core.hooksPath` debe responder `.githooks`), no lo des por hecho.
+>
+> Y como el resto pasa a ser convención, **hace falta un acuerdo escrito en lenguaje llano** que la gente lea de verdad — no un SOP técnico. Ese documento *es* el control. Ver §11.2 y el ejemplo `00 Sistema/Cómo trabajamos en este vault.md` que instala `team-mode.sh`.
+>
+> **Las tres salidas, si el control por convención no alcanza:** pasar la org a **GitHub Team** (precio por usuario/mes, verificar el vigente), hacer el repo **público** (rara vez viable en un vault), o aceptar la convención a conciencia. La tercera es una decisión legítima con dos personas que se hablan; con más gente deja de serlo — *con una persona es disciplina, con varias es estadística*.
+
+**Un repo por organización**, ya fijado en §11.1. La org agrega la capa de arriba: varios repos del mismo negocio bajo una identidad, con permisos y facturación comunes.
+
+### 12.2 Owners: dos, no todos — y qué hacer si estás solo
+
+Un owner puede **borrar la organización entera**. "Nos damos todos owner" suena a igualdad entre socios y es un riesgo operativo real.
+
+- **Con socios:** 2 owners (vos + el socio principal), el resto Members con escritura en el repo que les toca.
+- **Sin socios:** vos como único owner, y **no** inventes una segunda cuenta para acompañarte.
+
+Por qué una segunda cuenta propia no protege: comparte tus puntos de falla — mismo correo, mismo teléfono con el 2FA, mismo gestor de contraseñas. Se caen juntas. Eso es **falla correlacionada**: dos copias que se caen a la vez no son dos copias. La redundancia solo cuenta si es independiente, y para eso haría falta otra persona real.
+
+> **Con un socio al 50%, la salvedad se asume en vez de esquivarse.** Hacerlo owner es lo coherente con la sociedad, y el riesgo irreversible es uno solo: puede borrar la org. Mitigación real y suficiente: **cada clon local es un backup completo del historial**. Lo que se perdería es el acceso, la URL y los issues — no el trabajo. Además, en plan Free (§12.1) un permiso recortado no protegería nada: sin reglas de rama, "Member con escritura" y "Owner" pueden hacer exactamente el mismo daño en `main`.
+
+**Continuidad real para un dueño solo** (ordenado por retorno):
+
+| Medida | Contra qué |
+|---|---|
+| **El clon local ya es backup completo** — git es distribuido: el `.git` del disco tiene *todo* el historial | GitHub caído, cuenta bloqueada, org borrada por accidente. Lo que está en riesgo es el acceso, la URL y los issues; el trabajo no |
+| Códigos de recuperación de 2FA guardados fuera del teléfono | El 90% de las pérdidas de acceso reales: cambiar de celular sin migrar el autenticador |
+| Acceso de emergencia del gestor de contraseñas a un familiar | "Si me pasa algo" — sin dar acceso hoy, y cubre todo, no solo GitHub |
+| Una copia del clon fuera de casa (disco externo u otra nube) | Incendio, robo, ransomware — más probables que los escenarios extremos |
+
+> GitHub tiene además un procedimiento para que familiares directos soliciten acceso a la cuenta de una persona fallecida, con documentación. **Verificar el detalle en su documentación si el punto importa** — no está confirmado acá.
+
+**¿Crear la org aunque estés solo? Sí.** Es gratis, no agrega mantenimiento (administrás desde tu cuenta de siempre), y deja la estructura lista para el día que entre un socio o un freelance. Además separa la identidad: `github.com/<negocio>/…` se lee como negocio; `github.com/{{OWNER_GITHUB}}/<negocio>-cosas` se lee como proyecto personal — y eso importa para el objetivo de evidencia profesional.
+
+### 12.3 Clonar, no forkear
+
+**Fork es para cuando NO tenés permiso de escritura** — el modelo del open source: alguien externo copia el repo bajo su cuenta y manda PRs desde ahí.
+
+Siendo miembro de la org con escritura, forkear es trabajo extra puro: habría que sincronizar el fork con el original constantemente y los PRs cruzarían de repo a repo sin necesidad. El modelo correcto es **shared repository**: todos clonan el mismo repo, cada uno en su rama (§11.2).
+
+```bash
+git clone https://github.com/<org>/vault.git
+cd vault
+bash ./setup.sh                      # ← sin esto no tenés hooks (§12.1)
+git switch -c <vos>/moc-clientes
+git push -u origin <vos>/moc-clientes    # → PR → revisión → squash merge
+```
+
+> ⚠️ **Dos clones del mismo negocio van en carpetas HERMANAS, nunca anidadas** — ver 12.5, riesgo 1. Y si el vault tiene un repo de código además del vault, lo mismo: hermanos.
+
+Trabajar desde **dos máquinas propias** es el mismo mecanismo: clonás en ambas, el remoto es la fuente de verdad, `git pull` al abrir sesión (§6.2). No hay fork ni configuración especial.
+
+> **Si el repo se creó con "Use this template"** (el camino de instalación de este template), la instancia **no tiene ancestro común** con el repo del que salió: `git merge-base` devuelve vacío y `git merge upstream/main` no sirve para actualizarse. Para eso está `update.sh`, que trae los archivos de framework por whitelist. No intentes mergear el upstream a mano.
+
+### 12.4 Correo verificado — la condición que no se puede saltear
+
+Un commit graba tu nombre y correo **como texto plano**, tomados de `git config user.email`. Git no los valida contra nada. GitHub, al recibir el push, busca ese string entre los correos **registrados y confirmados** de las cuentas existentes:
+
+- **Coincide** → el commit muestra tu foto, linkea a tu perfil y **cuenta en tu contribution graph**.
+- **No coincide** → nombre en gris, sin avatar, sin link, no cuenta para nada. Y arreglarlo después exige **reescribir el historial**, que en un repo compartido es un dolor serio.
+
+> 🔴 **Por eso esto va ANTES del primer commit de cada persona nueva, no después.** Es el único paso del onboarding cuyo arreglo tardío es caro: reescribir historial ya compartido obliga a que todo el mundo reclone o resetee.
+
+Cómo verificarlo: **Settings → Emails → Add email address** → click en el link del mail. Se pueden tener **varios correos verificados en la misma cuenta**: es exactamente lo que permite commitear con el correo del negocio en un repo y con el personal en otro **sin perder atribución en ninguno**.
+
+```bash
+git config user.email          # con qué correo estoy commiteando
+git log -1 --format='%ae'      # qué correo quedó en el último commit
+```
+
+> ⚠️ **Ese correo queda visible en el historial de todo repo público.** Para repos de portfolio, usar el correo `noreply` que GitHub ofrece en esa misma pantalla (`NNNNNN+usuario@users.noreply.github.com`): sirve igual para la atribución y no expone la dirección real.
+
+**No confundir con el badge verde "Verified"** de los commits: eso es firma criptográfica (GPG/SSH) y prueba que el commit lo hizo alguien con tu clave privada — porque como el correo es texto plano, *cualquiera puede commitear diciendo que es vos*. Son mecanismos independientes. No es necesario al arrancar.
+
+### 12.5 Identidad por proyecto en la máquina
+
+`git config user.email` **local** (sin `--global`) vive en el `.git/config` del repo y pisa la identidad global solo ahí. Para no depender de acordarse, `includeIf` en el `.gitconfig` global aplica una identidad a todo repo bajo una ruta:
+
+```
+[includeIf "gitdir:C:/Users/<usuario>/Negocios/"]
+    path = ~/.gitconfig-negocios
+```
+
+**Esto condiciona dónde van las carpetas en disco.** Si se quiere identidad por negocio, los repos de negocio tienen que agruparse bajo una carpeta común (`Negocios\`); si da igual, van todos como hermanos.
+
+```
+C:\Users\<usuario>\Vaults\
+├─ vault-personal\       ← .git propio
+├─ <negocio-a>\          ← .git propio
+└─ <negocio-b>\          ← .git propio
+```
+
+Dos riesgos, y el segundo es el grave:
+
+1. **Nunca anidar** un vault dentro de otro (`vault-personal\<negocio>\`): el repo de arriba se traga al de abajo. Carpetas hermanas no se pisan — un repo solo ve desde su `.git` hacia abajo.
+2. **Nunca copiar la carpeta de otro vault con el `.git` adentro** "como backup" o "para pasársela a alguien": se hereda el historial completo del vault de origen dentro del repo nuevo, que es justo lo que la frontera personal↔negocio viene a impedir. Se **clona** del remoto, siempre; y si hay que partir de contenido, se copia el **contenido** y se hace `git init` limpio.
+
+Lo que git **sí** aísla por repo: remote, ramas e identidad. Un `git push` en un negocio no puede llegar al vault personal. Lo que **no** aísla y sí molesta con cuentas múltiples: el gestor de credenciales del sistema guarda un token **por host** (`github.com`) — otro argumento para la regla de una sola cuenta (12.1).
+
+> **`gh` necesita su propio ajuste cuando hay dos remotos.** Un clon con `origin` (tu repo) y `upstream` (el template) deja a `gh pr create` sin saber a cuál apuntar, y suele elegir mal — abre el PR contra el template. Se fija una vez por clon: `gh repo set-default <org>/<repo>`. `setup.sh` ya lo hace; verificalo si el PR sale raro.
+
+### 12.6 Demostrar el aporte (CV y LinkedIn)
+
+Acá se pagan las decisiones de arriba. Cuatro capas, de menos a más útil:
+
+| Capa | Qué muestra | Cómo |
+|---|---|---|
+| Contribution graph | Que trabajaste, no qué hiciste | Settings → Profile → *Include private contributions on my profile*. **Requiere 12.4**: sin correo verificado no hay nada que mostrar |
+| Membresía pública de la org | Que sos parte del negocio, sin exponer código | Organization → People → membresía en *Public* |
+| **Un repo público extraído** | El trabajo real, legible por un reclutador | Publicar la parte no sensible (un pipeline, un script de automatización, el propio template) sin datos ni credenciales |
+| CHANGELOG + bitácora del repo | Registro fechado que respalda la métrica del CV | Ya lo genera el template |
+
+La tercera es la que casi nadie hace y la más valiosa: un reclutador **no puede** leer tu repo privado. Es evidencia, no declaración.
+
+LinkedIn no se sincroniza con GitHub: la org va en **Experiencia** como empresa, y el link al repo público o a la org en **Proyectos**.
+
+> ⚠️ **Tema no técnico que muerde:** con socios, definir desde el día uno **de quién es el código** y si podés seguir mostrándolo en el portfolio después de irte. La org resuelve la propiedad técnica (transferir, agregar, sacar gente); no resuelve la legal. Evidencia que no podés mostrar no sirve.
 
 ---
 

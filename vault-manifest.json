@@ -1,7 +1,7 @@
 {
   "template": "sistema-maestro-template",
-  "version": "1.9.2",
-  "released": "2026-07-28",
+  "version": "1.10.0",
+  "released": "2026-08-06",
   "description": "Sistema operativo personal en Obsidian, multi-agente y agnóstico de harness (AGENTS.md + git). 8 capas, 28 SOPs, 14 plantillas, 10 skills, hooks + verifier pre-commit. Frontmatter OKF v0.2 (type/generated/title/description/resource) e índices index.md generados. SEGURO POR DEFECTO: deny en settings.json, security-guard (PreToolUse), secret-scan (pre-commit), security-audit + Baseline de Seguridad portable. Gate de git agnóstico de harness: centinelas @user y bloqueo de reescritura de historia corren para cualquier agente, no solo Claude Code.",
   "infrastructure": [
     ".claude/**",
