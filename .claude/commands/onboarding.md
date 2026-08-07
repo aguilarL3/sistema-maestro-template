@@ -9,7 +9,7 @@ Solo tiene sentido si existe `FIRST_RUN.md` en la raíz (vault sin personalizar)
    OWNER="..."
    OWNER_EMAIL="..."
    OWNER_GITHUB="..."
-   Después corré: `SM_ONBOARDING=1 bash ./personalize.sh` (reemplaza los {{OWNER}} en todo el vault; es idempotente y update.sh lo re-corre tras cada actualización). **El prefijo `SM_ONBOARDING=1` es obligatorio acá**: sin él, `personalize.sh` se niega a correr mientras exista `FIRST_RUN.md` (guard anti-inicialización-desde-afuera).
+   Después corré: `SM_ONBOARDING=1 bash ./personalize.sh` (reemplaza los {{ OWNER }} en todo el vault; es idempotente y update.sh lo re-corre tras cada actualización). **El prefijo `SM_ONBOARDING=1` es obligatorio acá**: sin él, `personalize.sh` se niega a correr mientras exista `FIRST_RUN.md` (guard anti-inicialización-desde-afuera).
 2. **¿Solo o en equipo? (1 pregunta).** «¿Este vault es tuyo solo, o lo van a usar varias personas?» Si es solo (lo habitual), no preguntes nada más y seguí. Si son varias, pedí los nombres tal como los quieren ver en Obsidian y agregá al archivo de identidad:
    VAULT_MODE=equipo
    TEAM_MEMBERS="Nombre Uno,Nombre Dos"

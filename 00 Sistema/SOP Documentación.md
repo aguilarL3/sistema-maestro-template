@@ -182,6 +182,27 @@ Regla del vault (endurecida por el hook `harden-links`):
 - **Índices `index.md`** → siempre markdown (artefacto generado).
 - **Embeds** `![[...]]` → intactos (no se convierten).
 
+### 6.2 Escribir *sobre* los placeholders del template (regla contraintuitiva)
+
+> ⚠️ **En esta sección todos los tokens se muestran escapados** (`{{ OWNER }}`, con espacios). El token real va **sin** los espacios. Tuvo que ser así: esta sección es un `.md` y `personalize.sh` la recorre igual que a cualquier otra.
+
+`personalize.sh` sustituye los tokens de identidad —`{{ OWNER }}`, `{{ OWNER_EMAIL }}`, `{{ OWNER_GITHUB }}`— con **`sed` literal, sobre todos los `.md` y `.txt` del vault**: no solo el frontmatter, no solo las notas. Es ciego, y no distingue un placeholder que hay que resolver de una frase que *habla* del placeholder.
+
+Consecuencia real, ya materializada en una instancia: la frase *"placeholders `{{ OWNER }}` sin resolver"* quedó como *"placeholders `Ana Pérez` sin resolver"* — el nombre del dueño incrustado donde iba el nombre del token, o sea una frase que no significa nada. Y como `update.sh` re-corre `personalize.sh` en cada actualización, el daño se repite solo.
+
+**La regla, entonces:**
+
+| Dónde aparece el token | Cómo se escribe | Por qué |
+|---|---|---|
+| Frontmatter, plantillas, prosa que **debe** decir el nombre del dueño | **sin espacios** internos | Es un placeholder de verdad: se quiere sustituir |
+| Prosa que **habla del token** (docs, CHANGELOG, bitácoras, este SOP) | **con un espacio interno** a cada lado | El matcher es literal, sin tolerancia a whitespace: el espacio alcanza para que no matchee, y el texto se lee igual |
+
+> 🔴 **Ese espacio es funcional, no un typo.** Un agente o una persona que lo "corrija" por prolijidad rompe la frase en la próxima corrida de `personalize.sh` — y el síntoma aparece después, en otro archivo, sin relación aparente con el "arreglo". Si ves el token con espacios internos en prosa, **dejalo así**.
+
+**Antes de correr `personalize.sh` a mano:** `grep -rn "{{" --include="*.md" --include="*.txt" .` y escapá lo que sea prosa. Y ojo con el alcance: el `find` del script recorre `.md` **y `.txt`** (o sea que `llms.txt` entra), pero **no** los `.py` ni los `.sh` — un placeholder hardcodeado en un hook **no se resuelve nunca** por esta vía.
+
+Placeholders que **no** corren riesgo, porque el script no los conoce: `{{date}}` y `{{title}}` de Templater, `${{ }}` de GitHub Actions, y cualquier `{{TOKEN}}` de un JSON de ejemplo.
+
 ---
 
 ## 7. Esquema de `id`
