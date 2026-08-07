@@ -34,5 +34,23 @@ echo ""
 echo "Siguientes pasos:"
 echo "  1. Abrí esta carpeta como vault en Obsidian → 'Trust author and enable plugins'"
 echo "  2. Leé '00 Inicio Rapido.md' (el tutorial de entrada)"
-echo "  3. Con un agente de IA: abrilo acá y pedile 'Run onboarding'"
-echo "  4. Actualizaciones: ./update.sh --check"
+
+# El onboarding se sugiere SOLO si el vault está sin inicializar. FIRST_RUN.md es
+# la marca. En un vault ya personalizado, /onboarding pediría la identidad de
+# quien lo corre y volvería a personalizar TODO con SU nombre — que es justo el
+# accidente a evitar cuando la segunda persona clona un vault que ya tiene dueño.
+if [ -f FIRST_RUN.md ]; then
+  echo "  3. Con un agente de IA: abrilo acá y pedile 'Run onboarding'"
+  echo "  4. Actualizaciones: ./update.sh --check"
+else
+  echo "  3. Este vault YA está inicializado: NO corras /onboarding ni personalize.sh."
+  echo "     Pediría tu identidad y re-personalizaría el vault entero con tu nombre,"
+  echo "     mezclando dos identidades. Si te sumás a un vault que ya tiene dueño,"
+  echo "     tu paso siguiente es leer el acuerdo de trabajo del equipo, no inicializar."
+  if [ -f "00 Sistema/Cómo trabajamos en este vault.md" ]; then
+    echo "     → '00 Sistema/Cómo trabajamos en este vault.md'"
+  fi
+  echo "  4. Configurá tu identidad de git con tu correo VERIFICADO en GitHub:"
+  echo "       git config user.email <tu-correo>   &&   git log -1 --format='%ae'"
+  echo "  5. Actualizaciones: ./update.sh --check  (las corre quien mantiene el vault)"
+fi
