@@ -16,6 +16,13 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.11.3] — 2026-08-07
+**El aviso marcaba el CHANGELOG como "archivo de ley". Falso positivo.**
+
+- 🔴 **Corregido: la advertencia de "toca archivos que cambian tu comportamiento" saltaba por documentación.** El `CHANGELOG` vive en `00 Sistema/`, que es ruta de ley, así que un PR que solo movía la versión disparaba la advertencia. **Es exactamente el defecto que vuelve inútil a un aviso:** una alerta que salta cuando no pasa nada se aprende a ignorar, y el día que importe de verdad ya nadie la lee.
+- **Se excluyen las rutas de `00 Sistema/` que son conceptuales, no ejecutables:** `CHANGELOG`, `Blueprint`, `Filosofía`, `Glosario`, `Tipos de Documentación`, `Conflicto Semántico`, `Centinelas` y `Orquestación`. Siguen marcándose los SOPs, las plantillas, `.claude/`, los hooks y los scripts — que sí cambian cómo trabaja el agente de la otra persona.
+- **Probado en las dos direcciones**, que es lo que hay que probar en un filtro: con los archivos del PR que disparó el falso positivo → no marca nada; con `.claude/settings.json`, un SOP y `AGENTS.md` → marca los tres.
+
 ## [1.11.2] — 2026-08-07
 **La mención del aviso salía vacía, y el motivo era invisible.**
 

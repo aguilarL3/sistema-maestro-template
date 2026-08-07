@@ -101,7 +101,14 @@ jobs:
           ARCHIVOS="$(gh pr diff "$PR" --repo "$REPO" --name-only 2>&1)" || {
             echo "::notice::no se pudo leer el diff ($ARCHIVOS)"; ARCHIVOS=""
           }
-          LEY="$(printf '%s\n' "$ARCHIVOS" | grep -E '^(00 Sistema/|\.claude/|\.githooks/|\.github/|AGENTS\.md|CLAUDE\.md|llms\.txt|Matriz Definitiva\.md|repo\.conf|setup\.sh|update\.sh|personalize\.sh|team-mode\.sh)' || true)"
+          # El segundo grep saca los que viven en rutas de ley pero son
+          # DOCUMENTACIÓN: el CHANGELOG y las notas conceptuales del sistema no
+          # cambian el comportamiento de nadie. Una advertencia que salta por un
+          # changelog es una advertencia que se aprende a ignorar.
+          LEY="$(printf '%s\n' "$ARCHIVOS" \
+                 | grep -E '^(00 Sistema/|\.claude/|\.githooks/|\.github/|AGENTS\.md|CLAUDE\.md|llms\.txt|Matriz Definitiva\.md|repo\.conf|setup\.sh|update\.sh|personalize\.sh|team-mode\.sh)' \
+                 | grep -vE '^00 Sistema/(CHANGELOG|Blueprint|Filosofía|Glosario|Tipos de|Conflicto|Centinelas|Orquestación)' \
+                 || true)"
 
           {
             if [ -n "$MENCION" ]; then
