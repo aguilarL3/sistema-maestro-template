@@ -104,6 +104,35 @@ gh pr create --reviewer <la-otra-persona>    # o desde la web de GitHub
 > - **Seguí los repos** en GitHub (botón *Watch* → *All Activity*): te llega un mail con cada PR nuevo. Con **GitHub Mobile**, también al teléfono.
 > - Al abrir el agente en el vault, un aviso automático te dice **qué PRs esperan tu review** (hook `pr-notice.sh`). Y con `/revisar-pr <número>` el agente te lo explica en lenguaje del vault antes de que lo leas.
 
+### ¿Y si el PR está esperando y querés seguir con otra cosa?
+
+**Podés, y es lo normal.** No hay que esperar la aprobación para empezar lo siguiente. Lo único que importa es **desde dónde creás la rama nueva**.
+
+> [!danger] La trampa que hace que un PR "traiga cosas de más"
+> Si terminás `<xx>/boton`, abrís el PR, y **estando parada en esa rama** hacés `git switch -c <xx>/footer`, la rama nueva **se lleva todos los commits del botón**. Tu PR del footer va a mostrar el botón también, quien revisa ve cambios que ya miró, y al mergear queda un enredo.
+
+**La regla: toda rama nueva sale de la rama principal actualizada.**
+
+```bash
+git switch main               # volvés al tronco
+git pull                      # traés lo que se mergeó mientras tanto
+git switch -c <xx>/footer     # ahora sí, rama limpia
+```
+
+**Si te piden cambios en el PR anterior mientras estás en otra cosa**, no abrís un PR nuevo: volvés, corregís y pusheás — el PR se actualiza solo.
+
+```bash
+git switch <xx>/boton
+# … corregís …
+git add -A && git commit -m "fix(boton): lo que pidió el review"
+git push
+git switch <xx>/footer        # y volvés a lo que estabas
+```
+
+> Si tenés cambios sin commitear al cambiar de rama, git te frena. Commiteá antes, o `git stash` y `git stash pop` al volver.
+
+**Dos o tres ramas abiertas a la vez, no más.** No es un límite técnico: cuanto más viven, más se alejan de la principal y peor mezclan — sobre todo en prosa, que es lo que peor mergea. **Y si se apilan cuatro o cinco esperando review, el problema no es cómo trabaja quien las abre: es que quien revisa está tardando.** Conviene decirlo, porque en un equipo chico el tiempo de review es el cuello de botella.
+
 ## 3. Nunca escribas directo en la rama principal
 
 La rama principal es la versión que todos abren en Obsidian. Tiene que estar siempre sana, así que **todo entra por PR**.
