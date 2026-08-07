@@ -28,6 +28,17 @@ Registro de cambios del **framework** (template). `update.sh` actualiza este arc
 - 🔴 **Corregido: 6 frases del framework se autodestruían en cada `personalize.sh`.** El script sustituye con `sed` literal sobre **todos** los `.md` y `.txt`, así que cualquier documento que *hablara* del token lo perdía: *"placeholders `{{ OWNER }}` sin resolver"* quedaba como *"placeholders `Ana Pérez` sin resolver"*. Estaba pasando en `.claude/commands/onboarding.md`, en 4 entradas de este CHANGELOG y en `Catálogo de Hooks y Locks` — y como `update.sh` re-corre `personalize.sh`, el daño se repetía en cada actualización. Los 6 pasaron a la forma escapada.
 - **Nuevo: [SOP Documentación](<SOP Documentación.md>) §6.2 "Escribir *sobre* los placeholders del template".** La convención que evita que vuelva a pasar: en prosa, el token va **con un espacio interno**; en frontmatter y plantillas, sin él. El espacio es **funcional** — un agente que lo "corrija" por prolijidad rompe la frase en la próxima corrida, y el síntoma aparece después, en otro archivo, sin relación aparente con el arreglo. Incluye el alcance real del script (`.md` y `.txt`, **no** `.py` ni `.sh`) y qué placeholders no corren riesgo (`{{date}}` de Templater, `${{ }}` de Actions).
 
+## [1.11.1] — 2026-08-07
+**El PR ahora te menciona solo, y te dice qué mirar primero.**
+
+- **Nuevo workflow `.github/workflows/aviso-de-pr.yml`.** Al abrirse un PR, comenta mencionando a quien tiene que revisar. Una **@mención notifica SIEMPRE**: no depende del plan de GitHub, ni de que la persona siga el repo, ni de que quien abre el PR se acuerde de pedir el review. Es el rodeo exacto a la limitación del `CODEOWNERS` documentada en la 1.11.0.
+- **Pero un ping pelado no agrega nada sobre el mail del *watching*, así que el comentario hace algo más:** marca **si el PR toca las rutas que cambian el comportamiento del agente de la otra persona** (`00 Sistema/`, `.claude/`, `.githooks/`, `AGENTS.md`, `CLAUDE.md`, scripts raíz…). Eso es lo que más fácil se pasa por alto en un diff y lo único que hay que revisar sí o sí.
+- **Tres decisiones de diseño que conviene no "simplificar":**
+  - **Sin `synchronize` en el `on:`** — solo `opened`, `reopened` y `ready_for_review`. Con `synchronize`, cada push a la rama volvería a comentar.
+  - **A quién mencionar se resuelve por API** (colaboradores con permiso de escritura, menos el autor), **no con handles hardcodeados**: si entra o sale gente del equipo, sigue estando bien solo.
+  - **Nunca falla el check** (`|| true` y `exit 0`): un aviso roto no debe bloquear un PR. Y no comenta desde forks ni en borradores.
+- **Hardening:** los valores entran por `env:` y **nunca interpolados con `${{ }}` dentro del `run:`** — un `${{ }}` se sustituye como texto antes de que corra el shell, así que un título de PR con comillas o `$(...)` se ejecutaría. Cero actions de terceros: solo el `gh` del runner.
+
 ## [1.11.0] — 2026-08-07
 **En modo equipo, nada te avisaba que había un PR esperando tu review.**
 
