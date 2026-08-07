@@ -77,7 +77,7 @@ Son tres momentos, siempre iguales:
 |---|---|
 | **Al abrir** | `git pull` — traés lo que hicieron los demás. Sin esto trabajás sobre una versión vieja |
 | **Antes de tocar nada** | `git switch -c <vos>/tema` — te movés a **tu rama** |
-| **Al cerrar** | Publicás tu rama y abrís un **PR** para que otra persona lo mire antes de que entre |
+| **Al cerrar** | Publicás tu rama y abrís un **PR**. Según qué tocaste, lo mergeás vos o esperás review — ver §5 |
 
 **Tu prefijo de rama** — dos letras, no la inicial: en cuanto dos personas comparten inicial, la inicial sola es ambigua. Fijalo por escrito **antes del primer PR**.
 
@@ -175,7 +175,81 @@ Git **no sabe mezclar dos ediciones del mismo párrafo** en un texto en prosa. L
 
 **Ramas cortas: abrilas y cerralas el mismo día.** Cuanto más vive una rama, más se aleja del resto y peor mezcla. Si un trabajo va a llevar una semana, partilo.
 
-## 5. Trabajar con tu agente de IA
+## 5. Aprobar y mergear no son lo mismo
+
+Confundirlos es lo que más cuesta al principio. **Nadie hace `git push` a `main`, nunca.**
+
+| | Qué es | Qué mueve |
+|---|---|---|
+| **Aprobar** | El botón *Approve* del PR. Decís "está bien" | **Nada.** Solo deja un tilde verde |
+| **Mergear** | El botón *Squash and merge* | **Esto** es lo que mete el cambio en `main` |
+
+> **La regla: quien abre el PR es quien lo mergea, después de que el otro aprueba.**
+
+| Quién lo escribió | Quién aprueba | Quién aprieta *merge* |
+|---|---|---|
+| Persona A | Persona B | **Persona A** |
+| Persona B | Persona A | **Persona B** |
+
+El autor sabe si quiere agregar algo antes de cerrarlo, y es quien responde por el cambio. Quien aprueba solo dice que sí.
+
+> Técnicamente cualquiera de las personas puede mergear cualquier PR: no hay nada que lo impida. Es una convención, no un candado — pero evita que alguien cierre el trabajo de otra persona sin avisar.
+
+### No todo necesita review
+
+El PR **sirve igual aunque nadie lo mire**: corre las verificaciones antes de que el cambio entre, deja el diff guardado, junta tus registros del día en una sola línea legible, avisa a la otra persona, y deja todo revertible de una. El review se le cuelga encima; no es su razón de ser.
+
+Por eso hay dos caminos, y **el flag es la señal** — queda escrito en el PR mismo, sin que nadie tenga que acordarse:
+
+| Qué tocaste | Cómo abrís el PR | Quién mergea |
+|---|---|---|
+| Tu diario, notas nuevas tuyas | `gh pr create --fill` | **Vos, al toque.** No esperás a nadie |
+| `01 Index/`, `02 MOCs/`, `00 Sistema/`, `.claude/` | `gh pr create --reviewer <la-otra>` | Vos, **después** de que apruebe |
+
+### Recorrido A — bajo riesgo, sin espera
+
+```bash
+git switch main && git pull
+git switch -c <xx>/fotos-productos
+# … trabajás …
+git push -u origin <xx>/fotos-productos
+gh pr create --fill                      # sin --reviewer = "esto entra solo"
+gh pr merge --squash --delete-branch     # lo mergeás vos, al toque
+git switch main && git pull
+```
+
+### Recorrido B — necesita los ojos de la otra persona
+
+```bash
+git switch main && git pull
+git switch -c <yy>/sop-nuevo-flujo
+# … trabajás …
+git push -u origin <yy>/sop-nuevo-flujo
+gh pr create --reviewer <la-otra-persona>    # "necesito que mires esto"
+```
+
+**Y ahí parás.** La otra persona abre *Files changed* (o le pide `/revisar-pr <número>` a su agente), y hace *Review changes* → **Approve** → *Submit review*. **Recién entonces**, vos:
+
+```bash
+gh pr merge --squash --delete-branch
+git switch main && git pull
+```
+
+> **Si tocás `00 Sistema/`, `.claude/`, `AGENTS.md` o `CLAUDE.md`, avisá además por mensaje.** Los avisos automáticos existen —la mención en el PR, el aviso al abrir el agente, el mail— pero un cambio que altera **cómo trabaja el agente de la otra persona** merece una frase humana.
+
+### La rama se borra sola, pero solo en GitHub
+
+Al mergear, la rama **desaparece de GitHub** automáticamente. La copia que quedó en tu computadora **no**: esa la borrás vos.
+
+```bash
+git switch main && git pull
+git fetch --prune                                     # sincroniza qué existe en GitHub
+git branch --merged main | grep -v main | xargs git branch -d
+```
+
+> El `-d` en minúscula solo borra ramas ya incorporadas, así que es seguro: si algo no se mergeó, se niega.
+
+## 6. Trabajar con tu agente de IA
 
 Cada persona usa su propio agente. La ley que obedecen está versionada en el vault (`AGENTS.md`, `CLAUDE.md`, `.claude/`), así que tu agente la lee solo. Cuatro reglas para vos:
 
@@ -188,13 +262,13 @@ Cuando termines una sesión larga, tu agente deja una nota en `05 Diario/Bitáco
 
 > Si son **exactamente dos**: cada PR lo revisa la otra, siempre, y no hay tercero de respaldo — si una no está, el PR espera. Es el costo de ser dos; conviene saberlo de entrada.
 
-## 6. Lo que nunca va al vault
+## 7. Lo que nunca va al vault
 
 **Contraseñas, tokens, claves de API, datos de tarjetas, exportaciones con datos personales de clientes.** Nada de eso, ni siquiera "un momentito para probar".
 
 Una vez que algo así se publica, **ya se filtró**: borrarlo después no lo borra del historial, y hay que rotar la credencial. La verificación local te va a frenar si detecta algo, pero no confíes en ella — confiá en no ponerlo.
 
-## 7. Sobre el check `verify` del PR
+## 8. Sobre el check `verify` del PR
 
 Cuando abrís un PR, GitHub muestra un check llamado **`verify`**: corre el buscador de secretos y el de bloques protegidos (esos dos lo ponen en rojo), y además avisa —sin ponerlo en rojo— del formato de las notas, los enlaces rotos y los índices desactualizados.
 
@@ -203,7 +277,7 @@ Dos cosas que hay que saber para no malinterpretarlo:
 - **Es una señal, no un bloqueo** *(en plan Free)*. No se puede exigir que un check pase antes de mergear: un PR en rojo **se puede mergear igual**. Mirarlo es responsabilidad de quien revisa.
 - **El control real es el `pre-commit` de tu máquina.** El del servidor corre *después* de que ya publicaste, y no puede frenar el merge. Por eso el paso 1 no es opcional.
 
-## 8. Si algo sale mal
+## 9. Si algo sale mal
 
 - **Te aparece un conflicto al mezclar:** no lo resuelvas a las apuradas. Avisá y lo revisamos. Un conflicto mal resuelto borra el trabajo de alguien en silencio.
 - **Rompiste algo y no sabés qué:** no borres nada. Git guarda todo; se recupera. Avisá.
