@@ -16,6 +16,16 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.13.1] — 2026-08-07
+**`update.sh` mandaba a re-correrse para siempre.**
+
+- **Corregido el falso positivo `⚠ update.sh se actualizó a sí mismo`.** El aviso se repetía **idéntico en cada corrida hasta que commiteabas**, mandando a re-ejecutar un script que ya estaba al día.
+- **La causa, y es sutil:** el aviso se disparaba mirando `CHANGED`, que compara **`HEAD` con upstream**. Mientras el update no se commitea, `update.sh` sigue apareciendo ahí corrida tras corrida — aunque el archivo **en disco** ya sea el nuevo.
+- **El arreglo mide lo que de verdad importa:** no si el archivo difiere del último commit, sino **si el proceso en ejecución está usando la whitelist `FRAMEWORK_PATHS` vieja**. Se compara el archivo contra upstream en el **árbol de trabajo**, y **antes** del checkout. Si ya coincide, la whitelist nueva está aplicada y no hay nada que re-correr.
+- **El aviso sigue apareciendo cuando sirve** — en la corrida que efectivamente trae un `update.sh` nuevo, que es cuando la whitelist del proceso en curso quedó atrás. Probado en los tres estados: antes de aplicar → avisa · aplicado sin commitear → silencio · commiteado → silencio.
+
+> **Lección de método:** el aviso no estaba mal *pensado*, estaba mal *medido*. Preguntaba «¿cambió respecto del último commit?» cuando lo que importaba era «¿el proceso que corre ahora ya tiene lo nuevo?». **Cuando una condición se repite sin sentido, sospechá del punto de comparación antes que de la lógica.**
+
 ## [1.13.0] — 2026-08-07
 **El acuerdo de trabajo del equipo no viajaba en la plantilla. Ahora sí.**
 

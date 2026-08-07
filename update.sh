@@ -111,6 +111,19 @@ fi
 # pierde al terminar. Además, un checkout que falle en la última vuelta hace
 # salir la subshell con 1 y, con `set -e`, aborta el script justo antes de
 # personalize.sh — el modo de falla que este arreglo viene a cerrar.
+# ¿El update.sh que está CORRIENDO ahora mismo ya es el de upstream?
+#
+# Se mide ANTES del checkout y contra el ÁRBOL DE TRABAJO, no contra HEAD, y esa
+# es toda la corrección. `CHANGED` compara HEAD con upstream: mientras el update
+# no se commitee, update.sh aparece ahí en TODAS las corridas siguientes — así
+# que el aviso de abajo se repetía idéntico para siempre y mandaba a re-correr
+# un script que ya estaba al día. Lo que de verdad importa no es si el archivo
+# difiere del último commit, sino si el proceso en ejecución está usando la
+# whitelist FRAMEWORK_PATHS vieja: si el archivo en disco ya coincide con
+# upstream, la whitelist nueva ya se aplicó y no hay nada que re-correr.
+SELF_STALE=0
+git diff --quiet "$REMOTE/$BRANCH" -- update.sh 2>/dev/null || SELF_STALE=1
+
 FALLIDOS=""
 while IFS= read -r f; do
   [ -n "$f" ] || continue
@@ -128,7 +141,7 @@ echo ""
 if [ -f owner.env ]; then bash ./personalize.sh; fi
 # Re-aplica la capa multi-persona (no-op en modo personal; nunca pisa lo existente).
 if [ -f team-mode.sh ]; then bash ./team-mode.sh; fi
-if printf '%s\n' "$CHANGED" | grep -qx "update.sh"; then
+if [ "$SELF_STALE" = "1" ] && printf '%s\n' "$CHANGED" | grep -qx "update.sh"; then
   echo "⚠ update.sh se actualizó a sí mismo — corré ./update.sh una vez más para aplicar la whitelist nueva."
 fi
 echo "Actualizado a $REMOTE_V. Revisá 'git status' y commiteá: git commit -m \"chore: update framework a $REMOTE_V\""
