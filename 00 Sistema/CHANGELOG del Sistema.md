@@ -16,6 +16,19 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.14.0] — 2026-08-08
+**Tres huecos que el sistema tenía y nadie veía: rutinas que se caen calladas, transcripts que nadie lee, y una bitácora sin techo.**
+
+- **Nuevo monitor de rutinas (`check-routines.sh`, `SessionStart`).** Las rutinas programadas escriben su informe y lo commitean, pero **nada avisa cuando NO corren** — y el panel puede seguir mostrándolas "activa" mientras están rotas. El sistema es *pull* (hay que ir a mirar) y las personas somos *push* (nos enteramos de lo que nos llega); ese desajuste es el hueco.
+  - No se puede empujar una notificación desde el vault, así que hace lo barato y efectivo: **que la ausencia sea imposible de no ver al abrir sesión**.
+  - **Mide el resultado, no el mecanismo:** pregunta "¿hay informe reciente en `05 Diario/Auditorías/`?" y no "¿disparó el cron?". Por eso no necesita credenciales ni la API, y un informe escrito **a mano** cuenta como mantenimiento hecho — que es la verdad operativa. La fecha sale del **nombre** del archivo, no del mtime: en un clon fresco el mtime es la hora del checkout y mentiría.
+  - **Opt-in por `vault.conf` → `ROUTINES_EXPECTED` (vacío por defecto).** Sin ese interruptor, un vault recién creado —que todavía no tiene ningún informe— gritaría «NUNCA corrió» desde el día uno, para siempre. **Vigilar exige declarar.**
+- **Nuevo buscador de sesiones (`search-sessions.py`).** `pre-compact.sh` venía guardando conversaciones enteras en `.vault-meta/session-logs/` que **no consultaba nadie**: el dato estaba, faltaba la herramienta. Es *grep con estructura* (sabe qué es un turno, de quién y cuándo; ignora los volcados de archivos), con dedupe por `sessionId` y búsqueda sin acentos. ⚠️ Solo ve sesiones que **compactaron**: `--list` primero, antes de concluir que algo no existe.
+- **Nuevo tope del Agent Diary (`check-diary-size.sh` + hook `Stop`).** La bitácora estaba acotada *al leer* (el hook inyecta solo la última entrada) pero era infinita *al escribir*. Pasado el techo, el aviso suma la instrucción de **proponer** una consolidación. Mide **caracteres, no líneas** (las entradas son párrafos largos: contar líneas subestima el costo de contexto varias veces).
+  - **No borra y no bloquea**, a diferencia del tope duro que inspiró la idea: la ley del vault es *"nunca borrar"* y *"siempre proponer, nunca decidir solo"*, así que el mecanismo pone el tema sobre la mesa y la tijera la decide el dueño.
+
+> **El hilo común de los tres, y la razón de que estén en la misma versión: los tres callan cuando todo está bien.** Un aviso que aparece siempre se vuelve paisaje y deja de verse — que es exactamente cómo una rutina puede quedar caída durante días con el panel diciendo "activa". **Un monitor que habla de más no es un monitor.**
+
 ## [1.13.1] — 2026-08-07
 **`update.sh` mandaba a re-correrse para siempre.**
 

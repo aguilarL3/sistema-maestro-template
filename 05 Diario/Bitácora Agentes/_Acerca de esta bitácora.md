@@ -50,9 +50,24 @@ El hook `SessionStart` (`.claude/hooks/session-context.sh`) inyecta al arrancar 
 
 > **Señal de frescura (red de seguridad):** aunque el orden se respete, el hook avisa `⚠ Hubo N commit(s) DESPUÉS de este handoff` cuando hubo trabajo commiteado posterior al último toque de la bitácora — indica que el handoff mostrado puede estar desfasado y hay que confirmar contra el Roadmap y el `git log`.
 
+## Tope de consolidación
+
+Esta bitácora está acotada **al leer** (el hook inyecta solo la última entrada) pero sería infinita **al escribir**: sin un techo, nadie la sintetiza nunca y termina siendo un archivo histórico disfrazado de handoff.
+
+`check-diary-size.sh` le pone techo al mes vigente y el hook `Stop` lo consulta: pasado el umbral, el aviso de bitácora suma la instrucción de **proponer una consolidación**. Lo valioso no es el número — es *el mecanismo que obliga a sintetizar*. A un agente al que solo se le pide "resumí bien" no lo hace; a uno que choca contra un tope, sí.
+
+**Qué significa consolidar acá — y qué no:**
+
+- **NO es borrar.** La bitácora sirve al handoff, no al archivo histórico, y la historia completa ya vive en git (`git log -p`).
+- **SÍ es:** sintetizar las entradas viejas del mes en un bloque de aprendizajes duraderos, dejar **verbatim las últimas** (que son el handoff vivo), y mover a su nota lo que resultó ser **conocimiento reutilizable** en vez de diario.
+- **La propone un agente; la tijera final la decide el dueño del vault.** El tope no borra ni bloquea: solo obliga a poner el tema sobre la mesa.
+
+Ver el estado con `bash .claude/hooks/check-diary-size.sh`. Los umbrales se ajustan por variable de entorno (`DIARY_SOFT_CHARS`, `DIARY_HARD_CHARS`, `DIARY_SOFT_ENTRIES`, `DIARY_HARD_ENTRIES`).
+
 ## Controles
 
 - **Desactivar la bitácora:** crear el archivo `.vault-meta/diary.disabled`.
 - **Desactivar el auto-commit de agentes:** crear `.vault-meta/autocommit.disabled`.
+- **Desactivar solo el tope de consolidación** (la bitácora sigue andando): crear `.vault-meta/diary-cap.disabled`.
 
 > *Sesión significativa* = se crearon/editaron archivos del vault, se tocaron sistemas externos, o se crearon/mejoraron SOPs.

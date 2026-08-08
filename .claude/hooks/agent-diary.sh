@@ -47,5 +47,15 @@ find .vault-meta -maxdepth 1 -name 'diary-done-*' -mtime +7 -delete 2>/dev/null 
 MONTH="$(date +%Y-%m)"
 DAY="$(date +%Y-%m-%d)"
 
-printf '{"decision":"block","reason":"[AGENT DIARY] Se trabajó sobre el vault esta sesión. Antes de terminar, registrá UNA entrada en la bitácora \\"05 Diario/Bitácora Agentes/%s.md\\" (creá el archivo y la carpeta si no existen) con este formato exacto:\\n\\n## %s — <tu agente, ej. Claude Code>\\n- Qué se avanzó/creó/editó:\\n- Qué quedó bloqueado:\\n- Qué se decidió o cambió:\\n- Qué debe saber el próximo agente:\\n\\nTRES REGLAS (el hook de sesión inyecta la ÚLTIMA entrada del archivo):\\n1. Agregá tu entrada AL FINAL del archivo (la más reciente SIEMPRE abajo).\\n2. En \\"Qué debe saber\\", el siguiente paso apuntá al [[Roadmap del Sistema]] (fuente viva), NO congeles un paso concreto.\\n3. UNA entrada por sesión: este aviso no se repite; si seguís trabajando después de registrarla, AMPLIÁ tu propia entrada (no crees otra).\\n\\nDespués terminá normalmente. (Para desactivar esta bitácora: crear el archivo .vault-meta/diary.disabled)"}' "$MONTH" "$DAY"
+# Tope de consolidación: si el mes vigente se pasó de largo, el aviso suma la
+# instrucción de PROPONER una consolidación. Se pide acá y no en otro lado porque
+# este es el único momento en que el agente ya está con la bitácora en la mano.
+# El fragmento va sin comillas dobles ni backslashes: se inyecta en un string JSON.
+CAP_MSG=""
+case "$(bash "$ROOT/.claude/hooks/check-diary-size.sh" --level 2>/dev/null || echo OK)" in
+  SOFT) CAP_MSG='\n\nNOTA DE TAMAÑO: la bitácora de este mes va larga. Al escribir, sé breve y no repitas lo que ya está en entradas previas.' ;;
+  HARD) CAP_MSG='\n\n⚠ TOPE DE CONSOLIDACIÓN ALCANZADO: la bitácora de este mes superó el techo (corré «bash .claude/hooks/check-diary-size.sh» para ver los números). Además de tu entrada, PROPONÉ a Leandro una consolidación del mes: sintetizar las entradas viejas en aprendizajes duraderos, dejar VERBATIM las últimas (el handoff vivo) y mover a su nota lo que sea conocimiento reutilizable. NO consolides por tu cuenta: proponé y esperá su decisión.' ;;
+esac
+
+printf '{"decision":"block","reason":"[AGENT DIARY] Se trabajó sobre el vault esta sesión. Antes de terminar, registrá UNA entrada en la bitácora \\"05 Diario/Bitácora Agentes/%s.md\\" (creá el archivo y la carpeta si no existen) con este formato exacto:\\n\\n## %s — <tu agente, ej. Claude Code>\\n- Qué se avanzó/creó/editó:\\n- Qué quedó bloqueado:\\n- Qué se decidió o cambió:\\n- Qué debe saber el próximo agente:\\n\\nTRES REGLAS (el hook de sesión inyecta la ÚLTIMA entrada del archivo):\\n1. Agregá tu entrada AL FINAL del archivo (la más reciente SIEMPRE abajo).\\n2. En \\"Qué debe saber\\", el siguiente paso apuntá al [[Roadmap del Sistema]] (fuente viva), NO congeles un paso concreto.\\n3. UNA entrada por sesión: este aviso no se repite; si seguís trabajando después de registrarla, AMPLIÁ tu propia entrada (no crees otra).\\n\\nDespués terminá normalmente. (Para desactivar esta bitácora: crear el archivo .vault-meta/diary.disabled)%s"}' "$MONTH" "$DAY" "$CAP_MSG"
 exit 0
