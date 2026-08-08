@@ -16,6 +16,17 @@ resource:
 
 Registro de cambios del **framework** (template). `update.sh` actualiza este archivo junto al resto del framework — **no anotes acá los cambios de tu instancia** (se pisarían en el próximo update): esos van en tu bitácora de agentes o en una nota propia.
 
+## [1.15.0] — 2026-08-08
+**El buscador de sesiones no necesitaba más captura: el harness ya guardaba todo.**
+
+- **`search-sessions.py` ahora lee DOS fuentes y deduplica por `sessionId`:** la copia local de `pre-compact.sh` **y** `~/.claude/projects/<proyecto>/`, donde Claude Code guarda **todas** las sesiones por su cuenta, una por archivo y en el mismo formato JSONL.
+- **La diferencia, medida:** en el vault de origen la copia local tenía **2 sesiones** y la del harness **50** (9.661 turnos). La local solo captura **al compactar**; la del harness no se saltea ninguna.
+- **Por qué no solo la del harness, que es la completa:** es una ruta **interna, no documentada y específica de Claude Code** — puede cambiar de versión y no existe en otros harnesses. La copia local queda como **ancla portable**: si la del harness cambia o desaparece, el buscador sigue andando con menos corpus en vez de romperse. La resolución de ruta tampoco confía solo en armar el nombre de la carpeta: si no la encuentra, busca la que declare este mismo `cwd` adentro (override por `CLAUDE_PROJECTS_DIR`).
+- **Un solo script para vault y repo de código:** detecta `.vault-meta/session-logs/` o `.repo-meta/session-logs/`. Dos copias divergirían con el tiempo.
+- ⚠️ Lo que sigue sin dar: sesiones de **otra persona u otra máquina**, y la retención del harness no la controlamos.
+
+> **Lección de método, y es la que vale de esta versión:** el plan era construir una captura nueva en `SessionEnd` para llenar el corpus. No hizo falta — el dato ya se estaba recolectando en otro lado. **Antes de construir un recolector, fijate si alguien ya está recolectando.**
+
 ## [1.14.0] — 2026-08-08
 **Tres huecos que el sistema tenía y nadie veía: rutinas que se caen calladas, transcripts que nadie lee, y una bitácora sin techo.**
 

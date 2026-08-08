@@ -18,16 +18,35 @@ Hermes) porque el corpus son unos pocos MB y el escaneo tarda menos que mantener
 el índice sincronizado. La regla del vault es "simplicidad antes que complejidad";
 si el corpus crece a cientos de sesiones, acá es donde entra FTS5.
 
-⚠️ SOBRE LA COBERTURA: `pre-compact.sh` solo dispara **al compactar**. Una sesión
-que nunca compactó no deja rastro, y varias fotos de una misma sesión larga cuentan
-como una sola. `--list` te dice exactamente qué hay: usalo antes de concluir que
-"no existe" algo.
+DOS FUENTES, Y EL PORQUÉ DE CADA UNA:
+
+  1. LOCAL — `.vault-meta/session-logs/` (o `.repo-meta/` en repos de código), que
+     llena `pre-compact.sh`. Es **nuestra**: nosotros controlamos la ruta, el
+     formato y la retención, y no depende de qué harness se use. Pero solo captura
+     **al compactar**, así que una sesión que nunca compactó no deja rastro.
+  2. HARNESS — `~/.claude/projects/<proyecto>/`, donde Claude Code guarda **todas**
+     las sesiones por su cuenta, una por archivo, sin que nadie configure nada.
+     Mismo formato JSONL. Es la fuente completa.
+
+La diferencia no es teórica: medido el 2026-08-08 en el vault, la local tenía **2**
+sesiones y la del harness **52**.
+
+Se leen LAS DOS y se deduplica por `sessionId`. Por qué no solo la del harness, que
+es la completa: es una ruta **interna y no documentada** del harness, específica de
+Claude Code — puede cambiar de versión y no existe en Codex/Hermes. La local es el
+ancla portable. Si la del harness desaparece, esto sigue funcionando con menos
+corpus en vez de romperse.
+
+⚠️ Lo que NINGUNA de las dos da: sesiones de otras personas o de otra máquina. Y la
+retención del harness no la controlamos (poda cuando quiere). `--list` te dice
+exactamente qué hay: usalo antes de concluir que algo "no existe".
 
 Uso:
   python search-sessions.py --list              # inventario: qué sesiones hay
   python search-sessions.py "graphify"          # buscar en todo
   python search-sessions.py "OKF" --role user   # solo lo que pidió el humano
   python search-sessions.py "verif.*commit" --regex --full
+  CLAUDE_PROJECTS_DIR=/otra/ruta python search-sessions.py --list   # override
 """
 import argparse
 import json
@@ -45,7 +64,51 @@ for _s in (sys.stdout, sys.stderr):
         pass
 
 ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()))
-LOGDIR = ROOT / ".vault-meta" / "session-logs"
+
+
+def local_dirs():
+    """Los backups que deja `pre-compact.sh`. Se aceptan los dos nombres para que
+    este script sea UNO SOLO y sirva igual en el vault (`.vault-meta/`) y en un
+    repo de código (`.repo-meta/`) — dos copias divergirían con el tiempo."""
+    return [d for d in (ROOT / ".vault-meta" / "session-logs",
+                        ROOT / ".repo-meta" / "session-logs") if d.is_dir()]
+
+
+def harness_dir():
+    """Dónde Claude Code guarda las sesiones de ESTE proyecto.
+
+    El nombre de la carpeta es la ruta absoluta con ':' y separadores vueltos '-'
+    (C:\\Users\\x\\vault → C--Users-x-vault). Como es una convención interna del
+    harness y no un contrato, no se confía solo en armar el nombre: si no está, se
+    buscan todas las carpetas de proyecto y se elige la que declare este mismo
+    `cwd` adentro. Si tampoco, se devuelve None y el buscador sigue con la local."""
+    override = os.environ.get("CLAUDE_PROJECTS_DIR")
+    base = Path(override) if override else Path.home() / ".claude" / "projects"
+    if not base.is_dir():
+        return None
+
+    root_abs = str(ROOT.resolve())
+    guess = base / re.sub(r"[:\\/]", "-", root_abs)
+    if guess.is_dir():
+        return guess
+
+    # Fallback: preguntarle a los datos en vez de adivinar el nombre.
+    target = root_abs.replace("/", "\\").lower()
+    for cand in base.iterdir():
+        if not cand.is_dir():
+            continue
+        for f in sorted(cand.glob("*.jsonl"))[:1]:
+            try:
+                with f.open(encoding="utf-8", errors="replace") as fh:
+                    for line in fh:
+                        cwd = (json.loads(line).get("cwd") or "") if line.strip() else ""
+                        if cwd and cwd.replace("/", "\\").lower() == target:
+                            return cand
+                        if cwd:
+                            break
+            except (OSError, json.JSONDecodeError, ValueError):
+                continue
+    return None
 
 # Ruido del harness: turnos que no son conversación real y ensucian los resultados.
 NOISE = re.compile(
@@ -87,52 +150,62 @@ def blocks_to_text(content) -> str:
 def load_sessions():
     """Devuelve {session_id: {...}} quedándose con la foto MÁS COMPLETA de cada
     sesión. Dos snapshots de una sesión larga son el mismo hilo capturado dos
-    veces: contarlos como dos sesiones distintas inflaría el inventario y
-    duplicaría cada resultado de búsqueda."""
+    veces —y ahora, además, la misma sesión puede venir por las DOS fuentes—:
+    contarlas por separado inflaría el inventario y duplicaría cada resultado."""
     sessions = {}
-    if not LOGDIR.is_dir():
-        return sessions
 
-    for f in sorted(LOGDIR.glob("session_*.jsonl")):
-        turns, sid, first_ts, last_ts = [], None, None, None
-        try:
-            fh = f.open(encoding="utf-8", errors="replace")
-        except OSError:
-            continue
-        with fh:
-            for line in fh:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    o = json.loads(line)
-                except (json.JSONDecodeError, ValueError):
-                    continue
-                sid = o.get("sessionId") or sid
-                typ = o.get("type")
-                if typ not in ("user", "assistant"):
-                    continue
-                if o.get("isMeta"):
-                    continue
-                text = blocks_to_text((o.get("message") or {}).get("content"))
-                if not text.strip() or NOISE.match(text):
-                    continue
-                ts = o.get("timestamp") or ""
-                if ts:
-                    first_ts = first_ts or ts
-                    last_ts = ts
-                turns.append({"role": typ, "ts": ts, "text": text})
+    # (etiqueta, archivos). La local va primero para que, ante empate exacto de
+    # tamaño, gane la fuente que controlamos nosotros.
+    fuentes = []
+    for d in local_dirs():
+        fuentes.append(("local", sorted(d.glob("session_*.jsonl"))))
+    hd = harness_dir()
+    if hd:
+        fuentes.append(("harness", sorted(hd.glob("*.jsonl"))))
 
-        if not turns:
-            continue
-        key = sid or f.name
-        prev = sessions.get(key)
-        # Se queda la foto con más turnos: es la más tardía de la misma sesión.
-        if prev is None or len(turns) > len(prev["turns"]):
-            sessions[key] = {
-                "id": key, "file": f.name, "turns": turns,
-                "first": first_ts or "", "last": last_ts or "",
-            }
+    for src, files in fuentes:
+        for f in files:
+            turns, sid, first_ts, last_ts = [], None, None, None
+            try:
+                fh = f.open(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            with fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        o = json.loads(line)
+                    except (json.JSONDecodeError, ValueError):
+                        continue
+                    sid = o.get("sessionId") or sid
+                    typ = o.get("type")
+                    if typ not in ("user", "assistant"):
+                        continue
+                    if o.get("isMeta"):
+                        continue
+                    text = blocks_to_text((o.get("message") or {}).get("content"))
+                    if not text.strip() or NOISE.match(text):
+                        continue
+                    ts = o.get("timestamp") or ""
+                    if ts:
+                        first_ts = first_ts or ts
+                        last_ts = ts
+                    turns.append({"role": typ, "ts": ts, "text": text})
+
+            if not turns:
+                continue
+            key = sid or f.name
+            prev = sessions.get(key)
+            # Se queda la foto con más turnos. Cubre los dos casos de duplicado:
+            # dos snapshots de una misma sesión larga, y la misma sesión llegando
+            # por la fuente local y por la del harness.
+            if prev is None or len(turns) > len(prev["turns"]):
+                sessions[key] = {
+                    "id": key, "file": f.name, "turns": turns, "src": src,
+                    "first": first_ts or "", "last": last_ts or "",
+                }
     return sessions
 
 
@@ -158,22 +231,28 @@ def main():
 
     sessions = load_sessions()
     if not sessions:
-        print(f"No hay transcripts en «{LOGDIR}».")
-        print("Los deja `pre-compact.sh`, y SOLO al compactar: una sesión que nunca")
-        print("compactó no deja rastro. Si esperabas encontrar algo, ese es el motivo.")
+        print("No se encontró ningún transcript de este proyecto.")
+        print(f"  · local   : {[str(d) for d in local_dirs()] or 'no existe'}")
+        print(f"  · harness : {harness_dir() or 'no encontrado'}")
+        print("La local la llena `pre-compact.sh` y SOLO al compactar; la del harness")
+        print("la escribe Claude Code sola. Si las dos están vacías, no hay historia que buscar.")
         return 1
 
     ordered = sorted(sessions.values(), key=lambda s: s["first"])
 
     if args.list or not args.query:
         total = sum(len(s["turns"]) for s in ordered)
-        print(f"{len(ordered)} sesión(es) guardada(s) · {total} turnos · «{LOGDIR}»\n")
+        n_loc = sum(1 for s in ordered if s["src"] == "local")
+        n_har = len(ordered) - n_loc
+        print(f"{len(ordered)} sesión(es) · {total} turnos "
+              f"({n_loc} de la copia local, {n_har} del harness)\n")
         for s in ordered:
             day = (s["first"] or "?")[:10]
             hi = (s["first"] or "")[11:16]
             hf = (s["last"] or "")[11:16]
             nu = sum(1 for t in s["turns"] if t["role"] == "user")
-            print(f"  {day} {hi}–{hf} · {len(s['turns']):4d} turnos ({nu} del humano) · {s['file']}")
+            tag = "local  " if s["src"] == "local" else "harness"
+            print(f"  {day} {hi}–{hf} · {len(s['turns']):4d} turnos ({nu} del humano) · [{tag}]")
             first_user = next((t["text"] for t in s["turns"] if t["role"] == "user"), "")
             if first_user:
                 print(f"      ↳ arranque: {snippet(first_user, (0, 0), 150)}")
@@ -200,7 +279,7 @@ def main():
                     continue
                 shown += 1
                 if not header_done:
-                    print(f"\n━━ {(s['first'] or '?')[:10]} · {s['file']}")
+                    print(f"\n━━ {(s['first'] or '?')[:10]} · [{s['src']}] {s['file']}")
                     header_done = True
                 who = "👤 humano" if t["role"] == "user" else "🤖 agente"
                 print(f"  [{(t['ts'] or '')[11:16]}] {who}:")
@@ -212,7 +291,8 @@ def main():
 
     if not hits:
         print(f"Sin coincidencias para «{args.query}» en {len(ordered)} sesión(es).")
-        print("Ojo: solo se guardan sesiones que COMPACTARON (ver --list).")
+        print("Ojo: solo se ven sesiones de ESTA máquina y este usuario, y el harness")
+        print("poda las suyas cuando quiere. Mirá `--list` para saber qué hay de verdad.")
         return 1
     print(f"\n{hits} coincidencia(s)" + (f", mostrando {shown}." if hits > shown else "."))
     return 0
